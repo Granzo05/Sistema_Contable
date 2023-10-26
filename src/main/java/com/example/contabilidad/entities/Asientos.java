@@ -3,21 +3,20 @@ package com.example.contabilidad.entities;
 import com.example.contabilidad.entities.Enums.EnumTipoTransaccion;
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "asientos")
 public class Asientos {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long nroAsiento;
     @Column(name = "fecha_asentado", updatable = false, nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
     public Date fechaRegistro;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "nroAsiento")
-    private String nroAsiento;
-    @Column(name = "nroCuenta")
+    @Column(name = "nro_cuenta")
     private String nroCuenta;
     @Column(name = "descripcion")
     private String descripcion;
@@ -39,11 +38,14 @@ public class Asientos {
     @JoinColumn(name = "mayor")
     private Mayor mayor;
 
-    public String getNroAsiento() {
+    public Asientos() {
+    }
+
+    public Long getNroAsiento() {
         return nroAsiento;
     }
 
-    public void setNroAsiento(String nroAsiento) {
+    public void setNroAsiento(Long nroAsiento) {
         this.nroAsiento = nroAsiento;
     }
 

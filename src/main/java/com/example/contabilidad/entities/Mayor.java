@@ -1,6 +1,6 @@
 package com.example.contabilidad.entities;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
@@ -9,6 +9,8 @@ public class Mayor {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(name = "nro_cuenta")
+    private String nroCuenta;
     @OneToMany(mappedBy = "mayor")
     private List<Asientos> asientos;
 
@@ -20,6 +22,9 @@ public class Mayor {
 
     @Column(name = "saldo")
     private String saldo;
+
+    public Mayor() {
+    }
 
     public Long getId() {
         return id;
@@ -35,6 +40,9 @@ public class Mayor {
 
     public void setAsientos(List<Asientos> asientos) {
         this.asientos = asientos;
+    }
+    public void addAsiento(Asientos asientos) {
+        this.asientos.add(asientos);
     }
 
     public double getDebe() {

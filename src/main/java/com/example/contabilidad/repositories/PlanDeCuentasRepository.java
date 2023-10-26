@@ -13,8 +13,9 @@ import java.util.Optional;
 public interface PlanDeCuentasRepository extends JpaRepository<PlanDeCuentas, Long> {
     List<PlanDeCuentas> findAll();
 
-    @Query("SELECT c FROM PlanDeCuentas c WHERE c.nombre = :nombre AND c.nroCuenta = :nroCuenta")
-    Optional<PlanDeCuentas> findByNameAndID(@Param("nombre") String nombre, @Param("nroCuenta") String numeroCuenta);
+    @Query("SELECT c FROM PlanDeCuentas c WHERE c.descripcion = :descripcion AND c.nroCuenta = :nroCuenta")
+    Optional<PlanDeCuentas> findByDescripcionAndNroCuenta(String descripcion, String nroCuenta);
+
 
     @Query("SELECT c FROM PlanDeCuentas c WHERE c.nroCuenta = :nroCuenta")
     Optional<PlanDeCuentas> findByNroCuenta(@Param("nroCuenta") String numeroCuenta);

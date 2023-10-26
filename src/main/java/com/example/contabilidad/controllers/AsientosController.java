@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,7 +29,7 @@ public class AsientosController {
     public ResponseEntity<String> crearAsientos(@RequestBody Asientos asientosDetails) {
         asientosRepository.save(asientosDetails);
 
-        List<Asientos> asientos = mayorRepository.findByNroCuenta(asientosDetails.getNroCuenta());
+        List<Asientos> asientos = asientosRepository.findByNroCuenta(asientosDetails.getNroCuenta());
         asientos.add(asientosDetails);
 
         Mayor mayor = new Mayor();
@@ -51,13 +50,12 @@ public class AsientosController {
     }
 
     @GetMapping("/asientos/id/{id}")
-    public ResponseEntity<Asientos> buscarAsientosPorNroCuenta(@PathVariable String nroCuenta) {
-        Optional<Asientos> asientosOptional = asientosRepository.findByNroCuenta(nroCuenta);
-        if (asientosOptional.isEmpty()) {
-            return ResponseEntity.notFound().build();
+    public List<Asientos> buscarAsientosPorNroCuenta(@PathVariable String nroCuenta) {
+        List<Asientos> asientos = asientosRepository.findByNroCuenta(nroCuenta);
+        if (asientos.isEmpty()) {
+            return asientos;
         }
-        Asientos asientos = asientosOptional.get();
-        return ResponseEntity.ok(asientos);
+        return asientos;
     }
 
     @CrossOrigin
@@ -78,7 +76,8 @@ public class AsientosController {
             fecha = dateFormat.parse(fechaStr);
         } catch (ParseException ignored) {
         }
-        return asientosRepository.findByFecha(fecha);
+        return asientosRepository.findAll();
+
     }
 
     @CrossOrigin
@@ -87,7 +86,7 @@ public class AsientosController {
         // Convierte la fecha recibida en un objeto Date con el formato "dd/MM/yyyy"
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date fecha = null;
-        return asientosRepository.findByFecha(fecha);
+        return asientosRepository.findAll();
     }
 
 }

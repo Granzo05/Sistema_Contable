@@ -1,16 +1,13 @@
 package com.example.contabilidad.controllers;
 
+import com.example.contabilidad.entities.Asientos;
 import com.example.contabilidad.entities.Mayor;
-import com.example.contabilidad.entities.PlanDeCuentas;
 import com.example.contabilidad.repositories.MayorRepository;
-import com.example.contabilidad.repositories.PlanDeCuentasRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class MayorController {
@@ -21,16 +18,34 @@ public class MayorController {
     }
 
     @GetMapping("/mayor")
-    public ResponseEntity<Mayor> buscarMayor(@RequestParam("nroCuenta") String nroCuenta,
-                                             @RequestParam("mes") int mes,
-                                             @RequestParam("año") int año) {
+    public Mayor buscarMayor(@RequestParam("nroCuenta") String nroCuenta,
+                             @RequestParam("mes") int mes,
+                             @RequestParam("año") int anio) {
 
-        Mayor mayor = mayorRepository.findByCuentaAñoYMes(nroCuenta, año, mes);
+        Mayor mayor = mayorRepository.findByNroCuenta(nroCuenta);
 
-        if (mayor == null) {
-            return ResponseEntity.notFound().build();
+        List<Asientos> asientos = mayor.getAsientos();
+
+        double debe = 0;
+        double haber = 0;
+
+        Mayor mayorFiltrado = new Mayor();
+        for (Asientos asiento : asientos) {
+            if (asiento.getFechaRegistro().getMonth() == mes && asiento.getFechaRegistro().getYear() == anio) {
+                mayorFiltrado.addAsiento(asiento);
+                haber += asiento.getHaber();
+                debe += asiento.getDebe();
+            }
         }
-        return ResponseEntity.ok(mayor);
-    }
+        if (haber > debe) {
+            mayorFiltrado.setSaldo("Acreedor");
+        } else {
+            mayorFiltrado.setSaldo("Acreedor");
+        }
 
+        mayorFiltrado.setDebe(debe);
+        mayorFiltrado.setHaber(haber);
+
+        return mayorFiltrado;
+    }
 }

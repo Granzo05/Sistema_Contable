@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +19,7 @@ public class PlanDeCuentasController {
 
     @PostMapping("/cuenta")
     public ResponseEntity<String> crearCuenta(@RequestBody PlanDeCuentas planDeCuentasDetails) {
-        Optional<PlanDeCuentas> planDeCuentas = planDeCuentasRepository.findByNameAndID(planDeCuentasDetails.getDescripcion(), planDeCuentasDetails.getNroCuenta());
+        Optional<PlanDeCuentas> planDeCuentas = planDeCuentasRepository.findByDescripcionAndNroCuenta(planDeCuentasDetails.getDescripcion(), planDeCuentasDetails.getNroCuenta());
         if (planDeCuentas.isEmpty()) {
             planDeCuentasRepository.save(planDeCuentasDetails);
             return new ResponseEntity<>("El plan de cuentas ha sido añadido correctamente", HttpStatus.CREATED);

@@ -2,7 +2,7 @@ package com.example.contabilidad.entities;
 
 import com.example.contabilidad.entities.Enums.EnumRubro;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
@@ -14,17 +14,36 @@ public class PlanDeCuentas {
     @Column(name = "rubro")
     @Enumerated(EnumType.STRING)
     private EnumRubro rubro;
-    @Column(name = "nroCuenta")
+    @Column(name = "nro_cuenta")
     private String nroCuenta;
     @Column(name = "descripcion")
     private String descripcion;
 
     @OneToMany(mappedBy = "planDeCuentas")
-    private final List<Asientos> asientos;
+    private List<Asientos> asientos;
+
+    public PlanDeCuentas() {
+    }
 
     public PlanDeCuentas(EnumRubro rubro, String descripcion, List<Asientos> asientos) {
         this.rubro = rubro;
         this.descripcion = descripcion;
+        this.asientos = asientos;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<Asientos> getAsientos() {
+        return asientos;
+    }
+
+    public void setAsientos(List<Asientos> asientos) {
         this.asientos = asientos;
     }
 
