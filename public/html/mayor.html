@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistema Contable</title>
+    <link rel="stylesheet" href="/public/css/cuenta/styleCuenta.css" />
+  </head>
+
+  <body>
+    <h1>- Mayor -</h1>
+    <div id="consultarCuenta">   
+      <select>
+        <option value="ACTIVO">Activo</option>
+        <option value="PASIVO">Pasivo</option>
+        <option value="PN">PN</option>
+        <option value="INGRESO">Ingreso</option>
+        <option value="EGRESO">Egreso</option>
+      </select>   
+        <label for="descripcionBuscar">Descripción:</label>
+        <textarea id="descripcionBuscar" rows="4" cols="50"></textarea><br />
+        <input type="number" name="mes" id="mes" placeholder="Mes">
+        <input type="number" name="año" id="año" placeholder="Año">
+        <button type="button" onclick="buscarMayor()">Buscar mayor</button>
+      <div class="result" id="resultadoBuscar"></div>
+    </div>
+
+    <script src="/public/js/scriptMayor.js"></script>
+  </body>
+</html>
