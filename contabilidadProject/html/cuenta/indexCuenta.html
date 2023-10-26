@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Contable</title>
+    <link rel="stylesheet" href="/css/cuenta/styleCuenta.css">
+</head>
+<body>
+    <h1>- PLAN DE CUENTAS -</h1>
+    <div id="acciones">
+        <button type="button" id="añadir" onclick="botonAgregar()">Añadir</button>
+        <button type="button" id="eliminar" onclick="botonEliminar()">Eliminar</button>
+        <button type="button" id="modificar" onclick="botonModificar()">Modificar</button>
+        <button type="button" id="consultar" onclick="botonConsultar()">Consultar</button>
+    </div>
+    <div id="añadirCuenta">
+        <img width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply" id="iconoCerrar" onclick="botonCerrar()"/>
+        <h2>- Agregar cuenta -</h2>
+        <form id="cuentaForm">
+            <label for="rubro">Rubro:</label>
+            <select id="rubro">
+                <option value="Activo">Activo</option>
+                <option value="Pasivo">Pasivo</option>
+                <option value="PN">PN</option>
+                <option value="Ingreso">Ingreso</option>
+                <option value="Egreso">Egreso</option>
+            </select>
+            <label for="numeroCuenta">Número de cuenta:</label>
+            <input type="number" id="numeroCuenta" required pattern="[0-9]{4}" title="El número de cuenta debe ser un número de 4 dígitos.">
+            <label for="descripcion">Descripción:</label>
+            <textarea id="descripcion" rows="4" cols="50"></textarea><br>
+            <button type="button" onclick="agregarCuenta()">Agregar cuenta</button>
+        </form>
+        <div class="result" id="resultado"></div>
+    </div>
+    <div id="eliminarCuenta">
+        <img width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply" id="iconoCerrar" onclick="botonCerrar()"/>
+        <h2>- Eliminar cuenta -</h2>
+        <form id="cuentaForm">
+            <label for="rubro">Rubro:</label>
+            <select id="rubro">
+                <option value="Activo">Activo</option>
+                <option value="Pasivo">Pasivo</option>
+                <option value="PN">PN</option>
+                <option value="Ingreso">Ingreso</option>
+                <option value="Egreso">Egreso</option>
+            </select>
+            <label for="numeroCuenta">Número de cuenta:</label>
+            <input type="number" id="numeroCuenta" required pattern="[0-9]{4}" title="El número de cuenta debe ser un número de 4 dígitos.">
+            <label for="descripcion">Descripción:</label>
+            <textarea id="descripcion" rows="4" cols="50"></textarea><br>
+            <button type="button" onclick="agregarCuenta()">Agregar cuenta</button>
+        </form>
+        <div class="result" id="resultado"></div>
+    </div>
+    <div id="modificarCuenta">
+        <img width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply" id="iconoCerrar" onclick="botonCerrar()"/>
+        <h2>- Eliminar cuenta -</h2>
+        <form id="cuentaForm">
+            <label for="rubro">Rubro:</label>
+            <select id="rubro">
+                <option value="Activo">Activo</option>
+                <option value="Pasivo">Pasivo</option>
+                <option value="PN">PN</option>
+                <option value="Ingreso">Ingreso</option>
+                <option value="Egreso">Egreso</option>
+            </select>
+            <label for="numeroCuenta">Número de cuenta:</label>
+            <input type="number" id="numeroCuenta" required pattern="[0-9]{4}" title="El número de cuenta debe ser un número de 4 dígitos.">
+            <label for="descripcion">Descripción:</label>
+            <textarea id="descripcion" rows="4" cols="50"></textarea><br>
+            <button type="button" onclick="agregarCuenta()">Agregar cuenta</button>
+        </form>
+        <div class="result" id="resultado"></div>
+    </div>
+    <div id="consultarCuenta">
+        <img width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply" id="iconoCerrar" onclick="botonCerrar()"/>
+        <h2>- Eliminar cuenta -</h2>
+        <form id="cuentaForm">
+            <label for="rubro">Rubro:</label>
+            <select id="rubro">
+                <option value="Activo">Activo</option>
+                <option value="Pasivo">Pasivo</option>
+                <option value="PN">PN</option>
+                <option value="Ingreso">Ingreso</option>
+                <option value="Egreso">Egreso</option>
+            </select>
+            <label for="numeroCuenta">Número de cuenta:</label>
+            <input type="number" id="numeroCuenta" required pattern="[0-9]{4}" title="El número de cuenta debe ser un número de 4 dígitos.">
+            <label for="descripcion">Descripción:</label>
+            <textarea id="descripcion" rows="4" cols="50"></textarea><br>
+            <button type="button" onclick="agregarCuenta()">Agregar cuenta</button>
+        </form>
+        <div class="result" id="resultado"></div>
+    </div>
+
+
+
+    <script src="/js/cuenta/scriptCuenta.js"></script>
+</body>
+</html>
