@@ -18,9 +18,9 @@ public class PlanDeCuentasController {
         this.planDeCuentasRepository = planDeCuentasRepository;
     }
 
-    @PostMapping("/planDeCuentas")
-    public ResponseEntity<String> crearPlanDeCuentas(@RequestBody PlanDeCuentas planDeCuentasDetails) {
-        Optional<PlanDeCuentas> planDeCuentas = planDeCuentasRepository.findByNameAndID(planDeCuentasDetails.getNombre(), planDeCuentasDetails.getNroCuenta());
+    @PostMapping("/cuenta")
+    public ResponseEntity<String> crearCuenta(@RequestBody PlanDeCuentas planDeCuentasDetails) {
+        Optional<PlanDeCuentas> planDeCuentas = planDeCuentasRepository.findByNameAndID(planDeCuentasDetails.getDescripcion(), planDeCuentasDetails.getNroCuenta());
         if (planDeCuentas.isEmpty()) {
             planDeCuentasRepository.save(planDeCuentasDetails);
             return new ResponseEntity<>("El plan de cuentas ha sido añadido correctamente", HttpStatus.CREATED);
@@ -29,7 +29,7 @@ public class PlanDeCuentasController {
         }
     }
 
-    @GetMapping("/planDeCuentas/id/{id}")
+    @GetMapping("/cuenta/nro/{id}")
     public ResponseEntity<PlanDeCuentas> buscarPlanDeCuentasPorNroCuenta(@PathVariable String nroCuenta) {
         Optional<PlanDeCuentas> planDeCuentasOptional = planDeCuentasRepository.findByNroCuenta(nroCuenta);
         if (planDeCuentasOptional.isEmpty()) {
@@ -40,42 +40,25 @@ public class PlanDeCuentasController {
     }
 
     @CrossOrigin
-    @PostMapping("/planDeCuentas/{rubro}")
+    @PostMapping("/cuenta/rubro/{rubro}")
     public List<PlanDeCuentas> buscarPlanDeCuentasPorRubro(@PathVariable String rubro) {
         // Recibo un email y una password desde el planDeCuentas, esa pass la encripto para ver si coincide con la guardada
         List<PlanDeCuentas> planDeCuentasOptional = planDeCuentasRepository.findByRubro(rubro);
         return planDeCuentasOptional;
     }
 
-    @PutMapping("/planDeCuentas/{nroCuenta}")
+    @PutMapping("/planDeCuentas/{nroCuenta}/update")
     public ResponseEntity<PlanDeCuentas> updatePlanDeCuentas(@PathVariable String nroCuenta, @RequestBody PlanDeCuentas planDeCuentasDetails) {
         Optional<PlanDeCuentas> planDeCuentasOptional = planDeCuentasRepository.findByNroCuenta(nroCuenta);
         if (planDeCuentasOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        PlanDeCuentas planDeCuentas = planDeCuentasOptional.get();
-        Class<?> planDeCuentasClass = planDeCuentas.getClass();
-        Class<?> planDeCuentasDetailsClass = planDeCuentasDetails.getClass();
 
-        for (Field field : planDeCuentasClass.getDeclaredFields()) {
-            field.setAccessible(true);
-            String fieldName = field.getName();
-            try {
-                Field planDeCuentasDetailsField = planDeCuentasDetailsClass.getDeclaredField(fieldName);
-                planDeCuentasDetailsField.setAccessible(true);
-                Object newValue = planDeCuentasDetailsField.get(planDeCuentasDetails);
-                if (newValue != null && !newValue.equals(field.get(planDeCuentas))) {
-                    field.set(planDeCuentas, newValue);
-                }
-            } catch (NoSuchFieldException | IllegalAccessException e) {
-                System.out.println("El error es " + e.getClass());
-            }
-        }
-        PlanDeCuentas savedPlanDeCuentas = planDeCuentasRepository.save(planDeCuentas);
+        PlanDeCuentas savedPlanDeCuentas = planDeCuentasRepository.save(planDeCuentasDetails);
         return ResponseEntity.ok(savedPlanDeCuentas);
     }
 
-    @DeleteMapping("/planDeCuentas/{nroCuenta}")
+    @DeleteMapping("/planDeCuentas/{nroCuenta}/delete")
     public ResponseEntity<?> borrarPlanDeCuentas(@PathVariable String nroCuenta) {
         Optional<PlanDeCuentas> planDeCuentas = planDeCuentasRepository.findByNroCuenta(nroCuenta);
         if (!planDeCuentas.isPresent()) {

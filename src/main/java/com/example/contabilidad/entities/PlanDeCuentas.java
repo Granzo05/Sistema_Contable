@@ -14,8 +14,6 @@ public class PlanDeCuentas {
     @Column(name = "rubro")
     @Enumerated(EnumType.STRING)
     private EnumRubro rubro;
-    @Column(name = "nombre")
-    private String nombre;
     @Column(name = "nroCuenta")
     private String nroCuenta;
     @Column(name = "descripcion")
@@ -24,19 +22,10 @@ public class PlanDeCuentas {
     @OneToMany(mappedBy = "planDeCuentas")
     private final List<Asientos> asientos;
 
-    public PlanDeCuentas(EnumRubro rubro, String nombre, String descripcion, List<Asientos> asientos) {
+    public PlanDeCuentas(EnumRubro rubro, String descripcion, List<Asientos> asientos) {
         this.rubro = rubro;
-        this.nombre = nombre;
         this.descripcion = descripcion;
         this.asientos = asientos;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     public EnumRubro getRubro() {
