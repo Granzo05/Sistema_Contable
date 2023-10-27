@@ -21,13 +21,14 @@
       <label for="numeroAsientoAñadir">Número de Asiento:</label>
       <input type="number" id="numeroAsientoAñadir" required pattern="[0-9]{4}"
         title="El número de Asiento debe ser un número de 4 dígitos." />
+      <input type="date" id="fechaAsientoAñadir" />
       <button type="button" onclick="AñadirAsiento()">
         Añadir Asiento
       </button>
     </form>
     <div class="result" id="resultadoAñadir"></div>
   </div>
-  
+
   <div id="consultarAsiento">
     <h2>- Buscar Asiento -</h2>
     <form id="AsientoFormBuscar">
@@ -37,7 +38,7 @@
       <label for="numeroCuentaBuscar">Número de cuenta:</label>
       <input type="number" id="numeroCuentaBuscar" required pattern="[0-9]{4}"
         title="El número de cuenta debe ser un número de 4 dígitos." />
-      <input type="date" id="fechaCuentaBuscar" />
+      <input type="date" id="fechaAsientoBuscar" />
       <button type="button" onclick="buscarAsiento()">Buscar Asiento</button>
     </form>
     <div class="result" id="resultadoBuscar"></div>
