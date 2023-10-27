@@ -26,16 +26,21 @@ public class AsientosController {
 
     @PostMapping("/asientos")
     public ResponseEntity<String> crearAsientos(@RequestBody Asientos asientosDetails) {
+        // Cargo el asiento
         asientosRepository.save(asientosDetails);
 
+        // Busco los asientos de ese nro de cuenta, por ejemplo los de caja. Cargo el asiento y busco todos los cargados neuvamente
         List<Asientos> asientos = asientosRepository.findByNroCuenta(asientosDetails.getNroCuenta());
-        asientos.add(asientosDetails);
 
+        // Creo el mayor
         Mayor mayor = new Mayor();
+        // Le asigno los asientos
         mayor.setAsientos(asientos);
+        // Actualizo los debe y haber de ese mayor
         mayor.setDebe(mayor.getDebe() + asientosDetails.getDebe());
         mayor.setHaber(mayor.getHaber() + asientosDetails.getHaber());
 
+        // Actualizo el saldo
         if (mayor.getDebe() == mayor.getHaber()) {
             mayor.setSaldo("Saldado");
         } else if (mayor.getDebe() > mayor.getHaber()) {
@@ -43,7 +48,7 @@ public class AsientosController {
         } else {
             mayor.setSaldo("Acreedor");
         }
-
+        // Lo actualizo
         mayorRepository.save(mayor);
         return new ResponseEntity<>("El asiento ha sido añadido correctamente", HttpStatus.CREATED);
     }
@@ -58,34 +63,16 @@ public class AsientosController {
     }
 
     @CrossOrigin
-    @PostMapping("/asientos/{asiento}")
-    public List<Asientos> buscarAsientosPorNroAsiento(@PathVariable String asiento) {
-        // Recibo un email y una password desde el asientos, esa pass la encripto para ver si coincide con la guardada
-        List<Asientos> asientosOptional = asientosRepository.findByNroAsiento(asiento);
-        return asientosOptional;
+    @PostMapping("/asientos/{nroAsiento}")
+    public List<Asientos> buscarAsientosPorNroAsiento(@PathVariable String nroAsiento) {
+        List<Asientos> asientos = asientosRepository.findByNroAsiento(nroAsiento);
+        return asientos;
     }
 
     @CrossOrigin
     @PostMapping("/asientos/{fecha}")
     public List<Asientos> buscarAsientosPorFecha(@PathVariable String fechaStr) {
-        // Convierte la fecha recibida en un objeto Date con el formato "dd/MM/yyyy"
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Date fecha = null;
-        try {
-            fecha = dateFormat.parse(fechaStr);
-        } catch (ParseException ignored) {
-        }
-        return asientosRepository.findAll();
-
+        List<Asientos> asiento = asientosRepository.findByFecha(fechaStr);
+        return asiento;
     }
-
-    @CrossOrigin
-    @PostMapping("/asientos/mayor")
-    public List<Asientos> buscarAsientosEnMayor(@RequestBody Asientos asientos) {
-        // Convierte la fecha recibida en un objeto Date con el formato "dd/MM/yyyy"
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Date fecha = null;
-        return asientosRepository.findAll();
-    }
-
 }

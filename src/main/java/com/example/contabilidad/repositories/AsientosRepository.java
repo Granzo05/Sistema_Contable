@@ -18,4 +18,7 @@ public interface AsientosRepository extends JpaRepository<Asientos, Long> {
     @Query("SELECT a FROM Asientos a WHERE a.nroAsiento = :nroAsiento")
     List<Asientos> findByNroAsiento(@Param("nroAsiento") String nroAsiento);
 
+    @Query("SELECT a FROM Asientos a WHERE a.fecha_asentado = :fecha")
+    List<Asientos> findByFecha(@Param("fecha") String fecha);
+
 }
