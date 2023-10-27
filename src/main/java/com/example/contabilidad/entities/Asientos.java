@@ -1,32 +1,34 @@
 package com.example.contabilidad.entities;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "asientos")
 public class Asientos {
-    @Column(name = "fecha_asentado", updatable = false, nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreationTimestamp
-    public Date fechaRegistro;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "nro_asiento")
     private Long nroAsiento;
+    @Column(name = "fecha_asentado")
+    private Date fechaRegistro;
     @Column(name = "nro_cuenta")
     private String nroCuenta;
     @Column(name = "descripcion")
     private String descripcion;
-    @Column(name = "transaccion")
-    private String transaccion;
 
-    @Column(name = "debe")
-    private double debe;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "asiento_id")
+    private List<DetalleAsiento> detallesDebe;
 
-    @Column(name = "haber")
-    private double haber;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "asiento_id")
+    private List<DetalleAsiento> detallesHaber;
 
     @ManyToOne
     @JoinColumn(name = "plan_de_cuentas")
@@ -45,6 +47,14 @@ public class Asientos {
 
     public void setNroAsiento(Long nroAsiento) {
         this.nroAsiento = nroAsiento;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Date getFechaRegistro() {
@@ -87,28 +97,20 @@ public class Asientos {
         this.mayor = mayor;
     }
 
-    public double getDebe() {
-        return debe;
+    public List<DetalleAsiento> getDetallesDebe() {
+        return detallesDebe;
     }
 
-    public void setDebe(double debe) {
-        this.debe = debe;
+    public void setDetallesDebe(List<DetalleAsiento> detallesDebe) {
+        this.detallesDebe = detallesDebe;
     }
 
-    public double getHaber() {
-        return haber;
+    public List<DetalleAsiento> getDetallesHaber() {
+        return detallesHaber;
     }
 
-    public void setHaber(double haber) {
-        this.haber = haber;
-    }
-
-    public String getTransaccion() {
-        return transaccion;
-    }
-
-    public void setTransaccion(String transaccion) {
-        this.transaccion = transaccion;
+    public void setDetallesHaber(List<DetalleAsiento> detallesHaber) {
+        this.detallesHaber = detallesHaber;
     }
 }
 

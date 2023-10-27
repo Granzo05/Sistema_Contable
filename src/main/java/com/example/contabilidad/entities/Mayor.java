@@ -8,23 +8,40 @@ import java.util.List;
 @Table(name = "mayor")
 public class Mayor {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "nro_cuenta")
-    private String nroCuenta;
+    @Column(name = "descripcion_cuenta")
+    private String descripcion;
     @OneToMany(mappedBy = "mayor")
     private List<Asientos> asientos;
-
     @Column(name = "debe")
-    private double debe;
+    private Double debe = 0.0;
 
     @Column(name = "haber")
-    private double haber;
+    private Double haber = 0.0;
 
     @Column(name = "saldo")
     private String saldo;
 
     public Mayor() {
+        this.debe = 0.0;
+        this.haber = 0.0;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public void setDebe(Double debe) {
+        this.debe = debe;
+    }
+
+    public void setHaber(Double haber) {
+        this.haber = haber;
     }
 
     public Long getId() {

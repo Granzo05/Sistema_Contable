@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="/public/css/styleAsiento.css" />
 
   <style>
-    body .left{
+    body .left {
       display: flex;
       align-items: center;
       margin-right: auto;
@@ -18,12 +18,12 @@
       margin-top: 0px;
     }
 
-    body .center{
+    body .center {
       align-items: center;
       text-align: center;
       margin-top: 0px;
     }
-    
+
     .asiento-container {
       display: flex;
       flex-direction: row;
@@ -35,8 +35,9 @@
       flex: 1;
     }
 
-    .cuenta {
-      align-items:flex-start;
+    .cuentaDebe,
+    .cuentaHaber {
+      align-items: flex-start;
     }
   </style>
 </head>
@@ -50,39 +51,55 @@
   </div>
 
   <div id="añadirAsiento">
-    <img width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply" id="iconoCerrar" onclick="botonCerrar()"/>
+    <img width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply" id="iconoCerrar"
+      onclick="botonCerrar()" />
     <h2>- Añadir Asiento -</h2>
     <br><br>
     <form id="AsientoFormAñadir">
-      <label for="numeroAsientoAñadir">Número de Asiento:</label>
-      <input type="number" id="numeroAsientoAñadir" required pattern="[0-9]{4}"
-        title="El número de Asiento debe ser un número de 4 dígitos." />
       <input type="date" id="fechaAsientoAñadir" />
 
       <div class="asiento-container">
         <div class="cuenta-container">
-          <input type="text" placeholder="Cuenta" class="cuenta" id="cuenta">
-          <input type="text" placeholder="Cuenta" class="cuenta" id="cuenta">
+          <input type="text" placeholder="Cuenta del debe" class="cuentaDebe">
+          <div id="cuenta-cointainer-debe">
+          </div>
+          <input type="text" placeholder="Cuenta del haber" class="cuentaHaber" style="direction: rtl">
+          <div id="cuenta-cointainer-haber">
+          </div>
         </div>
         <div class="debe-container">
           <h2>DEBE</h2>
-          <input type="number" placeholder="Valor" class="valor">
+          <input type="number" placeholder="Valor del debe" class="valorDebe">
+          <div id="debe-valor-container">
+          </div>
         </div>
         <div class="haber-container">
           <br><br><br><br><br>
           <h2>HABER</h2>
-          <input type="number" placeholder="Valor" class="valor">
+          <input type="number" placeholder="Valor del haber" class="valorHaber">
+          <div id="haber-valor-container">
+          </div>
         </div>
       </div>
-      <button type="button" onclick="AñadirAsiento()">
-        Añadir Asiento
+      <button type="button" onclick="agregarInputsAsientoDebe()">
+        Agregar fila de debe
+      </button>
+      <button type="button" onclick="agregarInputsAsientoHaber()">
+        Agregar fila de haber
+      </button>
+      <button type="button" onclick="agregarInputsAsientos()">
+        Agregar fila para ambos
+      </button>
+      <button type="button" onclick="cargarAsiento()">
+        Cargar asiento
       </button>
     </form>
     <div class="result" id="resultadoAñadir"></div>
   </div>
 
   <div id="consultarAsiento">
-    <img width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply" id="iconoCerrar" onclick="botonCerrar()"/>
+    <img width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply" id="iconoCerrar"
+      onclick="botonCerrar()" />
     <h2>- Buscar Asiento -</h2>
     <form id="AsientoFormBuscar">
       <label for="numeroAsientoBuscar">Número de Asiento:</label>

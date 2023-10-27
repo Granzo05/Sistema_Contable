@@ -16,6 +16,8 @@ public interface PlanDeCuentasRepository extends JpaRepository<PlanDeCuentas, Lo
     @Query("SELECT c FROM PlanDeCuentas c WHERE c.descripcion = :descripcion AND c.nroCuenta = :nroCuenta")
     Optional<PlanDeCuentas> findByDescripcionAndNroCuenta(String descripcion, String nroCuenta);
 
+    @Query("SELECT c FROM PlanDeCuentas c WHERE c.descripcion = :descripcion")
+    PlanDeCuentas findByDescripcion(String descripcion);
 
     @Query("SELECT c FROM PlanDeCuentas c WHERE c.nroCuenta = :nroCuenta")
     Optional<PlanDeCuentas> findByNroCuenta(@Param("nroCuenta") String numeroCuenta);

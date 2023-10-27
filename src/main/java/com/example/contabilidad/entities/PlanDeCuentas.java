@@ -8,7 +8,7 @@ import java.util.List;
 @Table(name = "plan_de_cuentas")
 public class PlanDeCuentas {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "rubro")
     private String rubro;

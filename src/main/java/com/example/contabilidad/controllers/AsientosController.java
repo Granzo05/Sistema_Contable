@@ -1,78 +1,120 @@
 package com.example.contabilidad.controllers;
 
 import com.example.contabilidad.entities.Asientos;
+import com.example.contabilidad.entities.DetalleAsiento;
 import com.example.contabilidad.entities.Mayor;
 import com.example.contabilidad.repositories.AsientosRepository;
 import com.example.contabilidad.repositories.MayorRepository;
+import com.example.contabilidad.repositories.PlanDeCuentasRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @RestController
 public class AsientosController {
     private final AsientosRepository asientosRepository;
     private final MayorRepository mayorRepository;
+    private final PlanDeCuentasRepository planDeCuentasRepository;
 
     public AsientosController(AsientosRepository asientosRepository,
-                              MayorRepository mayorRepository) {
+                              MayorRepository mayorRepository,
+                              PlanDeCuentasRepository planDeCuentasRepository) {
         this.asientosRepository = asientosRepository;
         this.mayorRepository = mayorRepository;
+        this.planDeCuentasRepository = planDeCuentasRepository;
     }
 
     @PostMapping("/asientos")
     public ResponseEntity<String> crearAsientos(@RequestBody Asientos asientosDetails) {
-        // Cargo el asiento
         asientosRepository.save(asientosDetails);
 
-        // Busco los asientos de ese nro de cuenta, por ejemplo los de caja. Cargo el asiento y busco todos los cargados neuvamente
-        List<Asientos> asientos = asientosRepository.findByNroCuenta(asientosDetails.getNroCuenta());
+        List<DetalleAsiento> detallesDebe = asientosDetails.getDetallesDebe();
+        List<DetalleAsiento> detallesHaber = asientosDetails.getDetallesHaber();
 
-        // Creo el mayor
-        Mayor mayor = new Mayor();
-        // Le asigno los asientos
-        mayor.setAsientos(asientos);
-        // Actualizo los debe y haber de ese mayor
-        mayor.setDebe(mayor.getDebe() + asientosDetails.getDebe());
-        mayor.setHaber(mayor.getHaber() + asientosDetails.getHaber());
+        List<Mayor> mayores = new ArrayList<>();
 
-        // Actualizo el saldo
-        if (mayor.getDebe() == mayor.getHaber()) {
-            mayor.setSaldo("Saldado");
-        } else if (mayor.getDebe() > mayor.getHaber()) {
-            mayor.setSaldo("Deudor");
-        } else {
-            mayor.setSaldo("Acreedor");
+        for (DetalleAsiento detalle : detallesDebe) {
+            Mayor mayor = mayorRepository.findByDescripcionCuenta(detalle.getDescripcion());
+            if (mayor == null) {
+                mayor = new Mayor();
+            }
+            if (detalle.getValor() != null) {
+                mayor.setDescripcion(detalle.getDescripcion());
+                mayor.setDebe(detalle.getValor());
+                mayores.add(mayor);
+            }
         }
-        // Lo actualizo
-        mayorRepository.save(mayor);
+
+        for (DetalleAsiento detalle : detallesHaber) {
+            Mayor mayor = mayorRepository.findByDescripcionCuenta(detalle.getDescripcion());
+            if (mayor == null) {
+                mayor = new Mayor();
+            }
+            if (detalle.getValor() != null) {
+                mayor.setDescripcion(detalle.getDescripcion());
+                mayor.setHaber(detalle.getValor());
+                mayores.add(mayor);
+            }
+        }
+
+        for (Mayor mayor : mayores) {
+            if (mayor.getDebe() > mayor.getHaber()) {
+                mayor.setSaldo("Deudor");
+            } else if (mayor.getDebe() < mayor.getHaber()) {
+                mayor.setSaldo("Acreedor");
+            } else {
+                mayor.setSaldo("Saldado");
+            }
+            mayorRepository.save(mayor);
+        }
+
         return new ResponseEntity<>("El asiento ha sido añadido correctamente", HttpStatus.CREATED);
     }
+
 
     @GetMapping("/asientos/id/{id}")
     public List<Asientos> buscarAsientosPorNroCuenta(@PathVariable String nroCuenta) {
         List<Asientos> asientos = asientosRepository.findByNroCuenta(nroCuenta);
-        if (asientos.isEmpty()) {
-            return asientos;
-        }
+
         return asientos;
     }
 
     @CrossOrigin
     @PostMapping("/asientos/{nroAsiento}")
-    public List<Asientos> buscarAsientosPorNroAsiento(@PathVariable String nroAsiento) {
-        List<Asientos> asientos = asientosRepository.findByNroAsiento(nroAsiento);
-        return asientos;
+    public List<Asientos> buscarAsientosPorNroAsiento(@PathVariable Long nroAsiento) {
+        return asientosRepository.findByNroAsiento(nroAsiento);
     }
 
     @CrossOrigin
     @PostMapping("/asientos/{fecha}")
     public List<Asientos> buscarAsientosPorFecha(@PathVariable String fechaStr) {
-        List<Asientos> asiento = asientosRepository.findByFecha(fechaStr);
-        return asiento;
+        Date fecha = convertirFechaStringADate(fechaStr);
+
+        if (fecha != null) {
+            List<Asientos> asiento = asientosRepository.findByFecha(fecha);
+            return asiento;
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public Date convertirFechaStringADate(String fechaStr) {
+        try {
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+            Date fecha = formatoFecha.parse(fechaStr);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(fecha);
+
+            Date fechaConvertida = calendar.getTime();
+
+            return fechaConvertida;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

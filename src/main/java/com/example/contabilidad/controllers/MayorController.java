@@ -1,6 +1,7 @@
 package com.example.contabilidad.controllers;
 
 import com.example.contabilidad.entities.Asientos;
+import com.example.contabilidad.entities.DetalleAsiento;
 import com.example.contabilidad.entities.Mayor;
 import com.example.contabilidad.repositories.MayorRepository;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,33 +19,41 @@ public class MayorController {
     }
 
     @GetMapping("/mayor")
-    public Mayor buscarMayor(@RequestParam("nroCuenta") String nroCuenta,
+    public Mayor buscarMayor(@RequestParam("descripcion") String descripcion,
                              @RequestParam("mes") int mes,
                              @RequestParam("año") int anio) {
 
-        Mayor mayor = mayorRepository.findByNroCuenta(nroCuenta);
+        Mayor mayor = mayorRepository.findByDescripcionCuenta(descripcion);
 
         List<Asientos> asientos = mayor.getAsientos();
 
-        double debe = 0;
-        double haber = 0;
+        Double debeTotal = 0.0;
+        Double haberTotal = 0.0;
 
         Mayor mayorFiltrado = new Mayor();
         for (Asientos asiento : asientos) {
             if (asiento.getFechaRegistro().getMonth() == mes && asiento.getFechaRegistro().getYear() == anio) {
                 mayorFiltrado.addAsiento(asiento);
-                haber += asiento.getHaber();
-                debe += asiento.getDebe();
+
+                List<DetalleAsiento> detallesHaber = asiento.getDetallesHaber();
+                for (DetalleAsiento haber: detallesHaber) {
+                    haberTotal += haber.getValor();
+                }
+
+                List<DetalleAsiento> detallesDebe = asiento.getDetallesDebe();
+                for (DetalleAsiento debe: detallesDebe) {
+                    debeTotal += debe.getValor();
+                }
             }
         }
-        if (haber > debe) {
+        if (haberTotal > debeTotal) {
             mayorFiltrado.setSaldo("Acreedor");
         } else {
             mayorFiltrado.setSaldo("Deudor");
         }
 
-        mayorFiltrado.setDebe(debe);
-        mayorFiltrado.setHaber(haber);
+        mayorFiltrado.setDebe(debeTotal);
+        mayorFiltrado.setHaber(haberTotal);
 
         return mayorFiltrado;
     }

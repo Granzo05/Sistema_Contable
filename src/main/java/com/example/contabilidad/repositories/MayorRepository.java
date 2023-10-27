@@ -12,8 +12,8 @@ import java.util.List;
 public interface MayorRepository extends JpaRepository<Mayor, Long> {
     List<Mayor> findAll();
 
-    @Query("SELECT m FROM Mayor m WHERE m.nroCuenta = :nroCuenta")
-    Mayor findByNroCuenta(@Param("nroCuenta") String numeroCuenta);
+    @Query("SELECT m FROM Mayor m WHERE m.descripcion = :descripcion")
+    Mayor findByDescripcionCuenta(@Param("descripcion") String descripcion);
 
     /*
     @Query("SELECT m FROM Mayor m WHERE YEAR(m.fecha) = :anio AND MONTH(m.fecha) = :mes AND m.asiento.nroCuenta = :nroCuenta")
