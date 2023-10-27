@@ -1,7 +1,14 @@
 function buscarCuentasPorRubro() {
-  const rubro = document.getElementById("rubroBuscar").value;
+  const rubroSelect = document.getElementById("rubroBuscar");
+  let rubro = rubroSelect.value;
+  let tabla = document.getElementById("tablaCuentas");
 
-  fetch("http://localhost:8080/cuenta/rubro/" + rubro, {
+  // Borra el contenido existente de la tabla
+  while (tabla.firstChild) {
+    tabla.removeChild(tabla.firstChild);
+  }
+
+  fetch("http://localhost:8080/cuenta/" + rubro, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -13,14 +20,29 @@ function buscarCuentasPorRubro() {
           `Error al obtener datos (${response.status}): ${response.statusText}`
         );
       }
+      return response.json();
     })
     .then((data) => {
-      // Hacer una table o algo con los datos
+      data.forEach((cuenta) => {
+        let tr = document.createElement("tr");
+        let numeroCuenta = document.createElement("td");
+        numeroCuenta.textContent = cuenta.nroCuenta;
+
+        let descripcion = document.createElement("td");
+        descripcion.textContent = cuenta.descripcion;
+
+        tr.appendChild(numeroCuenta);
+        tr.appendChild(descripcion);
+
+        tabla.appendChild(tr);
+      });
     })
     .catch((error) => {
       console.error("Error:", error);
     });
 }
+
+
 
 function buscarCuentasPorNroCuenta() {
   const nroCuenta = document.getElementById("nroCuentaBuscar").value;
@@ -46,10 +68,12 @@ function buscarCuentasPorNroCuenta() {
     });
 }
 
-function agregarCuenta() {
-  var rubro = document.getElementById("rubroAgregar").value;
-  var numeroCuenta = document.getElementById("numeroCuentaAgregar").value;
-  var descripcion = document.getElementById("descripcionAgregar").value;
+function AñadirCuenta() {
+  var rubroSelect = document.getElementById("rubroAñadir");
+  var rubro = rubroSelect.value;
+
+  var numeroCuenta = document.getElementById("numeroCuentaAñadir").value;
+  var descripcion = document.getElementById("descripcionAñadir").value;
 
   let cuentaData = {
     rubro: rubro,
@@ -58,7 +82,7 @@ function agregarCuenta() {
   };
 
   fetch("http://localhost:8080/cuenta", {
-    method: "GET",
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
@@ -84,47 +108,43 @@ function agregarCuenta() {
 }
 
 function actualizarCuenta() {
-  var rubro = document.getElementById("rubroActualizar").value;
   var numeroCuenta = document.getElementById("numeroCuentaActualizar").value;
   var descripcion = document.getElementById("descripcionActualizar").value;
+  var rubro = document.getElementById("rubroActualizar").value;
 
-  let datos = [];
-
-  if (rubro != null) {
-    datos.push(rubro);
+  if (!numeroCuenta) {
+    alert("Por favor, ingrese un número de cuenta válido.");
+    return;
   }
 
-  if (numeroCuenta != null) {
-    datos.push(numeroCuenta);
-  }
-
-  if (descripcion != null) {
-    datos.push(descripcion);
-  }
+  let data = {
+    nroCuenta: numeroCuenta,
+    descripcion: descripcion,
+    rubro: rubro
+  };
 
   fetch("http://localhost:8080/cuenta/" + numeroCuenta + "/update", {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(datos),
+    body: JSON.stringify(data),
   })
     .then((response) => {
       if (!response.ok) {
         throw new Error(
-          `Error al obtener datos (${response.status}): ${response.statusText}`
+          `Error al actualizar la cuenta (${response.status}): ${response.statusText}`
         );
+      } else {
+        alert("Joyaaaaaaa");
       }
-      var resultado = document.getElementById("resultadoActualizar");
-      resultado.innerHTML = `
-                <h2>Cuenta actualizada con exito:</h2>
-                <strong>Número de Cuenta:</strong> ${numeroCuenta}<br>
-            `;
     })
     .catch((error) => {
       console.error("Error:", error);
+      alert("Ocurrió un error al actualizar la cuenta. Por favor, inténtelo de nuevo más tarde.");
     });
 }
+
 
 function eliminarCuenta() {
   var numeroCuenta = document.getElementById("numeroCuentaEliminar").value;
@@ -157,7 +177,7 @@ let botonEliminarCuenta = document.getElementById("eliminarCuenta");
 let botonModificarCuenta = document.getElementById("modificarCuenta");
 let botonConsultarCuenta = document.getElementById("consultarCuenta");
 
-function botonAgregar() {
+function botonAñadir() {
   if (botonAñadirCuenta.style.display === "none") {
     botonAñadirCuenta.style.display = "block";
     botonEliminarCuenta.style.display = "none";
@@ -196,6 +216,8 @@ function botonConsultar() {
     botonEliminarCuenta.style.display = "none";
     botonModificarCuenta.style.display = "none";
     botonAñadirCuenta.style.display = "none";
+
+    buscarCuentasPorRubro();
   } else {
     botonConsultarCuenta.style.display = "none";
   }

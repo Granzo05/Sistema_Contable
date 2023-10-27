@@ -40,7 +40,7 @@ public class MayorController {
         if (haber > debe) {
             mayorFiltrado.setSaldo("Acreedor");
         } else {
-            mayorFiltrado.setSaldo("Acreedor");
+            mayorFiltrado.setSaldo("Deudor");
         }
 
         mayorFiltrado.setDebe(debe);

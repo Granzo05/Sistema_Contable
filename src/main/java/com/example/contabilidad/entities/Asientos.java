@@ -1,28 +1,26 @@
 package com.example.contabilidad.entities;
 
-import com.example.contabilidad.entities.Enums.EnumTipoTransaccion;
+import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "asientos")
 public class Asientos {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long nroAsiento;
     @Column(name = "fecha_asentado", updatable = false, nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
     public Date fechaRegistro;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long nroAsiento;
     @Column(name = "nro_cuenta")
     private String nroCuenta;
     @Column(name = "descripcion")
     private String descripcion;
     @Column(name = "transaccion")
-    @Enumerated(EnumType.STRING)
-    private EnumTipoTransaccion transaccion;
+    private String transaccion;
 
     @Column(name = "debe")
     private double debe;
@@ -73,14 +71,6 @@ public class Asientos {
         this.descripcion = descripcion;
     }
 
-    public EnumTipoTransaccion getTransaccion() {
-        return transaccion;
-    }
-
-    public void setTransaccion(EnumTipoTransaccion transaccion) {
-        this.transaccion = transaccion;
-    }
-
     public PlanDeCuentas getPlanDeCuentas() {
         return planDeCuentas;
     }
@@ -111,6 +101,14 @@ public class Asientos {
 
     public void setHaber(double haber) {
         this.haber = haber;
+    }
+
+    public String getTransaccion() {
+        return transaccion;
+    }
+
+    public void setTransaccion(String transaccion) {
+        this.transaccion = transaccion;
     }
 }
 

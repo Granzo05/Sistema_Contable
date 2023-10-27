@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -39,25 +40,36 @@ public class PlanDeCuentasController {
     }
 
     @CrossOrigin
-    @PostMapping("/cuenta/rubro/{rubro}")
+    @GetMapping("/cuenta/{rubro}")
     public List<PlanDeCuentas> buscarPlanDeCuentasPorRubro(@PathVariable String rubro) {
         // Recibo un email y una password desde el planDeCuentas, esa pass la encripto para ver si coincide con la guardada
         List<PlanDeCuentas> planDeCuentasOptional = planDeCuentasRepository.findByRubro(rubro);
         return planDeCuentasOptional;
     }
 
-    @PutMapping("/planDeCuentas/{nroCuenta}/update")
-    public ResponseEntity<PlanDeCuentas> updatePlanDeCuentas(@PathVariable String nroCuenta, @RequestBody PlanDeCuentas planDeCuentasDetails) {
+    @PutMapping("/cuenta/{nroCuenta}/update")
+    public ResponseEntity<PlanDeCuentas> updatePlanDeCuentas(@PathVariable String nroCuenta, @RequestBody Map<String, String> requestData) {
         Optional<PlanDeCuentas> planDeCuentasOptional = planDeCuentasRepository.findByNroCuenta(nroCuenta);
         if (planDeCuentasOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        PlanDeCuentas savedPlanDeCuentas = planDeCuentasRepository.save(planDeCuentasDetails);
-        return ResponseEntity.ok(savedPlanDeCuentas);
+        PlanDeCuentas cuenta = planDeCuentasOptional.get();
+
+        if (requestData.containsKey("descripcion")) {
+            cuenta.setDescripcion(requestData.get("descripcion"));
+        }
+
+        if (requestData.containsKey("rubro")) {
+            cuenta.setRubro(requestData.get("rubro"));
+        }
+
+        planDeCuentasRepository.save(cuenta);
+        return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/planDeCuentas/{nroCuenta}/delete")
+
+    @DeleteMapping("/cuenta/{nroCuenta}/delete")
     public ResponseEntity<?> borrarPlanDeCuentas(@PathVariable String nroCuenta) {
         Optional<PlanDeCuentas> planDeCuentas = planDeCuentasRepository.findByNroCuenta(nroCuenta);
         if (!planDeCuentas.isPresent()) {

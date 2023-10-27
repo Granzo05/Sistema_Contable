@@ -1,6 +1,7 @@
 package com.example.contabilidad.entities;
 
 import jakarta.persistence.*;
+
 import java.util.List;
 
 @Entity
@@ -41,6 +42,7 @@ public class Mayor {
     public void setAsientos(List<Asientos> asientos) {
         this.asientos = asientos;
     }
+
     public void addAsiento(Asientos asientos) {
         this.asientos.add(asientos);
     }

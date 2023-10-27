@@ -1,8 +1,7 @@
 package com.example.contabilidad.entities;
 
-import com.example.contabilidad.entities.Enums.EnumRubro;
-
 import jakarta.persistence.*;
+
 import java.util.List;
 
 @Entity
@@ -12,9 +11,8 @@ public class PlanDeCuentas {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(name = "rubro")
-    @Enumerated(EnumType.STRING)
-    private EnumRubro rubro;
-    @Column(name = "nro_cuenta")
+    private String rubro;
+    @Column(name = "nro_cuenta", unique = true)
     private String nroCuenta;
     @Column(name = "descripcion")
     private String descripcion;
@@ -25,8 +23,7 @@ public class PlanDeCuentas {
     public PlanDeCuentas() {
     }
 
-    public PlanDeCuentas(EnumRubro rubro, String descripcion, List<Asientos> asientos) {
-        this.rubro = rubro;
+    public PlanDeCuentas(String descripcion, List<Asientos> asientos) {
         this.descripcion = descripcion;
         this.asientos = asientos;
     }
@@ -47,14 +44,6 @@ public class PlanDeCuentas {
         this.asientos = asientos;
     }
 
-    public EnumRubro getRubro() {
-        return rubro;
-    }
-
-    public void setRubro(EnumRubro rubro) {
-        this.rubro = rubro;
-    }
-
     public String getNroCuenta() {
         return nroCuenta;
     }
@@ -69,5 +58,13 @@ public class PlanDeCuentas {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public String getRubro() {
+        return rubro;
+    }
+
+    public void setRubro(String rubro) {
+        this.rubro = rubro;
     }
 }

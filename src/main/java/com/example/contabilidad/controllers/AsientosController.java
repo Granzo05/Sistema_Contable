@@ -12,7 +12,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class AsientosController {
@@ -37,7 +36,7 @@ public class AsientosController {
         mayor.setDebe(mayor.getDebe() + asientosDetails.getDebe());
         mayor.setHaber(mayor.getHaber() + asientosDetails.getHaber());
 
-        if(mayor.getDebe() == mayor.getHaber()){
+        if (mayor.getDebe() == mayor.getHaber()) {
             mayor.setSaldo("Saldado");
         } else if (mayor.getDebe() > mayor.getHaber()) {
             mayor.setSaldo("Deudor");

@@ -1,6 +1,5 @@
 package com.example.contabilidad.repositories;
 
-import com.example.contabilidad.entities.Asientos;
 import com.example.contabilidad.entities.Mayor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,8 +20,6 @@ public interface MayorRepository extends JpaRepository<Mayor, Long> {
     Mayor findByCuentaAnioYMes(@Param("nroCuenta") String nroCuenta, @Param("anio") int anio, @Param("mes") int mes);
 
      */
-
-
 
 
 }
