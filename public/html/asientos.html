@@ -6,6 +6,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sistema Contable</title>
   <link rel="stylesheet" href="/css/cuenta/styleCuenta.css" />
+
+  <style>
+    .asiento-container {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .debe-container,
+    .haber-container {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin: 10px;
+      flex: 1;
+    }
+
+    .cuenta {
+      align-items:flex-start;
+    }
+  </style>
 </head>
 
 <body>
@@ -22,6 +41,19 @@
       <input type="number" id="numeroAsientoAñadir" required pattern="[0-9]{4}"
         title="El número de Asiento debe ser un número de 4 dígitos." />
       <input type="date" id="fechaAsientoAñadir" />
+
+      <div class="asiento-container">
+        <div class="debe-container">
+          <h2>DEBE</h2>
+          <input type="text" placeholder="Cuenta" class="cuenta">
+          <input type="text" placeholder="Valor" class="valor">
+        </div>
+        <div class="haber-container">
+          <h2>HABER</h2>
+          <input type="text" placeholder="Cuenta" class="cuenta">
+          <input type="text" placeholder="Valor" class="valor">
+        </div>
+      </div>
       <button type="button" onclick="AñadirAsiento()">
         Añadir Asiento
       </button>
