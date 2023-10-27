@@ -46,10 +46,10 @@ function buscarAsientossPorNroAsientos() {
     });
 }
 
-function agregarAsientos() {
-  var rubro = document.getElementById("rubroAgregar").value;
-  var numeroAsientos = document.getElementById("numeroAsientosAgregar").value;
-  var descripcion = document.getElementById("descripcionAgregar").value;
+function AñadirAsientos() {
+  var rubro = document.getElementById("rubroAñadir").value;
+  var numeroAsientos = document.getElementById("numeroAsientosAñadir").value;
+  var descripcion = document.getElementById("descripcionAñadir").value;
 
   let AsientosData = {
     rubro: rubro,
@@ -83,122 +83,24 @@ function agregarAsientos() {
     });
 }
 
-function actualizarAsientos() {
-  var rubro = document.getElementById("rubroActualizar").value;
-  var numeroAsientos = document.getElementById(
-    "numeroAsientosActualizar"
-  ).value;
-  var descripcion = document.getElementById("descripcionActualizar").value;
+let añadirAsientos = document.getElementById("añadirAsiento");
+let consultarAsientos = document.getElementById("consultarAsiento");
 
-  let datos = [];
-
-  if (rubro != null) {
-    datos.push(rubro);
-  }
-
-  if (numeroAsientos != null) {
-    datos.push(numeroAsientos);
-  }
-
-  if (descripcion != null) {
-    datos.push(descripcion);
-  }
-
-  fetch("http://localhost:8080/asientos/" + idAsiento + "/update", {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(datos),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(
-          `Error al obtener datos (${response.status}): ${response.statusText}`
-        );
-      }
-      var resultado = document.getElementById("resultadoActualizar");
-      resultado.innerHTML = `
-                <h2>Asientos actualizada con exito:</h2>
-                <strong>Número de Asientos:</strong> ${numeroAsientos}<br>
-            `;
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-}
-
-function eliminarAsientos() {
-  var numeroAsientos = document.getElementById("numeroAsientosEliminar").value;
-
-  fetch("http://localhost:8080/asientos/" + idAsiento + "/delete", {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(
-          `Error al obtener datos (${response.status}): ${response.statusText}`
-        );
-      }
-      var resultado = document.getElementById("resultadoEliminar");
-      resultado.innerHTML = `
-                <h2>Asientos eliminada con exito:</h2>
-                <strong>Número de Asientos:</strong> ${numeroAsientos}<br>
-            `;
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-}
-
-let botonAñadirAsientos = document.getElementById("añadirAsientos");
-let botonEliminarAsientos = document.getElementById("eliminarAsientos");
-let botonModificarAsientos = document.getElementById("modificarAsientos");
-let botonConsultarAsientos = document.getElementById("consultarAsientos");
-
-function botonAgregar() {
-  if (botonAñadirAsientos.style.display === "none") {
-    botonAñadirAsientos.style.display = "block";
-    botonEliminarAsientos.style.display = "none";
-    botonModificarAsientos.style.display = "none";
-    botonConsultarAsientos.style.display = "none";
+function botonAñadir() {
+  if (añadirAsientos.style.display === "none") {
+    añadirAsientos.style.display = "block";
+    consultarAsientos.style.display = "none";
   } else {
-    botonAñadirAsientos.style.display = "none";
+    añadirAsientos.style.display = "none";
   }
 }
 
-function botonEliminar() {
-  if (botonEliminarAsientos.style.display === "none") {
-    botonEliminarAsientos.style.display = "block";
-    botonAñadirAsientos.style.display = "none";
-    botonModificarAsientos.style.display = "none";
-    botonConsultarAsientos.style.display = "none";
-  } else {
-    botonEliminarAsientos.style.display = "none";
-  }
-}
-
-function botonModificar() {
-  if (botonModificarAsientos.style.display === "none") {
-    botonModificarAsientos.style.display = "block";
-    botonEliminarAsientos.style.display = "none";
-    botonAñadirAsientos.style.display = "none";
-    botonConsultarAsientos.style.display = "none";
-  } else {
-    botonModificarAsientos.style.display = "none";
-  }
-}
 
 function botonConsultar() {
-  if (botonConsultarAsientos.style.display === "none") {
-    botonConsultarAsientos.style.display = "block";
-    botonEliminarAsientos.style.display = "none";
-    botonModificarAsientos.style.display = "none";
-    botonAñadirAsientos.style.display = "none";
+  if (consultarAsientos.style.display === "none") {
+    consultarAsientos.style.display = "block";
+    añadirAsientos.style.display = "none";
   } else {
-    botonConsultarAsientos.style.display = "none";
+    consultarAsientos.style.display = "none";
   }
 }
