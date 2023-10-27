@@ -173,7 +173,7 @@ function eliminarCuenta() {
 }
 
 let botonAñadirCuenta = document.getElementById("añadirCuenta");
-let botonEliminarCuenta = document.getElementById("eliminarCuenta");
+let botonEliminarCuenta = document.getElementById("eliminarCuentaId");
 let botonModificarCuenta = document.getElementById("modificarCuenta");
 let botonConsultarCuenta = document.getElementById("consultarCuenta");
 
@@ -221,4 +221,13 @@ function botonConsultar() {
   } else {
     botonConsultarCuenta.style.display = "none";
   }
+}
+
+function botonCerrar(){
+  var iconoCerrar = document.getElementById("iconoCerrar");
+  
+  añadirCuenta.style.display = "none";
+  consultarCuenta.style.display = "none";
+  eliminarCuentaId.style.display = "none";
+  modificarCuenta.style.display = "none";
 }

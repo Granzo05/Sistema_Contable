@@ -5,9 +5,25 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sistema Contable</title>
-  <link rel="stylesheet" href="/css/cuenta/styleCuenta.css" />
+  <link rel="stylesheet" href="/public/css/styleAsiento.css" />
 
   <style>
+    body .left{
+      display: flex;
+      align-items: center;
+      margin-right: auto;
+      color: white;
+      text-decoration: none;
+      position: fixed;
+      margin-top: 0px;
+    }
+
+    body .center{
+      align-items: center;
+      text-align: center;
+      margin-top: 0px;
+    }
+    
     .asiento-container {
       display: flex;
       flex-direction: row;
@@ -15,8 +31,6 @@
 
     .debe-container,
     .haber-container {
-      border: 1px solid #ccc;
-      padding: 10px;
       margin: 10px;
       flex: 1;
     }
@@ -28,14 +42,17 @@
 </head>
 
 <body>
-  <h1>- ASIENTOS -</h1>
+  <h1><a href="main.html" class="left">XenoverseCount</a></h1>
+  <h1 class="center">- ASIENTOS -</h1>
   <div id="acciones">
     <button type="button" id="botonAñadir" onclick="botonAñadir()">Añadir</button>
     <button type="button" id="botonConsultar" onclick="botonConsultar()">Consultar</button>
   </div>
 
   <div id="añadirAsiento">
+    <img width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply" id="iconoCerrar" onclick="botonCerrar()"/>
     <h2>- Añadir Asiento -</h2>
+    <br><br>
     <form id="AsientoFormAñadir">
       <label for="numeroAsientoAñadir">Número de Asiento:</label>
       <input type="number" id="numeroAsientoAñadir" required pattern="[0-9]{4}"
@@ -43,15 +60,18 @@
       <input type="date" id="fechaAsientoAñadir" />
 
       <div class="asiento-container">
+        <div class="cuenta-container">
+          <input type="text" placeholder="Cuenta" class="cuenta" id="cuenta">
+          <input type="text" placeholder="Cuenta" class="cuenta" id="cuenta">
+        </div>
         <div class="debe-container">
           <h2>DEBE</h2>
-          <input type="text" placeholder="Cuenta" class="cuenta">
-          <input type="text" placeholder="Valor" class="valor">
+          <input type="number" placeholder="Valor" class="valor">
         </div>
         <div class="haber-container">
+          <br><br><br><br><br>
           <h2>HABER</h2>
-          <input type="text" placeholder="Cuenta" class="cuenta">
-          <input type="text" placeholder="Valor" class="valor">
+          <input type="number" placeholder="Valor" class="valor">
         </div>
       </div>
       <button type="button" onclick="AñadirAsiento()">
@@ -62,6 +82,7 @@
   </div>
 
   <div id="consultarAsiento">
+    <img width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply" id="iconoCerrar" onclick="botonCerrar()"/>
     <h2>- Buscar Asiento -</h2>
     <form id="AsientoFormBuscar">
       <label for="numeroAsientoBuscar">Número de Asiento:</label>
@@ -70,13 +91,13 @@
       <label for="numeroCuentaBuscar">Número de cuenta:</label>
       <input type="number" id="numeroCuentaBuscar" required pattern="[0-9]{4}"
         title="El número de cuenta debe ser un número de 4 dígitos." />
-      <input type="date" id="fechaAsientoBuscar" />
+      <input type="date" id="fechaAsientoBuscar" /><br><br>
       <button type="button" onclick="buscarAsiento()">Buscar Asiento</button>
     </form>
     <div class="result" id="resultadoBuscar"></div>
   </div>
 
-  <script src="/js/scriptAsientos.js"></script>
+  <script src="/public/js/scriptAsientos.js"></script>
 </body>
 
 </html>

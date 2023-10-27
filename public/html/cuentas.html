@@ -5,11 +5,29 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sistema Contable</title>
-  <link rel="stylesheet" href="/css/cuenta/styleCuenta.css" />
+  <link rel="stylesheet" href="/public/css/cuenta/styleCuenta.css" />
+  <style>
+    body .left{
+      display: flex;
+      align-items: center;
+      margin-right: auto;
+      color: white;
+      text-decoration: none;
+      position: fixed;
+      margin-top: 0px;
+    }
+
+    body .center{
+      align-items: center;
+      text-align: center;
+      margin-top: 0px;
+    }
+  </style>
 </head>
 
 <body>
-  <h1>- PLAN DE CUENTAS -</h1>
+  <h1><a href="main.html" class="left">XenoverseCount</a></h1>
+  <h1 class="center">- PLAN DE CUENTAS -</h1>
   <div id="acciones">
     <button type="button" id="añadir" onclick="botonAñadir()">Añadir</button>
     <button type="button" id="eliminar" onclick="botonEliminar()">
@@ -23,6 +41,8 @@
     </button>
   </div>
   <div id="añadirCuenta">
+    <img width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply" id="iconoCerrar" onclick="botonCerrar()"/>
+        
     <h2>- Añadir cuenta -</h2>
     <form id="cuentaFormAñadir">
       <label for="rubroAñadir">Rubro:</label>
@@ -42,19 +62,23 @@
     </form>
     <div class="result" id="resultadoAñadir"></div>
   </div>
-  <div id="eliminarCuenta">
+  <div id="eliminarCuentaId">
+    <img width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply" id="iconoCerrar" onclick="botonCerrar()"/>
+        
     <h2>- Eliminar cuenta -</h2>
     <form id="cuentaFormEliminar">
       <label for="numeroCuentaEliminar">Número de cuenta:</label>
       <input type="number" id="numeroCuentaEliminar" required pattern="[0-9]{4}"
         title="El número de cuenta debe ser un número de 4 dígitos." />
-      <button type="button" onclick="eliminarCuenta()">
+      <br><button type="button" onclick="eliminarCuenta()">
         Eliminar cuenta
       </button>
     </form>
     <div class="result" id="resultadoEliminar"></div>
   </div>
   <div id="modificarCuenta">
+    <img width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply" id="iconoCerrar" onclick="botonCerrar()"/>
+        
     <h2>- Actualizar cuenta -</h2>
     <form id="cuentaFormActualizar">
       <label for="rubroActualizar">Rubro:</label>
@@ -75,6 +99,8 @@
     <div class="result" id="resultadoActualizar"></div>
   </div>
   <div id="consultarCuenta">
+    <img width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply" id="iconoCerrar" onclick="botonCerrar()"/>
+        
     <h2>- Buscar cuenta -</h2>
     <form id="cuentaFormBuscar">
       <label for="rubroBuscar">Rubro:</label>
@@ -96,7 +122,7 @@
     <div class="result" id="resultadoBuscar"></div>
   </div>
 
-  <script src="/js/scriptCuenta.js"></script>
+  <script src="/public/js/scriptCuenta.js"></script>
 </body>
 
 </html>

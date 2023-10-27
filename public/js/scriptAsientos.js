@@ -104,3 +104,11 @@ function botonConsultar() {
     consultarAsientos.style.display = "none";
   }
 }
+
+function botonCerrar(){
+  var iconoCerrar = document.getElementById("iconoCerrar");
+  
+  añadirAsientos.style.display = "none";
+  consultarAsientos.style.display = "none";
+}
+

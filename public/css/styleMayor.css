@@ -5,6 +5,22 @@ body{
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
+body .left{
+    display: flex;
+    align-items: center;
+    margin-right: auto;
+    color: white;
+    text-decoration: none;
+    position: fixed;
+    margin-top: 0px;
+  }
+
+  body .center{
+    align-items: center;
+    text-align: center;
+    margin-top: 0px;
+  }
+
 #acciones{
     margin: 20px auto;
 }
@@ -34,7 +50,6 @@ button {
     border-radius: 20px;
     font-size: 16px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    
 }
 
 button:hover{
@@ -44,14 +59,14 @@ button:hover{
     transition: 0.5s;
 }
 
-#añadirCuenta{
+#añadirAsiento{
     display: none;
     border: solid white;
     border-radius: 20px;
     padding: 20px 0px;
 }
 
-#añadirCuenta img{
+#añadirAsiento img{
     display: flex;
     color: black;
     cursor: pointer;
@@ -62,93 +77,64 @@ button:hover{
     height: 40px;
 }
 
-#añadirCuenta img:hover{
+#añadirAsiento img:hover{
     background-color: rgb(255, 255, 255);
     border-top-right-radius: 20px;
-    
 }
 
-#eliminarCuentaId{
-    display: none;
+
+
+#consultarMayor{
     border: solid white;
     border-radius: 20px;
     padding: 20px 0px;
 }
 
-#eliminarCuentaId img{
+#consultarMayor img{
     display: flex;
     color: black;
     cursor: pointer;
     position: fixed;
-    top: 139px;
+    top: 79px;
     right: 9px;
     width: 40px;
     height: 40px;
 }
 
-#eliminarCuentaId button:hover{
-    background-color: black;
-    color: white;
-    width: 160px;
-    transition: 0.5s;
-}
-
-#eliminarCuentaId img:hover{
+#consultarMayor img:hover{
     background-color: rgb(255, 255, 255);
     border-top-right-radius: 20px;
 }
 
-#modificarCuenta{
-    display: none;
-    border: solid white;
-    border-radius: 20px;
-    padding: 20px 0px;
-}
-
-#modificarCuenta img{
+.asiento-container{
+    align-items: center;
     display: flex;
-    color: black;
-    cursor: pointer;
-    position: fixed;
-    top: 139px;
-    right: 9px;
-    width: 40px;
-    height: 40px;
+    width: 100%;
+    border: none !important;
 }
 
-#modificarCuenta button:hover{
-    background-color: black;
-    color: white;
-    width: 170px;
-    transition: 0.5s;
+.cuenta-container{
+    width: 35%;
 }
 
-#modificarCuenta img:hover{
-    background-color: rgb(255, 255, 255);
-    border-top-right-radius: 20px;
+.debe-container{
+    padding-bottom: 112px;
+    border: none;
 }
 
-
-#consultarCuenta{
-    display: none;
-    border: solid white;
-    border-radius: 20px;
-    padding: 20px 0px;
+.haber-container{
+    padding-bottom: 112px;
+    border: none;
 }
 
-#consultarCuenta img{
-    display: flex;
-    color: black;
-    cursor: pointer;
-    position: fixed;
-    top: 139px;
-    right: 9px;
-    width: 40px;
-    height: 40px;
+.cuenta-container #cuenta{
+    width: 70%;
 }
 
-#consultarCuenta img:hover{
-    background-color: rgb(255, 255, 255);
-    border-top-right-radius: 20px;
+.debe-container input{
+    width: 70%;
 }
 
+.haber-container input{
+    width: 70%;
+}

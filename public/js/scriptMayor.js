@@ -45,3 +45,4 @@ function cargarSelectPorRubro() {
       console.error("Error:", error);
     });
 }
+
