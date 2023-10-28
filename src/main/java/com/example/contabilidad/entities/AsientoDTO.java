@@ -1,6 +1,5 @@
 package com.example.contabilidad.entities;
 
-import java.util.Date;
 import java.util.List;
 
 public class AsientoDTO {

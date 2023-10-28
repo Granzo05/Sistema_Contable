@@ -19,19 +19,7 @@ public class Asientos {
     @OneToMany(mappedBy = "asiento", cascade = CascadeType.ALL)
     private List<DetalleAsiento> detallesAsiento = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "mayor_id")
-    private Mayor mayor;
-
     public Asientos() {
-    }
-
-    public Mayor getMayor() {
-        return mayor;
-    }
-
-    public void setMayor(Mayor mayor) {
-        this.mayor = mayor;
     }
 
     public Long getId() {

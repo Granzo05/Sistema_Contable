@@ -11,8 +11,6 @@ public class Mayor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany(mappedBy = "mayor")
-    private List<Asientos> asientos = new ArrayList<>();
     @Column(name = "debe")
     private Double debe = 0.0;
     @Column(name = "haber")
@@ -42,18 +40,6 @@ public class Mayor {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public List<Asientos> getAsientos() {
-        return asientos;
-    }
-
-    public void setAsientos(List<Asientos> asientos) {
-        this.asientos = asientos;
-    }
-
-    public void addAsiento(Asientos asientos) {
-        this.asientos.add(asientos);
     }
 
     public Cuentas getCuenta() {
@@ -87,4 +73,5 @@ public class Mayor {
     public void setSaldo(String saldo) {
         this.saldo = saldo;
     }
+
 }

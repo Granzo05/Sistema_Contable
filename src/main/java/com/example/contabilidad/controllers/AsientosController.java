@@ -1,7 +1,10 @@
 package com.example.contabilidad.controllers;
 
 import com.example.contabilidad.entities.*;
-import com.example.contabilidad.repositories.*;
+import com.example.contabilidad.repositories.AsientosRepository;
+import com.example.contabilidad.repositories.CuentasRepository;
+import com.example.contabilidad.repositories.DetalleAsientoRepository;
+import com.example.contabilidad.repositories.MayorRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,19 +20,17 @@ public class AsientosController {
     private final MayorRepository mayorRepository;
     private final CuentasRepository cuentasRepository;
     private final DetalleAsientoRepository detalleAsientoRepository;
-    private final ModificacionMayorRepository modificacionMayorRepository;
 
     public AsientosController(AsientosRepository asientosRepository,
                               MayorRepository mayorRepository,
                               CuentasRepository cuentasRepository,
-                              DetalleAsientoRepository detalleAsientoRepository,
-                              ModificacionMayorRepository modificacionMayorRepository) {
+                              DetalleAsientoRepository detalleAsientoRepository) {
         this.asientosRepository = asientosRepository;
         this.mayorRepository = mayorRepository;
         this.cuentasRepository = cuentasRepository;
         this.detalleAsientoRepository = detalleAsientoRepository;
-        this.modificacionMayorRepository = modificacionMayorRepository;
     }
+
     @Transactional
     @PostMapping("/asientos")
     public ResponseEntity<String> crearAsientos(@RequestBody AsientoDTO asientoDTO) {
@@ -49,28 +50,15 @@ public class AsientosController {
         // Almaceno todos los detalles que se recibieron desde el cliente
         List<DetalleAsiento> detalleAsiento = new ArrayList<>();
 
-        for (DetalleAsiento debe : asientoDTO.getDetallesDebe()) {
-            // Busco la cuenta en el plan de cuentas, la que por ahora va a ser nula mientras no existan cuentas
-            Cuentas cuenta = cuentasRepository.findByDescripcion(debe.getDescripcion());
-            // Almaceno cada uno de los detalles del lado del debe para luego almacenarlos en el array que se le asigna al asiento
-            DetalleAsiento detalle = new DetalleAsiento();
-            detalle.setTipo("DEBE");
-            detalle.setCuenta(cuenta);
-            detalle.setValor(debe.getValor());
-            detalle.setAsiento(asiento);
-            detalleAsiento.add(detalle);
+        // Se encarga de buscar todos los detalles que se enviaron desde el cliente para acomodarlos y agregarle el objeto cuenta asociado a la descripcion que trae del cliente.
+        for (DetalleAsiento detalle: asientoDTO.getDetallesDebe()) {
+            detalleAsiento.add(cargarDetallesAsiento("DEBE", detalle, asiento));
         }
 
-        for (DetalleAsiento haber : asientoDTO.getDetallesHaber()) {
-            Cuentas cuenta = cuentasRepository.findByDescripcion(haber.getDescripcion());
-
-            DetalleAsiento detalle = new DetalleAsiento();
-            detalle.setTipo("HABER");
-            detalle.setCuenta(cuenta);
-            detalle.setValor(haber.getValor());
-            detalle.setAsiento(asiento);
-            detalleAsiento.add(detalle);
+        for (DetalleAsiento detalle: asientoDTO.getDetallesHaber()) {
+            detalleAsiento.add(cargarDetallesAsiento("HABER", detalle, asiento));
         }
+
         // Relaciono el detalle_id al asiento
         asiento.setDetallesAsiento(detalleAsiento);
         // Asentamos el asiento
@@ -79,12 +67,16 @@ public class AsientosController {
         // Actualizamos los mayores obteniendo los detalles que acaban de ser cargados al asiento
         List<DetalleAsiento> detallesAsiento = asiento.getDetallesAsiento();
 
+        // Aca creamos el mayor de la cuenta cargada en caso de que no haya un mayor existente, actualizamos el debe y haber de la cuenta y controlamos el saldo actual
+        cargaDelMayor(detallesAsiento);
+
+        return new ResponseEntity<>("El asiento ha sido añadido correctamente", HttpStatus.CREATED);
+    }
+
+    private void cargaDelMayor(List<DetalleAsiento> detallesAsiento) {
         for (DetalleAsiento detalle : detallesAsiento) {
             // Buscamos el mayor en la db
             Mayor mayor = mayorRepository.findByDescripcionCuenta(detalle.getCuenta().getDescripcion());
-
-            ModificacionMayor modificacion = new ModificacionMayor();
-
             // Si no existe, lo cual puede pasar al ser el primer mayor de una cuenta, lo creamos.
             if (mayor == null) {
                 mayor = new Mayor();
@@ -106,23 +98,29 @@ public class AsientosController {
             } else {
                 mayor.setSaldo("Saldado");
             }
-
-            modificacion.setAsiento(detalle.getAsiento());
-            modificacion.setFechaModificacion(detalle.getAsiento().getFechaRegistro());
-
             // Por ultimo le asignamos el asiento
-            mayor.addAsiento(detalle.getAsiento());
             // Cargamos el mayor en la db
             mayorRepository.save(mayor);
+
+            detalle.setMayor(mayor);
             // Cargamos los detalles del asiento asignado, ya que el asiento tiene un solo detalle asignado, pero el detalle puede ser 1 o muchos, ya que si o si de entrada
             // Va a tener 2 cuentas asociadas, una al haber y otra al debe, pero pueden haber 3 cuentas en el haber para igualar una del debe. Por lo tanto un solo asiento tiene muchos detalles
             detalleAsientoRepository.save(detalle);
-
-            modificacion.setMayor(mayor);
-            modificacionMayorRepository.save(modificacion);
         }
+    }
 
-        return new ResponseEntity<>("El asiento ha sido añadido correctamente", HttpStatus.CREATED);
+    private DetalleAsiento cargarDetallesAsiento(String tipoCuenta, DetalleAsiento detalle, Asientos asiento) {
+
+        // Busco la cuenta en el plan de cuentas, la que por ahora va a ser nula mientras no existan cuentas
+        Cuentas cuenta = cuentasRepository.findByDescripcion(detalle.getDescripcion());
+        // Almaceno cada uno de los detalles del lado del debe para luego almacenarlos en el array que se le asigna al asiento
+        DetalleAsiento detalleFinal = new DetalleAsiento();
+        detalleFinal.setTipo(tipoCuenta);
+        detalleFinal.setCuenta(cuenta);
+        detalleFinal.setValor(detalle.getValor());
+        detalleFinal.setAsiento(asiento);
+
+        return detalleFinal;
     }
 
     @CrossOrigin

@@ -22,6 +22,10 @@ public class DetalleAsiento {
     @Column(name = "valor")
     private Double valor;
 
+    @ManyToOne
+    @JoinColumn(name = "mayor_id")
+    private Mayor mayor;
+
     public String getTipo() {
         return tipo;
     }
@@ -67,5 +71,13 @@ public class DetalleAsiento {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public Mayor getMayor() {
+        return mayor;
+    }
+
+    public void setMayor(Mayor mayor) {
+        this.mayor = mayor;
     }
 }
