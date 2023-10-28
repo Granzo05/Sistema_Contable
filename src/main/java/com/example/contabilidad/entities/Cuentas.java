@@ -5,8 +5,8 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "plan_de_cuentas")
-public class PlanDeCuentas {
+@Table(name = "cuentas")
+public class Cuentas {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,15 +17,7 @@ public class PlanDeCuentas {
     @Column(name = "descripcion")
     private String descripcion;
 
-    @OneToMany(mappedBy = "planDeCuentas")
-    private List<Asientos> asientos;
-
-    public PlanDeCuentas() {
-    }
-
-    public PlanDeCuentas(String descripcion, List<Asientos> asientos) {
-        this.descripcion = descripcion;
-        this.asientos = asientos;
+    public Cuentas() {
     }
 
     public Long getId() {
@@ -34,14 +26,6 @@ public class PlanDeCuentas {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public List<Asientos> getAsientos() {
-        return asientos;
-    }
-
-    public void setAsientos(List<Asientos> asientos) {
-        this.asientos = asientos;
     }
 
     public String getNroCuenta() {

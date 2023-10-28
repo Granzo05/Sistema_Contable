@@ -47,10 +47,18 @@ function buscarAsientosPorNroAsientos() {
 }
 
 function cargarAsiento() {
-  var fecha = document.getElementById("fechaAsientoAñadir").value;
+  var fechaInput = document.getElementById("fechaAsientoAñadir").value;
+
+  let fecha = new Date(fechaInput);
+
+  let dia = fecha.getDate() + 1;
+  let mes = fecha.getMonth() + 1;
+  let anio = fecha.getFullYear();
+
+  let fechaFormateada = `${dia}/${mes}/${anio}`;
 
   let asientosData = {
-    fechaRegistro: fecha,
+    fechaRegistro: fechaFormateada,
     detallesDebe: [],
     detallesHaber: [],
   };
@@ -75,6 +83,7 @@ function cargarAsiento() {
     asientosData.detallesHaber.push({ descripcion, valor });
   }
 
+
   fetch("http://localhost:8080/asientos", {
     method: "POST",
     headers: {
@@ -87,7 +96,7 @@ function cargarAsiento() {
         throw new Error(
           `Error al obtener datos (${response.status}): ${response.statusText}`
         );
-      }      
+      }
       alert("Cargo joya");
     })
     .catch((error) => {

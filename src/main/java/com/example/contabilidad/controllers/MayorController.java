@@ -25,27 +25,11 @@ public class MayorController {
 
         Mayor mayor = mayorRepository.findByDescripcionCuenta(descripcion);
 
-        List<Asientos> asientos = mayor.getAsientos();
-
         Double debeTotal = 0.0;
         Double haberTotal = 0.0;
 
         Mayor mayorFiltrado = new Mayor();
-        for (Asientos asiento : asientos) {
-            if (asiento.getFechaRegistro().getMonth() == mes && asiento.getFechaRegistro().getYear() == anio) {
-                mayorFiltrado.addAsiento(asiento);
 
-                List<DetalleAsiento> detallesHaber = asiento.getDetallesHaber();
-                for (DetalleAsiento haber: detallesHaber) {
-                    haberTotal += haber.getValor();
-                }
-
-                List<DetalleAsiento> detallesDebe = asiento.getDetallesDebe();
-                for (DetalleAsiento debe: detallesDebe) {
-                    debeTotal += debe.getValor();
-                }
-            }
-        }
         if (haberTotal > debeTotal) {
             mayorFiltrado.setSaldo("Acreedor");
         } else {

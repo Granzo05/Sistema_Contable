@@ -2,6 +2,7 @@ package com.example.contabilidad.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -10,30 +11,21 @@ public class Mayor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "descripcion_cuenta")
-    private String descripcion;
     @OneToMany(mappedBy = "mayor")
-    private List<Asientos> asientos;
+    private List<Asientos> asientos = new ArrayList<>();
     @Column(name = "debe")
     private Double debe = 0.0;
-
     @Column(name = "haber")
     private Double haber = 0.0;
-
     @Column(name = "saldo")
     private String saldo;
+    @OneToOne
+    @JoinColumn(name = "cuenta_id")
+    private Cuentas cuenta;
 
     public Mayor() {
         this.debe = 0.0;
         this.haber = 0.0;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
     }
 
     public void setDebe(Double debe) {
@@ -62,6 +54,14 @@ public class Mayor {
 
     public void addAsiento(Asientos asientos) {
         this.asientos.add(asientos);
+    }
+
+    public Cuentas getCuenta() {
+        return cuenta;
+    }
+
+    public void setCuenta(Cuentas cuenta) {
+        this.cuenta = cuenta;
     }
 
     public double getDebe() {

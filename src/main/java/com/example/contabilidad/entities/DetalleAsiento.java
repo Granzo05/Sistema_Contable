@@ -7,18 +7,35 @@ import jakarta.persistence.*;
 public class DetalleAsiento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
-
-    @Column(name = "descripcion")
+    @ManyToOne
+    @JoinColumn(name = "asiento_id")
+    private Asientos asiento;
+    @ManyToOne
+    @JoinColumn(name = "cuenta_id")
+    private Cuentas cuenta;
+    @Transient
     private String descripcion;
+    @Column(name = "tipo_cuenta")
+    private String tipo;
 
     @Column(name = "valor")
     private Double valor;
 
-    @ManyToOne
-    @JoinColumn(name = "asiento_id")
-    private Asientos asientos;
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+    public Double getValor() {
+        return valor;
+    }
+
+    public void setValor(Double valor) {
+        this.valor = valor;
+    }
 
     public Long getId() {
         return id;
@@ -28,27 +45,27 @@ public class DetalleAsiento {
         this.id = id;
     }
 
+    public Asientos getAsiento() {
+        return asiento;
+    }
+
+    public void setAsiento(Asientos asiento) {
+        this.asiento = asiento;
+    }
+
+    public Cuentas getCuenta() {
+        return cuenta;
+    }
+
+    public void setCuenta(Cuentas cuenta) {
+        this.cuenta = cuenta;
+    }
+
     public String getDescripcion() {
         return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    public Asientos getAsientos() {
-        return asientos;
-    }
-
-    public void setAsientos(Asientos asientos) {
-        this.asientos = asientos;
-    }
-
-    public Double getValor() {
-        return valor;
-    }
-
-    public void setValor(Double valor) {
-        this.valor = valor;
     }
 }
