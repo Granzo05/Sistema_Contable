@@ -1,10 +1,7 @@
 package com.example.contabilidad.controllers;
 
 import com.example.contabilidad.entities.*;
-import com.example.contabilidad.repositories.AsientosRepository;
-import com.example.contabilidad.repositories.CuentasRepository;
-import com.example.contabilidad.repositories.DetalleAsientoRepository;
-import com.example.contabilidad.repositories.MayorRepository;
+import com.example.contabilidad.repositories.*;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,15 +17,18 @@ public class AsientosController {
     private final MayorRepository mayorRepository;
     private final CuentasRepository cuentasRepository;
     private final DetalleAsientoRepository detalleAsientoRepository;
+    private final ModificacionMayorRepository modificacionMayorRepository;
 
     public AsientosController(AsientosRepository asientosRepository,
                               MayorRepository mayorRepository,
                               CuentasRepository cuentasRepository,
-                              DetalleAsientoRepository detalleAsientoRepository) {
+                              DetalleAsientoRepository detalleAsientoRepository,
+                              ModificacionMayorRepository modificacionMayorRepository) {
         this.asientosRepository = asientosRepository;
         this.mayorRepository = mayorRepository;
         this.cuentasRepository = cuentasRepository;
         this.detalleAsientoRepository = detalleAsientoRepository;
+        this.modificacionMayorRepository = modificacionMayorRepository;
     }
     @Transactional
     @PostMapping("/asientos")
@@ -83,6 +83,8 @@ public class AsientosController {
             // Buscamos el mayor en la db
             Mayor mayor = mayorRepository.findByDescripcionCuenta(detalle.getCuenta().getDescripcion());
 
+            ModificacionMayor modificacion = new ModificacionMayor();
+
             // Si no existe, lo cual puede pasar al ser el primer mayor de una cuenta, lo creamos.
             if (mayor == null) {
                 mayor = new Mayor();
@@ -104,6 +106,10 @@ public class AsientosController {
             } else {
                 mayor.setSaldo("Saldado");
             }
+
+            modificacion.setAsiento(detalle.getAsiento());
+            modificacion.setFechaModificacion(detalle.getAsiento().getFechaRegistro());
+
             // Por ultimo le asignamos el asiento
             mayor.addAsiento(detalle.getAsiento());
             // Cargamos el mayor en la db
@@ -111,6 +117,9 @@ public class AsientosController {
             // Cargamos los detalles del asiento asignado, ya que el asiento tiene un solo detalle asignado, pero el detalle puede ser 1 o muchos, ya que si o si de entrada
             // Va a tener 2 cuentas asociadas, una al haber y otra al debe, pero pueden haber 3 cuentas en el haber para igualar una del debe. Por lo tanto un solo asiento tiene muchos detalles
             detalleAsientoRepository.save(detalle);
+
+            modificacion.setMayor(mayor);
+            modificacionMayorRepository.save(modificacion);
         }
 
         return new ResponseEntity<>("El asiento ha sido añadido correctamente", HttpStatus.CREATED);
