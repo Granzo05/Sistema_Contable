@@ -128,20 +128,6 @@ public class AsientosController {
     public List<Asientos> buscarAsientosPorNroAsiento(@PathVariable Long nroAsiento) {
         return asientosRepository.findByNroAsiento(nroAsiento);
     }
-
-    @CrossOrigin
-    @PostMapping("/asientos/{fecha}")
-    public List<Asientos> buscarAsientosPorFecha(@PathVariable String fechaStr) {
-        Date fecha = convertirFechaStringADate(fechaStr);
-
-        if (fecha != null) {
-            List<Asientos> asiento = asientosRepository.findByFecha(fecha);
-            return asiento;
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
     public Date convertirFechaStringADate(String fechaStr) {
         try {
             SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");

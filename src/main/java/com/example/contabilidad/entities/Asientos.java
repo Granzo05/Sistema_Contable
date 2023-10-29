@@ -13,6 +13,7 @@ public class Asientos {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "nro_asiento")
     private Long id;
+    @Temporal(TemporalType.DATE)
     @Column(name = "fecha_asentado")
     private Date fechaRegistro;
 
