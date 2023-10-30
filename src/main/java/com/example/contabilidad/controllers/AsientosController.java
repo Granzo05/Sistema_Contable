@@ -87,7 +87,7 @@ public class AsientosController {
             if (detalle.getTipo().equals("DEBE")) {
                 mayor.setDebe(mayor.getDebe() + detalle.getValor());
             } else if (detalle.getTipo().equals("HABER")) {
-                mayor.setHaber(mayor.getDebe() + detalle.getValor());
+                mayor.setHaber(mayor.getHaber() + detalle.getValor());
             }
 
             // Al final actualizamos el saldo actual del mayor
@@ -102,7 +102,6 @@ public class AsientosController {
             // Cargamos el mayor en la db
             mayorRepository.save(mayor);
 
-            detalle.setMayor(mayor);
             // Cargamos los detalles del asiento asignado, ya que el asiento tiene un solo detalle asignado, pero el detalle puede ser 1 o muchos, ya que si o si de entrada
             // Va a tener 2 cuentas asociadas, una al haber y otra al debe, pero pueden haber 3 cuentas en el haber para igualar una del debe. Por lo tanto un solo asiento tiene muchos detalles
             detalleAsientoRepository.save(detalle);

@@ -1,7 +1,9 @@
 function buscarMayor() {
-  const descripcion = document.getElementById("descripcionBuscar").value;
+  const numeroCuenta = document.getElementById("numeroCuenta").value;
+  const mes = document.getElementById("mes").value;
+  const año = document.getElementById("año").value;
 
-  fetch("http://localhost:8080/mayor/" + descripcion, {
+  fetch("http://localhost:8080/mayor/" + numeroCuenta + "/" + mes + "/" + año, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -13,36 +15,53 @@ function buscarMayor() {
           `Error al obtener datos (${response.status}): ${response.statusText}`
         );
       }
+      return response.json();
     })
     .then((data) => {
-      // Hacer una table o algo con los datos
+      console.log(data);
     })
     .catch((error) => {
       console.error("Error:", error);
     });
 }
 
-function cargarSelectPorRubro() {
-  const rubro = document.getElementById("rubro").value;
+/* function llenarSelectNroCuenta() {
+  const numeroCuenta = document.getElementById("numeroCuenta");
+  const listaSugerencia = document.getElementById("listaSugerencias");
+  numeroCuenta.addEventListener('input', function () {
 
-  fetch("http://localhost:8080/mayor/" + rubro, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(
-          `Error al obtener datos (${response.status}): ${response.statusText}`
-        );
-      }
+    fetch("http://localhost:8080/cuentas/lista", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     })
-    .then((data) => {
-      // Hacer un buscador dinamico que diga que descripciones hay parecidas al texto dependiendo del rubro
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(
+            `Error al obtener datos (${response.status}): ${response.statusText}`
+          );
+        }
+      })
+      .then((data) => {
+        listaSugerencia.innerHTML = '';
+        sugerencias.forEach(sugerencia => {
+          const item = document.createElement('li');
+          item.textContent = sugerencia;
+          listaSugerencia.appendChild(item);
+        });
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  });
+
+  listaSugerencia.addEventListener('click', function (event) {
+    const clic = event.target;
+    if (clic.tagName === 'LI') {
+      numeroCuenta.value = clic.textContent;
+      listaSugerencia.innerHTML = '';
+    }
+  });
 }
-
+*/

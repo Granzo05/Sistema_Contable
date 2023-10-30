@@ -51,4 +51,14 @@ public class Cuentas {
     public void setRubro(String rubro) {
         this.rubro = rubro;
     }
+
+    @Override
+    public String toString() {
+        return "Cuentas{" +
+                "id=" + id +
+                ", rubro='" + rubro + '\'' +
+                ", nroCuenta='" + nroCuenta + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                '}';
+    }
 }

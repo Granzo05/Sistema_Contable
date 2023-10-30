@@ -12,22 +12,20 @@
   <h1><a href="main.html" class="left">XenoverseCount</a></h1>
   <h1 class="center">- MAYOR -</h1>
   <div id="consultarMayor">
-     
-    <select>
-      <option value="ACTIVO">Activo</option>
-      <option value="PASIVO">Pasivo</option>
-      <option value="PN">PN</option>
-      <option value="INGRESO">Ingreso</option>
-      <option value="EGRESO">Egreso</option>
-    </select>
-    <label for="descripcionBuscar">Descripción:</label>
-    <textarea id="descripcionBuscar" rows="4" cols="50"></textarea><br />
+    <input type="text" name="numeroCuenta" id="numeroCuenta" placeholder="Numero de cuenta">
+    <ul id="listaSugerencias">
+    </ul>
+
     <input type="number" name="mes" id="mes" placeholder="Mes">
     <input type="number" name="año" id="año" placeholder="Año">
     <br>
     <button type="button" onclick="buscarMayor()">Buscar mayor</button>
     <div class="result" id="resultadoBuscar"></div>
   </div>
+
+  <table id="resultadoMayor">
+    <tr></tr>
+  </table>
 
   <script src="/public/js/scriptMayor.js"></script>
 </body>

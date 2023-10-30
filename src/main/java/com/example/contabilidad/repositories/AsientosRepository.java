@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -15,8 +16,10 @@ public interface AsientosRepository extends JpaRepository<Asientos, Long> {
     List<Asientos> findAll();
     @Query("SELECT a FROM Asientos a WHERE a.id = :id")
     List<Asientos> findByNroAsiento(@Param("id") Long id);
-    @Query("SELECT a FROM Asientos a WHERE YEAR(a.fechaRegistro) = :anio AND MONTH(a.fechaRegistro) = :mes")
-    List<Asientos> findByMesYAño(@Param("anio") int anio, @Param("mes") int mes);
+
+    // Busqueda nativa para no tener los joins de todas las entidades relaciondas ya que solo necesito el id para manejar mejor la busqueda
+    @Query("SELECT a.id FROM Asientos a WHERE a.fechaRegistro BETWEEN :startDate AND :endDate")
+    List<Long> findAsientoIdsByFechaRegistroBetween(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
 
 }

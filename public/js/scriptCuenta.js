@@ -81,6 +81,7 @@ function AñadirCuenta() {
     descripcion: descripcion,
   };
 
+  limpiarCampos();
   fetch("http://localhost:8080/cuenta", {
     method: "POST",
     headers: {
@@ -94,6 +95,7 @@ function AñadirCuenta() {
           `Error al obtener datos (${response.status}): ${response.statusText}`
         );
       }
+      limpiarCampos();
       var resultado = document.getElementById("resultadoAñadir");
       resultado.innerHTML = `
                 <h2>Cuenta agregada con éxito:</h2>
@@ -122,7 +124,6 @@ function actualizarCuenta() {
     descripcion: descripcion,
     rubro: rubro
   };
-
   fetch("http://localhost:8080/cuenta/" + numeroCuenta + "/update", {
     method: "PUT",
     headers: {
@@ -135,9 +136,8 @@ function actualizarCuenta() {
         throw new Error(
           `Error al actualizar la cuenta (${response.status}): ${response.statusText}`
         );
-      } else {
-        alert("Joyaaaaaaa");
       }
+      limpiarCampos();
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -148,7 +148,6 @@ function actualizarCuenta() {
 
 function eliminarCuenta() {
   var numeroCuenta = document.getElementById("numeroCuentaEliminar").value;
-
   fetch("http://localhost:8080/cuenta/" + numeroCuenta + "/delete", {
     method: "DELETE",
     headers: {
@@ -161,6 +160,7 @@ function eliminarCuenta() {
           `Error al obtener datos (${response.status}): ${response.statusText}`
         );
       }
+      limpiarCampos();
       var resultado = document.getElementById("resultadoEliminar");
       resultado.innerHTML = `
                 <h2>Cuenta eliminada con exito:</h2>
@@ -223,11 +223,34 @@ function botonConsultar() {
   }
 }
 
-function botonCerrar(){
+function botonCerrar() {
   var iconoCerrar = document.getElementById("iconoCerrar");
-  
+
   añadirCuenta.style.display = "none";
   consultarCuenta.style.display = "none";
   eliminarCuentaId.style.display = "none";
   modificarCuenta.style.display = "none";
+}
+
+function limpiarCampos() {
+  var numeroCuenta = document.getElementById("numeroCuentaActualizar");
+  var descripcion = document.getElementById("descripcionActualizar");
+  var rubro = document.getElementById("rubroActualizar");
+
+  numeroCuenta.value = "";
+  descripcion.value = "";
+  rubro.value = "ACTIVO";
+
+  var numeroCuenta = document.getElementById("numeroCuentaAñadir");
+  var descripcion = document.getElementById("descripcionAñadir");
+  var rubro = document.getElementById("rubroAñadir");
+
+  numeroCuenta.value = "";
+  descripcion.value = "";
+  rubro.value = "ACTIVO";
+
+  var numeroCuenta = document.getElementById("numeroCuentaEliminar");
+
+  numeroCuenta.value = "";
+
 }

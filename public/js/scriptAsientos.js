@@ -83,7 +83,6 @@ function cargarAsiento() {
     asientosData.detallesHaber.push({ descripcion, valor });
   }
 
-
   fetch("http://localhost:8080/asientos", {
     method: "POST",
     headers: {
@@ -97,6 +96,7 @@ function cargarAsiento() {
           `Error al obtener datos (${response.status}): ${response.statusText}`
         );
       }
+      limpiarCampos();
       alert("Cargo joya");
     })
     .catch((error) => {
@@ -183,3 +183,29 @@ function agregarInputsAsientos() {
   agregarInputsAsientoHaber();
 }
 
+function limpiarCampos() {
+  var fechaInput = document.getElementById("fechaAsientoAñadir");
+
+  let cuentaDebeInputs = document.querySelectorAll(".cuentaDebe");
+  let valorDebeInputs = document.querySelectorAll(".valorDebe");
+  let cuentaHaberInputs = document.querySelectorAll(".cuentaHaber");
+  let valorHaberInputs = document.querySelectorAll(".valorHaber");
+
+  fechaInput.value = "";
+
+  cuentaDebeInputs.forEach(element => {
+    element.value = "";
+  });
+
+  valorDebeInputs.forEach(element => {
+    element.value = "";
+  });
+
+  cuentaHaberInputs.forEach(element => {
+    element.value = "";
+  });
+
+  valorHaberInputs.forEach(element => {
+    element.value = "";
+  });
+}

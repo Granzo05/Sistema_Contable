@@ -1,7 +1,9 @@
 package com.example.contabilidad.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,11 +16,12 @@ public class Asientos {
     @Column(name = "nro_asiento")
     private Long id;
     @Temporal(TemporalType.DATE)
-    @Column(name = "fecha_asentado")
+    @Column(columnDefinition = "DATE", name = "fecha_asentado")
     private Date fechaRegistro;
-
-    @OneToMany(mappedBy = "asiento", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "asiento", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<DetalleAsiento> detallesAsiento = new ArrayList<>();
+
 
     public Asientos() {
     }
@@ -49,6 +52,15 @@ public class Asientos {
 
     public void addDetalles(DetalleAsiento detallesAsiento) {
         this.detallesAsiento.add(detallesAsiento);
+    }
+
+    @Override
+    public String toString() {
+        return "Asientos{" +
+                "id=" + id +
+                ", fechaRegistro=" + fechaRegistro +
+                ", detallesAsiento=" + detallesAsiento +
+                '}';
     }
 }
 
