@@ -13,8 +13,8 @@ import java.util.Optional;
 public interface CuentasRepository extends JpaRepository<Cuentas, Long> {
     List<Cuentas> findAll();
 
-    @Query("SELECT c FROM Cuentas c WHERE c.descripcion = :descripcion AND c.nroCuenta = :nroCuenta")
-    Optional<Cuentas> findByDescripcionAndNroCuenta(String descripcion, String nroCuenta);
+    @Query("SELECT c FROM Cuentas c WHERE c.descripcion = :descripcion OR c.nroCuenta = :nroCuenta")
+    List<Cuentas> findByDescripcionAndNroCuenta(String descripcion, String nroCuenta);
 
     @Query("SELECT c FROM Cuentas c WHERE c.descripcion LIKE :descripcion")
     Cuentas findByDescripcion(String descripcion);
@@ -25,10 +25,10 @@ public interface CuentasRepository extends JpaRepository<Cuentas, Long> {
     @Query("SELECT c FROM Cuentas c WHERE c.nroCuenta LIKE %:nroCuenta%")
     List<Cuentas> findByNroCuentaEquals(@Param("nroCuenta") String numeroCuenta);
 
-    @Query("SELECT c FROM Cuentas c WHERE c.nroCuenta LIKE %:nroCuenta%")
+    @Query("SELECT c FROM Cuentas c WHERE c.nroCuenta = :nroCuenta")
     Cuentas findByNroCuenta(@Param("nroCuenta") String numeroCuenta);
 
-    @Query("SELECT c FROM Cuentas c WHERE c.rubro = :rubro")
+    @Query("SELECT c FROM Cuentas c WHERE c.rubro = :rubro ORDER BY c.nroCuenta ASC")
     List<Cuentas> findByRubro(@Param("rubro") String rubro);
 
 }

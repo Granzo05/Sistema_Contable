@@ -20,8 +20,11 @@ public class CuentasController {
 
     @PostMapping("/cuenta")
     public ResponseEntity<String> crearCuenta(@RequestBody Cuentas cuentasDetails) {
+        List<Cuentas> planDeCuentas = cuentasRepository.findByDescripcionAndNroCuenta(cuentasDetails.getDescripcion(), cuentasDetails.getNroCuenta());
+        System.out.println(cuentasDetails.getRubro());
         System.out.println(cuentasDetails.getNroCuenta());
-        Optional<Cuentas> planDeCuentas = cuentasRepository.findByDescripcionAndNroCuenta(cuentasDetails.getDescripcion(), cuentasDetails.getNroCuenta());
+        System.out.println(cuentasDetails.getDescripcion());
+
         if (planDeCuentas.isEmpty()) {
             cuentasRepository.save(cuentasDetails);
             return new ResponseEntity<>("El plan de cuentas ha sido añadido correctamente", HttpStatus.CREATED);
@@ -54,15 +57,17 @@ public class CuentasController {
     public ResponseEntity<Cuentas> updatePlanDeCuentas(@PathVariable String nroCuenta, @RequestBody Map<String, String> requestData) {
         Cuentas cuenta = cuentasRepository.findByNroCuenta(nroCuenta);
         if (cuenta == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        if (requestData.containsKey("descripcion")) {
-            cuenta.setDescripcion(requestData.get("descripcion"));
-        }
-
-        if (requestData.containsKey("rubro")) {
-            cuenta.setRubro(requestData.get("rubro"));
+            cuenta = cuentasRepository.findByDescripcion(requestData.get("descripcion"));
+            if (cuenta == null) {
+                return ResponseEntity.notFound().build();
+            }
+            if (requestData.containsKey("descripcion")) {
+                cuenta.setDescripcion(requestData.get("descripcion"));
+            }
+            if (requestData.containsKey("rubro")) {
+                cuenta.setRubro(requestData.get("rubro"));
+            }
+            cuenta.setNroCuenta(nroCuenta);
         }
 
         cuentasRepository.save(cuenta);

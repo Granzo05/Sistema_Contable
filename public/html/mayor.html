@@ -21,22 +21,32 @@
     <input type="number" name="año" id="año" placeholder="Año">
     <br>
     <button id="btnBuscar" type="button" onclick="buscarMayor()">Buscar mayor</button>
-    <!--MODAL-->
-    <div id="myModalMayor" class="modal" style="display: none;">
-      <div class="modal-content">
-        <u>
-          <h2 style="font-size: 40px;" class="modalErrorH2"></h2>
-        </u>
-        <p style="font-size: 20px;" class="modalErrorP"></p>
-        <button id="closeModalButton" onclick="cerrarModal()">Entendido</button>
-      </div>
-    </div>
-    <!--MODAL-->
   </div>
 
   <table id="resultadoMayor">
     <tr></tr>
   </table>
+
+  <!-- MODAL BUENO -->
+  <div id="myModalayorExito" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="success-icon">✔</div>
+      <h2 style="font-size: 40px;" class="modalTitulo"></h2>
+      <p style="font-size: 20px;" class="modalMensaje"></p>
+      <button onclick="cerrarModalExito()">Entendido</button>
+    </div>
+  </div>
+
+
+  <!-- MODAL DE ERROR -->
+  <div id="myModalMayorError" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="error-icon">✖</div>
+      <h2 style="font-size: 40px; color: #FF0000;" class="modalTitulo"></h2>
+      <p style="font-size: 20px; color: #FF0000;" class="modalMensaje"></p>
+      <button onclick="cerrarModalError()">Entendido</button>
+    </div>
+  </div>
 
   <script src="/public/js/scriptMayor.js"></script>
 

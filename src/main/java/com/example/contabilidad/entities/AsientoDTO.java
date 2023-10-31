@@ -6,6 +6,15 @@ public class AsientoDTO {
     private String fechaRegistro;
     private List<DetalleAsiento> detallesDebe;
     private List<DetalleAsiento> detallesHaber;
+    private String descripcion;
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
 
     public String getFechaRegistro() {
         return fechaRegistro;

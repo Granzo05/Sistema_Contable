@@ -1,36 +1,47 @@
 function buscarAsiento() {
-  const nroAsientos = document.getElementById("nroAsientosBuscar").value;
-  const fecha = document.getElementById("fechaAsientoBuscar").value;
+  const nroAsientos = document.getElementById("numeroAsientoBuscar").value;
+  const fechaInput = document.getElementById("fechaAsientoBuscar").value;
   const nroCuenta = document.getElementById("numeroCuentaBuscar").value;
 
+  let fecha = new Date(fechaInput);
+  let dia = fecha.getDate() + 1;
+  let mes = fecha.getMonth() + 1;
+  let anio = fecha.getFullYear();
+
+  let fechaFormateada = `${dia}/${mes}/${anio}`;
+  let fechaFinalControlada = fechaFormateada.split("/");
+
+  /*
   if (!nroCuenta) {
     var mensaje = "El numero de cuenta es necesario para la carga";
     var titulo = "Campo vacío";
-    abrirModal(mensaje, titulo);
-  } else if (!fecha) {
+    abrirModalError(mensaje, titulo);
+  } else if (fechaFinalControlada[0] === "NaN" || fechaFinalControlada[1] === "NaN" || fechaFinalControlada[2] === "NaN") {
     var mensaje = "La fecha del asiento es necesaria para la busqueda";
     var titulo = "Campo vacío";
-    abrirModal(mensaje, titulo);
-  } else if (!nroAsientos) {
+    abrirModalError(mensaje, titulo);
+  } else 
+  */
+  if (!nroAsientos) {
     var mensaje = "El numero de asiento es necesario para la carga";
     var titulo = "Campo vacío";
-    abrirModal(mensaje, titulo);
+    abrirModalError(mensaje, titulo);
   } else {
-    fetch("http://localhost:8080/asientos/" + nroAsientos + "/" + fecha + "/" + nroCuenta, {
+    fetch("http://localhost:8080/asientos/" + nroAsientos, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
+    }).then((response) => {
+      if (!response.ok) {
+        var mensaje = "No se ha encontrado ningun asiento con esos datos";
+        var titulo = "Asiento no existente";
+        abrirModalError(mensaje, titulo);
+      }
+      return response.json();
     })
-      .then((response) => {
-        if (!response.ok) {
-          var mensaje = "No se ha encontrado ningun asiento con esos datos";
-          var titulo = "Asiento no existente";
-          abrirModal(mensaje, titulo);
-        }
-        return response.json();
-      })
       .then((data) => {
+        console.log(data);
         let divResultado = document.getElementById("resultadoBuscar");
 
         let divDebe = document.createElement("div");
@@ -102,7 +113,7 @@ function cargarAsiento() {
     if (parseFloat(valor) < 0) {
       var mensaje = "El valor de la cuenta " + descripcion + " no puede ser negativo";
       var titulo = "Valor erroneo";
-      abrirModal(mensaje, titulo);
+      abrirModalError(mensaje, titulo);
       break;
     }
     sumaValorDebe = parseFloat(valor);
@@ -118,37 +129,39 @@ function cargarAsiento() {
     if (parseFloat(valor) < 0) {
       var mensaje = "El valor de la cuenta " + descripcion + " no puede ser negativo";
       var titulo = "Valor erroneo";
-      abrirModal(mensaje, titulo);
+      abrirModalError(mensaje, titulo);
       break;
     }
     sumaValorHaber = parseFloat(valor);
     asientosData.detallesHaber.push({ descripcion, valor });
   }
 
-  if (!fechaFormateada) {
+  let fechaFinalControlada = fechaFormateada.split("/");
+
+  if (fechaFinalControlada[0] === "NaN" || fechaFinalControlada[1] === "NaN" || fechaFinalControlada[2] === "NaN") {
     var mensaje = "La fecha del asiento es necesaria para la busqueda";
     var titulo = "Campo vacío";
-    abrirModal(mensaje, titulo);
+    abrirModalError(mensaje, titulo);
   } else if (!valorHaberInputs) {
     var mensaje = "La cuenta del haber debe tener valor";
     var titulo = "Campo vacío";
-    abrirModal(mensaje, titulo);
+    abrirModalError(mensaje, titulo);
   } else if (!cuentaHaberInputs) {
     var mensaje = "Debe haber una cuenta hacia el haber";
     var titulo = "Campo vacío";
-    abrirModal(mensaje, titulo);
+    abrirModalError(mensaje, titulo);
   } else if (!cuentaDebeInputs) {
     var mensaje = "Debe haber una cuenta hacia el haber";
     var titulo = "Campo vacío";
-    abrirModal(mensaje, titulo);
+    abrirModalError(mensaje, titulo);
   } else if (!valorDebeInputs) {
     var mensaje = "La cuenta del debe debe tener valor";
     var titulo = "Campo vacío";
-    abrirModal(mensaje, titulo);
+    abrirModalError(mensaje, titulo);
   } else if (sumaValorDebe != sumaValorHaber) {
     var mensaje = "Ambas cuentas deben cancelarse, los valores ingresados son incorrectos o falta una cuenta";
     var titulo = "Partida doble erronea";
-    abrirModal(mensaje, titulo);
+    abrirModalError(mensaje, titulo);
   } else {
     fetch("http://localhost:8080/asientos", {
       method: "POST",
@@ -159,17 +172,15 @@ function cargarAsiento() {
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error(
-            `Error al obtener datos (${response.status}): ${response.statusText}`
-          );
+          var mensaje = "Las cuentas ingresadas no son correctas";
+          var titulo = "Error al cargar asiento";
+          abrirModalError(mensaje, titulo);
+        } else {
+          limpiarCampos();
+          var mensaje = "Carga con exito";
+          var titulo = "Asiento cargado satisfactoriamente";
+          abrirModalExito(mensaje, titulo);
         }
-        limpiarCampos();
-        return response.json();
-      })
-      .then((data) => {
-        var mensaje = "Carga con exito";
-        var titulo = "Asiento cargado con nº asiento: " + data.nroAsiento;
-        abrirModal(mensaje, titulo);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -192,6 +203,7 @@ function botonAñadir() {
 
 
 function botonConsultar() {
+  buscarCuentasPorRubro();
   if (consultarAsientos.style.display === "none") {
     consultarAsientos.style.display = "block";
     añadirAsientos.style.display = "none";
@@ -288,11 +300,11 @@ function reiniciarAsiento() {
   location.reload();
 }
 
-function abrirModal(mensaje, titulo) {
-  let modal = document.getElementById("myModalAsientos");
+function abrirModalExito(mensaje, titulo) {
+  let modal = document.getElementById("myModalAsientosExito");
 
-  let tituloModal = modal.querySelector(".modalErrorH2");
-  let mensajeModal = modal.querySelector(".modalErrorP");
+  let tituloModal = modal.querySelector(".modalTitulo");
+  let mensajeModal = modal.querySelector(".modalMensaje");
 
   tituloModal.innerHTML = titulo;
   mensajeModal.innerHTML = mensaje;
@@ -301,9 +313,114 @@ function abrirModal(mensaje, titulo) {
 }
 
 
-function cerrarModal() {
-  let modal = document.getElementById("myModalCuentas");
+function cerrarModalExito() {
+  let modal = document.getElementById("myModalAsientosExito");
   modal.style = "display: none";
-
 }
 
+function abrirModalError(mensaje, titulo) {
+  let modal = document.getElementById("myModalAsientosError");
+
+  let tituloModal = modal.querySelector(".modalTitulo");
+  let mensajeModal = modal.querySelector(".modalMensaje");
+
+  tituloModal.innerHTML = titulo;
+  mensajeModal.innerHTML = mensaje;
+
+  modal.style.display = "block";
+}
+
+
+function cerrarModalError() {
+  let modal = document.getElementById("myModalAsientosError");
+  modal.style = "display: none";
+}
+
+function buscarCuentasPorRubro() {
+  const rubroSelect = document.getElementById("rubroAsientos");
+  let rubro = rubroSelect.value;
+  const tabla = document.getElementById("tablaDeCuentasAsientos");
+
+  // Borra el contenido existente de la tabla
+  while (tabla.firstChild) {
+    tabla.removeChild(tabla.firstChild);
+  }
+
+  fetch("http://localhost:8080/cuenta/" + rubro, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(
+          `Error al obtener datos (${response.status}): ${response.statusText}`
+        );
+      }
+      return response.json();
+    })
+    .then((data) => {
+      data.forEach((cuenta) => {
+        let tr = document.createElement("tr");
+        let numeroCuenta = document.createElement("td");
+        numeroCuenta.textContent = cuenta.nroCuenta;
+
+        let descripcion = document.createElement("td");
+        descripcion.textContent = cuenta.descripcion;
+
+        tr.appendChild(numeroCuenta);
+        tr.appendChild(descripcion);
+
+        tabla.appendChild(tr);
+      });
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
+
+function buscarCuentasPorNroCuenta() {
+  const nroCuenta = document.getElementById("numeroCuentaBuscar").value;
+  const tabla = document.getElementById("tablaDeCuentasAsientos");
+
+  if (nroCuenta != "") {
+    while (tabla.firstChild) {
+      tabla.removeChild(tabla.firstChild);
+    }
+
+    fetch("http://localhost:8080/cuenta/nro_cuenta/" + nroCuenta, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(
+            `Error al obtener datos (${response.status}): ${response.statusText}`
+          );
+        }
+        return response.json();
+      })
+      .then((data) => {
+        data.forEach((cuenta) => {
+          let tr = document.createElement("tr");
+          let numeroCuenta = document.createElement("td");
+          numeroCuenta.textContent = cuenta.nroCuenta;
+
+          let descripcion = document.createElement("td");
+          descripcion.textContent = cuenta.descripcion;
+
+          tr.appendChild(numeroCuenta);
+          tr.appendChild(descripcion);
+
+          tabla.appendChild(tr);
+        });
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
+}

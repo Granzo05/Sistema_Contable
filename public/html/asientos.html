@@ -74,26 +74,45 @@
     <h2>- Buscar Asiento -</h2>
     <form id="AsientoFormBuscar">
       <label for="numeroAsientoBuscar">Número de Asiento:</label>
-      <input type="number" id="numeroAsientoBuscar" required pattern="[0-9]{4}"
-        title="El número de Asiento debe ser un número de 4 dígitos." />
+      <input type="number" id="numeroAsientoBuscar" required pattern="[0-9]" />
       <label for="numeroCuentaBuscar">Número de cuenta:</label>
-      <input type="number" id="numeroCuentaBuscar" required pattern="[0-9]{4}"
-        title="El número de cuenta debe ser un número de 4 dígitos." />
+      <input type="text" id="numeroCuentaBuscar" required pattern="[0-9]" oninput="buscarCuentasPorNroCuenta()" />
       <input type="date" id="fechaAsientoBuscar" /><br><br>
       <button id="btnConsultarAsiento" type="button" onclick="buscarAsiento()">Buscar Asiento</button>
     </form>
     <div class="result" id="resultadoBuscar"></div>
+    <label for="rubroAsientos">Rubro:</label>
+    <select id="rubroAsientos" onchange="buscarCuentasPorRubro()">
+      <option value="ACTIVO">Activo</option>
+      <option value="PASIVO">Pasivo</option>
+      <option value="PN">PN</option>
+      <option value="INGRESO">Ingreso</option>
+      <option value="EGRESO">Egreso</option>
+    </select>
+    <table id="tablaDeCuentasAsientos" style="border: 1px;"></table>
   </div>
 
-  <!--MODAL-->
-  <div id="myModalAsientos" class="modal" style="display: none;">
+  <!-- MODAL BUENO -->
+  <div id="myModalAsientosExito" class="modal" style="display: none;">
     <div class="modal-content">
-      <u><h2 style="font-size: 40px;" class="modalErrorH2"></h2></u>
-      <p style="font-size: 20px;" class="modalErrorP"></p>
-      <button id="closeModalButton" onclick="cerrarModal()">Entendido</button>
+      <div class="success-icon">✔</div>
+      <h2 style="font-size: 40px;" class="modalTitulo"></h2>
+      <p style="font-size: 20px;" class="modalMensaje"></p>
+      <button onclick="cerrarModalExito()">Entendido</button>
     </div>
   </div>
-  <!--MODAL-->
+
+
+  <!-- MODAL DE ERROR -->
+  <div id="myModalAsientosError" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="error-icon">✖</div>
+      <h2 style="font-size: 40px; color: #FF0000;" class="modalTitulo"></h2>
+      <p style="font-size: 20px; color: #FF0000;" class="modalMensaje"></p>
+      <button onclick="cerrarModalError()">Entendido</button>
+    </div>
+  </div>
+
   <script src="/public/js/scriptAsientos.js"></script>
 </body>
 
