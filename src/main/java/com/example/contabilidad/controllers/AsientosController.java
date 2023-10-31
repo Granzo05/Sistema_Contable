@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @RestController
 public class AsientosController {
@@ -51,11 +53,11 @@ public class AsientosController {
         List<DetalleAsiento> detalleAsiento = new ArrayList<>();
 
         // Se encarga de buscar todos los detalles que se enviaron desde el cliente para acomodarlos y agregarle el objeto cuenta asociado a la descripcion que trae del cliente.
-        for (DetalleAsiento detalle: asientoDTO.getDetallesDebe()) {
+        for (DetalleAsiento detalle : asientoDTO.getDetallesDebe()) {
             detalleAsiento.add(cargarDetallesAsiento("DEBE", detalle, asiento));
         }
 
-        for (DetalleAsiento detalle: asientoDTO.getDetallesHaber()) {
+        for (DetalleAsiento detalle : asientoDTO.getDetallesHaber()) {
             detalleAsiento.add(cargarDetallesAsiento("HABER", detalle, asiento));
         }
 
@@ -73,6 +75,21 @@ public class AsientosController {
         return new ResponseEntity<>("El asiento ha sido añadido correctamente", HttpStatus.CREATED);
     }
 
+    @CrossOrigin
+    @PostMapping("/asientos/{nroAsiento}/{fecha}/{nroCuenta}")
+    public List<DetalleAsiento> buscarAsiento(@PathVariable("nroAsiento") Long nroAsiento, @PathVariable("fecha") String fecha, @PathVariable("nroCuenta") Long nroCuenta) {
+        // Esto es para buscar por fecha y nro de asiento, pero como uso el nro_asiento como id, no necesitaria la fecha pero la dejo por las dudas
+        /*
+        String[] fechaFinal = fecha.split("/");
+        int dia = Integer.valueOf(fechaFinal[0]);
+        int mes = Integer.valueOf(fechaFinal[1]);
+        int año = Integer.valueOf(fechaFinal[2]);
+
+        LocalDate fechaFormateada = LocalDate.of(año, mes, dia);
+        */
+
+        return detalleAsientoRepository.findByAsientoId(nroAsiento);
+    }
     private void cargaDelMayor(List<DetalleAsiento> detallesAsiento) {
         for (DetalleAsiento detalle : detallesAsiento) {
             // Buscamos el mayor en la db
@@ -120,27 +137,5 @@ public class AsientosController {
         detalleFinal.setAsiento(asiento);
 
         return detalleFinal;
-    }
-
-    @CrossOrigin
-    @PostMapping("/asientos/{nroAsiento}")
-    public List<Asientos> buscarAsientosPorNroAsiento(@PathVariable Long nroAsiento) {
-        return asientosRepository.findByNroAsiento(nroAsiento);
-    }
-    public Date convertirFechaStringADate(String fechaStr) {
-        try {
-            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
-            Date fecha = formatoFecha.parse(fechaStr);
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(fecha);
-
-            Date fechaConvertida = calendar.getTime();
-
-            return fechaConvertida;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 }

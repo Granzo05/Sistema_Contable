@@ -109,39 +109,78 @@ function AñadirCuenta() {
   var numeroCuenta = document.getElementById("numeroCuentaAñadir").value;
   var descripcion = document.getElementById("descripcionAñadir").value;
 
-  let cuentaData = {
-    rubro: rubro,
-    nroCuenta: numeroCuenta,
-    descripcion: descripcion,
-  };
+  if (!numeroCuenta) {
+    var mensaje = "El numero de cuenta es necesario para la carga";
+    var titulo = "Campo vacío";
+    abrirModal(mensaje, titulo);
+  } else if (!descripcion) {
+    var mensaje = "La descripcion de la cuenta es necesaria para la carga";
+    var titulo = "Campo vacío";
+    abrirModal(mensaje, titulo);
+  } else if (verificarRubroYNroCuenta(rubro, numeroCuenta)) {
+  } else {
+    let cuentaData = {
+      rubro: rubro,
+      nroCuenta: numeroCuenta,
+      descripcion: descripcion,
+    };
 
-  limpiarCampos();
-
-  fetch("http://localhost:8080/cuenta", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(cuentaData),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(
-          `Error al obtener datos (${response.status}): ${response.statusText}`
-        );
-      }
-      limpiarCampos();
-      var resultado = document.getElementById("resultadoAñadir");
-      resultado.innerHTML = `
-                <h2>Cuenta agregada con éxito:</h2>
-                <strong>Número de Cuenta:</strong> ${numeroCuenta}<br>
-                <strong>Rubro:</strong> ${rubro}<br>
-                <strong>Descripción:</strong> ${descripcion}
-            `;
+    fetch("http://localhost:8080/cuenta", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(cuentaData),
     })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+      .then((response) => {
+        if (!response.ok) {
+          var mensaje = "La descripcion o el numero de cuenta ya ha sido cargado";
+          var titulo = "Cuenta repetida";
+          abrirModal(mensaje, titulo);
+        }
+        limpiarCampos();
+        var mensaje = "La cuenta ha sido añadida correctamente";
+        var titulo = "Carga con exito";
+        abrirModal(mensaje, titulo);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+}
+
+function verificarRubroYNroCuenta(rubro, numeroCuenta) {
+  if (rubro === "ACTIVO" && numeroCuenta[0] != "1") {
+    var mensaje = "El numero de cuenta del activo debe empezar con 1 obligatoriamente";
+    var titulo = "Valor inicial erroneo";
+    abrirModal(mensaje, titulo);
+    return true;
+
+  } else if (rubro === "PASIVO" && numeroCuenta[0] != "2") {
+    var mensaje = "El numero de cuenta del pasivo debe empezar con 2 obligatoriamente";
+    var titulo = "Valor inicial erroneo";
+    abrirModal(mensaje, titulo);
+    return true;
+
+  } else if (rubro === "PN" && numeroCuenta[0] != "3") {
+    var mensaje = "El numero de cuenta del patrimonio neto debe empezar con 3 obligatoriamente";
+    var titulo = "Valor inicial erroneo";
+    abrirModal(mensaje, titulo);
+    return true;
+
+  } else if (rubro === "INGRESO" && numeroCuenta[0] != "4") {
+    var mensaje = "El numero de cuenta del ingreso debe empezar con 4 obligatoriamente";
+    var titulo = "Valor inicial erroneo";
+    abrirModal(mensaje, titulo);
+    return true;
+
+  } else if (rubro === "EGRESO" && numeroCuenta[0] != "5") {
+    var mensaje = "El numero de cuenta del egreso debe empezar con 5 obligatoriamente";
+    var titulo = "Valor inicial erroneo";
+    abrirModal(mensaje, titulo);
+    return true;
+  }
+  return false;
 }
 
 function actualizarCuenta() {
@@ -150,60 +189,74 @@ function actualizarCuenta() {
   var rubro = document.getElementById("rubroActualizar").value;
 
   if (!numeroCuenta) {
-    alert("Por favor, ingrese un número de cuenta válido.");
-    return;
-  }
-
-  let data = {
-    nroCuenta: numeroCuenta,
-    descripcion: descripcion,
-    rubro: rubro
-  };
-  fetch("http://localhost:8080/cuenta/" + numeroCuenta + "/update", {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(
-          `Error al actualizar la cuenta (${response.status}): ${response.statusText}`
-        );
-      }
-      limpiarCampos();
+    var mensaje = "El numero de cuenta es necesario para la carga";
+    var titulo = "Campo vacío";
+    abrirModal(mensaje, titulo);
+  } else if (!descripcion) {
+    var mensaje = "La descripcion de la cuenta es necesaria para la carga";
+    var titulo = "Campo vacío";
+    abrirModal(mensaje, titulo);
+  } else if (verificarRubroYNroCuenta(rubro, numeroCuenta)) {
+  } else {
+    let data = {
+      nroCuenta: numeroCuenta,
+      descripcion: descripcion,
+      rubro: rubro
+    };
+    fetch("http://localhost:8080/cuenta/" + numeroCuenta + "/update", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
     })
-    .catch((error) => {
-      console.error("Error:", error);
-      alert("Ocurrió un error al actualizar la cuenta. Por favor, inténtelo de nuevo más tarde.");
-    });
+      .then((response) => {
+        if (!response.ok) {
+          var mensaje = "Ha habido un error al intentar actualizar la cuenta";
+          var titulo = "Error";
+          abrirModal(mensaje, titulo);
+        }
+        limpiarCampos();
+        var mensaje = "Cuenta actualizada con éxito";
+        var titulo = "Actualizacion completada";
+        abrirModal(mensaje, titulo);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("Ocurrió un error al actualizar la cuenta. Por favor, inténtelo de nuevo más tarde.");
+      });
+  }
 }
 
 function eliminarCuenta() {
   var numeroCuenta = document.getElementById("numeroCuentaEliminar").value;
-  fetch("http://localhost:8080/cuenta/" + numeroCuenta + "/delete", {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(
-          `Error al obtener datos (${response.status}): ${response.statusText}`
-        );
-      }
-      limpiarCampos();
-      var resultado = document.getElementById("resultadoEliminar");
-      resultado.innerHTML = `
-                <h2>Cuenta eliminada con exito:</h2>
-                <strong>Número de Cuenta:</strong> ${numeroCuenta}<br>
-            `;
+
+  if (!numeroCuenta) {
+    var mensaje = "El numero de cuenta es necesaria para la eliminar la cuenta";
+    var titulo = "Campo vacío";
+    abrirModal(mensaje, titulo);
+  } else {
+    fetch("http://localhost:8080/cuenta/" + numeroCuenta + "/delete", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
     })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+      .then((response) => {
+        if (!response.ok) {
+          var mensaje = "Ha ocurrido un error";
+          var titulo = "Eliminacion fallida";
+          abrirModal(mensaje, titulo);
+        }
+        limpiarCampos();
+        var mensaje = "La cuenta ha sido eliminada correctamente";
+        var titulo = "Eliminacion con exito";
+        abrirModal(mensaje, titulo);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
 }
 
 function cargarTabla(dato) {
@@ -303,56 +356,21 @@ function limpiarCampos() {
 
 }
 
-var openModalButton = document.getElementById("btnAñadirCuenta");
-var modal = document.getElementById("myModal");
-var closeModal = document.getElementById("closeModalButton");
+function abrirModal(mensaje, titulo) {
+  let modal = document.getElementById("myModalCuentas");
 
-openModalButton.addEventListener("click", function() {
+  let tituloModal = modal.querySelector(".modalErrorH2");
+  let mensajeModal = modal.querySelector(".modalErrorP");
+
+  tituloModal.innerHTML = titulo;
+  mensajeModal.innerHTML = mensaje;
+
   modal.style.display = "block";
-});
+}
 
-closeModal.addEventListener("click", function() {
-  modal.style.display = "none"; // Oculta el modal
-});
 
-window.addEventListener("click", function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-});
+function cerrarModal() {
+  let modal = document.getElementById("myModalCuentas");
+  modal.style = "display: none";
 
-var openModalButtonE = document.getElementById("btnEliminarCuenta");
-var modalE = document.getElementById("myModalE");
-var closeModalE = document.getElementById("closeModalButtonE");
-
-openModalButtonE.addEventListener("click", function() {
-  modalE.style.display = "block";
-});
-
-closeModalE.addEventListener("click", function() {
-  modalE.style.display = "none"; // Oculta el modal
-});
-
-window.addEventListener("click", function(event) {
-  if (event.target == modalE) {
-    modalE.style.display = "none";
-  }
-});
-
-var openModalButtonM = document.getElementById("btnModificarCuenta");
-var modalM = document.getElementById("myModalM");
-var closeModalM = document.getElementById("closeModalButtonM");
-
-openModalButtonM.addEventListener("click", function() {
-  modalM.style.display = "block";
-});
-
-closeModalM.addEventListener("click", function() {
-  modalM.style.display = "none"; // Oculta el modal
-});
-
-window.addEventListener("click", function(event) {
-  if (event.target == modalM) {
-    modalM.style.display = "none";
-  }
-});
+}

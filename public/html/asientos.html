@@ -6,40 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sistema Contable</title>
   <link rel="stylesheet" href="/public/css/styleAsiento.css" />
+  <link rel="stylesheet" href="/public/css/styleModal.css" />
 
-  <style>
-    body .left {
-      display: flex;
-      align-items: center;
-      margin-right: auto;
-      color: white;
-      text-decoration: none;
-      position: fixed;
-      margin-top: 0px;
-    }
-
-    body .center {
-      align-items: center;
-      text-align: center;
-      margin-top: 0px;
-    }
-
-    .asiento-container {
-      display: flex;
-      flex-direction: row;
-    }
-
-    .debe-container,
-    .haber-container {
-      margin: 10px;
-      flex: 1;
-    }
-
-    .cuentaDebe,
-    .cuentaHaber {
-      align-items: flex-start;
-    }
-  </style>
 </head>
 
 <body>
@@ -51,7 +19,7 @@
   </div>
 
   <div id="añadirAsiento">
-    <img width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply" id="iconoCerrar"
+    <img width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply" class="iconoCerrar"
       onclick="botonCerrar()" />
     <h2>- Añadir Asiento -</h2>
     <br><br>
@@ -84,15 +52,6 @@
       <button id="btnAñadirAsiento" type="button" onclick="cargarAsiento()">
         Cargar asiento
       </button>
-      <!--MODAL-->
-      <div id="myModalA" class="modal">
-        <div class="modal-content">
-          <h2 style="font-size: 50px;">¡ERROR!</h2>
-          <p style="font-size: 30px;">Panqueques y polenta</p>
-          <button id="closeModalButtonA">OK</button>
-        </div>
-      </div>
-      <!--MODAL-->
       <br><br>
       <button type="button" onclick="agregarInputsAsientoDebe()">
         Agregar fila de debe
@@ -104,13 +63,13 @@
         Agregar fila para ambos
       </button>
       <button id="btnReiniciar" type="button" onclick="reiniciarAsiento()">Reiniciar todo</button>
-      
+
     </form>
     <div class="result" id="resultadoAñadir"></div>
   </div>
 
   <div id="consultarAsiento">
-    <img width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply" id="iconoCerrar"
+    <img width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply" class="iconoCerrar"
       onclick="botonCerrar()" />
     <h2>- Buscar Asiento -</h2>
     <form id="AsientoFormBuscar">
@@ -122,19 +81,19 @@
         title="El número de cuenta debe ser un número de 4 dígitos." />
       <input type="date" id="fechaAsientoBuscar" /><br><br>
       <button id="btnConsultarAsiento" type="button" onclick="buscarAsiento()">Buscar Asiento</button>
-      <!--MODAL-->
-      <div id="myModalC" class="modal">
-        <div class="modal-content">
-          <h2 style="font-size: 50px;">¡ERROR!</h2>
-          <p style="font-size: 30px;">Votaste a Massa</p>
-          <button id="closeModalButtonC">OK</button>
-        </div>
-      </div>
-      <!--MODAL-->
     </form>
     <div class="result" id="resultadoBuscar"></div>
   </div>
 
+  <!--MODAL-->
+  <div id="myModalAsientos" class="modal" style="display: none;">
+    <div class="modal-content">
+      <u><h2 style="font-size: 40px;" class="modalErrorH2"></h2></u>
+      <p style="font-size: 20px;" class="modalErrorP"></p>
+      <button id="closeModalButton" onclick="cerrarModal()">Entendido</button>
+    </div>
+  </div>
+  <!--MODAL-->
   <script src="/public/js/scriptAsientos.js"></script>
 </body>
 

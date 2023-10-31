@@ -22,7 +22,6 @@ public class Asientos {
     @JsonIgnore
     private List<DetalleAsiento> detallesAsiento = new ArrayList<>();
 
-
     public Asientos() {
     }
 

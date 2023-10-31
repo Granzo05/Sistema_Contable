@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sistema Contable</title>
   <link rel="stylesheet" href="/public/css/styleMayor.css" />
+  <link rel="stylesheet" href="/public/css/styleModal.css" />
 </head>
 
 <body>
@@ -21,15 +22,16 @@
     <br>
     <button id="btnBuscar" type="button" onclick="buscarMayor()">Buscar mayor</button>
     <!--MODAL-->
-    <div id="myModal" class="modal">
+    <div id="myModalMayor" class="modal" style="display: none;">
       <div class="modal-content">
-        <h2 style="font-size: 50px;">¡ERROR!</h2>
-        <p style="font-size: 30px;">Quemaste a un judío</p>
-        <button id="closeModalButton">OK</button>
+        <u>
+          <h2 style="font-size: 40px;" class="modalErrorH2"></h2>
+        </u>
+        <p style="font-size: 20px;" class="modalErrorP"></p>
+        <button id="closeModalButton" onclick="cerrarModal()">Entendido</button>
       </div>
     </div>
     <!--MODAL-->
-    <div class="result" id="resultadoBuscar"></div>
   </div>
 
   <table id="resultadoMayor">
@@ -37,6 +39,7 @@
   </table>
 
   <script src="/public/js/scriptMayor.js"></script>
+
 </body>
 
 </html>

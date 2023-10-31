@@ -1,11 +1,11 @@
-body{
+body {
     text-align: center;
     color: white;
-    background-color:rgb(83, 83, 83);
+    background-color: rgb(83, 83, 83);
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-#acciones{
+#acciones {
     margin: 20px auto;
 }
 
@@ -18,7 +18,41 @@ label {
     margin-bottom: 5px;
 }
 
-input, select, textarea {
+body .left {
+    display: flex;
+    align-items: center;
+    margin-right: auto;
+    color: white;
+    text-decoration: none;
+    position: fixed;
+    margin-top: 0px;
+}
+
+body .center {
+    align-items: center;
+    text-align: center;
+    margin-top: 0px;
+}
+
+.asiento-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.debe-container,
+.haber-container {
+    margin: 10px;
+    flex: 1;
+}
+
+.cuentaDebe,
+.cuentaHaber {
+    align-items: flex-start;
+}
+
+input,
+select,
+textarea {
     width: 50%;
     padding: 5px;
     margin-bottom: 10px;
@@ -37,30 +71,30 @@ button {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-button:hover{
+button:hover {
     background-color: black;
     color: white;
     width: 210px;
     transition: 0.5s;
 }
 
-#btnReiniciar{
+#btnReiniciar {
     display: flex;
     width: 200px;
 }
 
-#btnReiniciar:hover{
+#btnReiniciar:hover {
     width: 139px;
 }
 
-#añadirAsiento{
+#añadirAsiento {
     display: none;
     border: solid white;
     border-radius: 20px;
     padding: 20px 0px;
 }
 
-#añadirAsiento img{
+#añadirAsiento img {
     display: flex;
     color: black;
     cursor: pointer;
@@ -71,21 +105,21 @@ button:hover{
     height: 40px;
 }
 
-#añadirAsiento img:hover{
+#añadirAsiento img:hover {
     background-color: rgb(255, 255, 255);
     border-top-right-radius: 20px;
 }
 
 
 
-#consultarAsiento{
+#consultarAsiento {
     display: none;
     border: solid white;
     border-radius: 20px;
     padding: 20px 0px;
 }
 
-#consultarAsiento img{
+#consultarAsiento img {
     display: flex;
     color: black;
     cursor: pointer;
@@ -96,79 +130,40 @@ button:hover{
     height: 40px;
 }
 
-#consultarAsiento img:hover{
+#consultarAsiento img:hover {
     background-color: rgb(255, 255, 255);
     border-top-right-radius: 20px;
 }
 
-.asiento-container{
+.asiento-container {
     align-items: center;
     display: flex;
     width: 100%;
     border: none !important;
 }
 
-.cuenta-container{
+.cuenta-container {
     width: 35%;
 }
 
-.debe-container{
+.debe-container {
     padding-bottom: 112px;
     border: none;
 }
 
-.haber-container{
+.haber-container {
     padding-bottom: 112px;
     border: none;
 }
 
-.cuenta-container #cuenta{
+.cuenta-container #cuenta {
     width: 70%;
 }
 
-.debe-container input{
+.debe-container input {
     width: 70%;
 }
 
-.haber-container input{
+.haber-container input {
     width: 70%;
-}
-
-.modal {
-    display: none; /* Oculta el modal de forma predeterminada */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro semitransparente */
-    z-index: 1;
-  }
-  
-.modal-content {
-    background-color: black;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    text-align: center;
-    width: 20%;
-    height: 30%;
-}
-  
-#closeModalButton {
-    background-color: white;
-    border: none;
-    padding: 10px 20px;
-    margin-top: 35px;
-    cursor: pointer;
-    border-radius: 5px;
-}
-  
-#closeModalButton:hover {
-    background-color: #999;
-    color: black;
 }

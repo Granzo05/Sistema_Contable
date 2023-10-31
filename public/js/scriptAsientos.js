@@ -1,53 +1,80 @@
-function buscarAsientosPorRubro() {
-  const rubro = document.getElementById("rubroBuscar").value;
-
-  fetch("http://localhost:8080/asientos/rubro/" + rubro, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(
-          `Error al obtener datos (${response.status}): ${response.statusText}`
-        );
-      }
-    })
-    .then((data) => {
-      // Hacer una table o algo con los datos
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-}
-
-function buscarAsientosPorNroAsientos() {
+function buscarAsiento() {
   const nroAsientos = document.getElementById("nroAsientosBuscar").value;
+  const fecha = document.getElementById("fechaAsientoBuscar").value;
+  const nroCuenta = document.getElementById("numeroCuentaBuscar").value;
 
-  fetch("http://localhost:8080/asientos/nro/" + nroAsientos, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(
-          `Error al obtener datos (${response.status}): ${response.statusText}`
-        );
-      }
+  if (!nroCuenta) {
+    var mensaje = "El numero de cuenta es necesario para la carga";
+    var titulo = "Campo vacío";
+    abrirModal(mensaje, titulo);
+  } else if (!fecha) {
+    var mensaje = "La fecha del asiento es necesaria para la busqueda";
+    var titulo = "Campo vacío";
+    abrirModal(mensaje, titulo);
+  } else if (!nroAsientos) {
+    var mensaje = "El numero de asiento es necesario para la carga";
+    var titulo = "Campo vacío";
+    abrirModal(mensaje, titulo);
+  } else {
+    fetch("http://localhost:8080/asientos/" + nroAsientos + "/" + fecha + "/" + nroCuenta, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     })
-    .then((data) => {
-      // Hacer una table o algo con los datos
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+      .then((response) => {
+        if (!response.ok) {
+          var mensaje = "No se ha encontrado ningun asiento con esos datos";
+          var titulo = "Asiento no existente";
+          abrirModal(mensaje, titulo);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        let divResultado = document.getElementById("resultadoBuscar");
+
+        let divDebe = document.createElement("div");
+        divDebe.className = "debeResultado";
+
+        data.detallesDebe.forEach(detalle => {
+          let spanCuenta = document.createElement("span");
+          spanCuenta.textContent = detalle.cuenta.descripcion;
+
+          let spanValor = document.createElement("span");
+          spanValor.textContent = detalle.valor;
+
+          divDebe.appendChild(spanCuenta);
+          divDebe.appendChild(spanValor);
+          divDebe.appendChild(document.createAttribute("br"));
+        });
+
+        let divHaber = document.createElement("div");
+        divHaber.className = "haberResultado";
+
+        data.detallesHaber.forEach(detalle => {
+          let spanCuenta = document.createElement("span");
+          spanCuenta.textContent = detalle.cuenta.descripcion;
+
+          let spanValor = document.createElement("span");
+          spanValor.textContent = detalle.valor;
+
+          divHaber.appendChild(spanCuenta);
+          divHaber.appendChild(spanValor);
+          divHaber.appendChild(document.createAttribute("br"));
+        });
+
+        divResultado.appendChild(divDebe);
+        divResultado.appendChild(divHaber);
+
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
 }
 
 function cargarAsiento() {
-  var fechaInput = document.getElementById("fechaAsientoAñadir").value;
+  const fechaInput = document.getElementById("fechaAsientoAñadir").value;
 
   let fecha = new Date(fechaInput);
 
@@ -63,13 +90,22 @@ function cargarAsiento() {
     detallesHaber: [],
   };
 
+  var sumaValorDebe = parseFloat(0);
+  var sumaValorHaber = parseFloat(0);
+
   let cuentaDebeInputs = document.querySelectorAll(".cuentaDebe");
   let valorDebeInputs = document.querySelectorAll(".valorDebe");
 
   for (let i = 0; i < cuentaDebeInputs.length; i++) {
     let descripcion = cuentaDebeInputs[i].value;
     let valor = valorDebeInputs[i].value;
-
+    if (parseFloat(valor) < 0) {
+      var mensaje = "El valor de la cuenta " + descripcion + " no puede ser negativo";
+      var titulo = "Valor erroneo";
+      abrirModal(mensaje, titulo);
+      break;
+    }
+    sumaValorDebe = parseFloat(valor);
     asientosData.detallesDebe.push({ descripcion, valor });
   }
 
@@ -79,29 +115,66 @@ function cargarAsiento() {
   for (let i = 0; i < cuentaHaberInputs.length; i++) {
     let descripcion = cuentaHaberInputs[i].value;
     let valor = valorHaberInputs[i].value;
-
+    if (parseFloat(valor) < 0) {
+      var mensaje = "El valor de la cuenta " + descripcion + " no puede ser negativo";
+      var titulo = "Valor erroneo";
+      abrirModal(mensaje, titulo);
+      break;
+    }
+    sumaValorHaber = parseFloat(valor);
     asientosData.detallesHaber.push({ descripcion, valor });
   }
 
-  fetch("http://localhost:8080/asientos", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(asientosData),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(
-          `Error al obtener datos (${response.status}): ${response.statusText}`
-        );
-      }
-      limpiarCampos();
-      alert("Cargo joya");
+  if (!fechaFormateada) {
+    var mensaje = "La fecha del asiento es necesaria para la busqueda";
+    var titulo = "Campo vacío";
+    abrirModal(mensaje, titulo);
+  } else if (!valorHaberInputs) {
+    var mensaje = "La cuenta del haber debe tener valor";
+    var titulo = "Campo vacío";
+    abrirModal(mensaje, titulo);
+  } else if (!cuentaHaberInputs) {
+    var mensaje = "Debe haber una cuenta hacia el haber";
+    var titulo = "Campo vacío";
+    abrirModal(mensaje, titulo);
+  } else if (!cuentaDebeInputs) {
+    var mensaje = "Debe haber una cuenta hacia el haber";
+    var titulo = "Campo vacío";
+    abrirModal(mensaje, titulo);
+  } else if (!valorDebeInputs) {
+    var mensaje = "La cuenta del debe debe tener valor";
+    var titulo = "Campo vacío";
+    abrirModal(mensaje, titulo);
+  } else if (sumaValorDebe != sumaValorHaber) {
+    var mensaje = "Ambas cuentas deben cancelarse, los valores ingresados son incorrectos o falta una cuenta";
+    var titulo = "Partida doble erronea";
+    abrirModal(mensaje, titulo);
+  } else {
+    fetch("http://localhost:8080/asientos", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(asientosData),
     })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(
+            `Error al obtener datos (${response.status}): ${response.statusText}`
+          );
+        }
+        limpiarCampos();
+        return response.json();
+      })
+      .then((data) => {
+        var mensaje = "Carga con exito";
+        var titulo = "Asiento cargado con nº asiento: " + data.nroAsiento;
+        abrirModal(mensaje, titulo);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
 }
 
 let añadirAsientos = document.getElementById("añadirAsiento");
@@ -210,44 +283,27 @@ function limpiarCampos() {
   });
 }
 
-function reiniciarAsiento(){
-    document.getElementById('añadirAsiento').style.display = 'block';
-    location.reload();
+function reiniciarAsiento() {
+  document.getElementById('añadirAsiento').style.display = 'block';
+  location.reload();
 }
 
-var openModalButtonA = document.getElementById("btnAñadirAsiento");
-var modalA = document.getElementById("myModalA");
-var closeModalA = document.getElementById("closeModalButtonA");
+function abrirModal(mensaje, titulo) {
+  let modal = document.getElementById("myModalAsientos");
 
-openModalButtonA.addEventListener("click", function() {
-  modalA.style.display = "block";
-});
+  let tituloModal = modal.querySelector(".modalErrorH2");
+  let mensajeModal = modal.querySelector(".modalErrorP");
 
-closeModalA.addEventListener("click", function() {
-  modalA.style.display = "none"; // Oculta el modal
-});
+  tituloModal.innerHTML = titulo;
+  mensajeModal.innerHTML = mensaje;
 
-window.addEventListener("click", function(event) {
-  if (event.target == modalA) {
-    modalA.style.display = "none";
-  }
-});
+  modal.style.display = "block";
+}
 
-var openModalButtonC = document.getElementById("btnConsultarAsiento");
-var modalC = document.getElementById("myModalC");
-var closeModalC = document.getElementById("closeModalButtonC");
 
-openModalButtonC.addEventListener("click", function() {
-  modalC.style.display = "block";
-});
+function cerrarModal() {
+  let modal = document.getElementById("myModalCuentas");
+  modal.style = "display: none";
 
-closeModalC.addEventListener("click", function() {
-  modalC.style.display = "none"; // Oculta el modal
-});
-
-window.addEventListener("click", function(event) {
-  if (event.target == modalC) {
-    modalC.style.display = "none";
-  }
-});
+}
 
