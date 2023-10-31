@@ -16,10 +16,16 @@ public interface CuentasRepository extends JpaRepository<Cuentas, Long> {
     @Query("SELECT c FROM Cuentas c WHERE c.descripcion = :descripcion AND c.nroCuenta = :nroCuenta")
     Optional<Cuentas> findByDescripcionAndNroCuenta(String descripcion, String nroCuenta);
 
-    @Query("SELECT c FROM Cuentas c WHERE c.descripcion = :descripcion")
+    @Query("SELECT c FROM Cuentas c WHERE c.descripcion LIKE :descripcion")
     Cuentas findByDescripcion(String descripcion);
 
-    @Query("SELECT c FROM Cuentas c WHERE c.nroCuenta = :nroCuenta")
+    @Query("SELECT c FROM Cuentas c WHERE c.descripcion LIKE %:descripcion%")
+    List<Cuentas> findByDescripcionEquals(String descripcion);
+
+    @Query("SELECT c FROM Cuentas c WHERE c.nroCuenta LIKE %:nroCuenta%")
+    List<Cuentas> findByNroCuentaEquals(@Param("nroCuenta") String numeroCuenta);
+
+    @Query("SELECT c FROM Cuentas c WHERE c.nroCuenta LIKE %:nroCuenta%")
     Cuentas findByNroCuenta(@Param("nroCuenta") String numeroCuenta);
 
     @Query("SELECT c FROM Cuentas c WHERE c.rubro = :rubro")

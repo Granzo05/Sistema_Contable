@@ -30,13 +30,16 @@ public class CuentasController {
         }
     }
 
-    @GetMapping("/cuenta/nro/{id}")
-    public ResponseEntity<Cuentas> buscarPlanDeCuentasPorNroCuenta(@PathVariable String nroCuenta) {
-        Cuentas planDeCuentasOptional = cuentasRepository.findByNroCuenta(nroCuenta);
-        if (planDeCuentasOptional == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(planDeCuentasOptional);
+    @GetMapping("/cuenta/nro_cuenta/{nroCuenta}")
+    public List<Cuentas> buscarPlanDeCuentasPorNroCuenta(@PathVariable String nroCuenta) {
+        List<Cuentas> cuentasFiltradas = cuentasRepository.findByNroCuentaEquals(nroCuenta);
+        return cuentasFiltradas;
+    }
+
+    @GetMapping("/cuenta/descripcion/{descripcion}")
+    public List<Cuentas> buscarPlanDeCuentasPorDescripcion(@PathVariable String descripcion) {
+        List<Cuentas> cuentasFiltradas = cuentasRepository.findByDescripcionEquals(descripcion);
+        return cuentasFiltradas;
     }
 
     @CrossOrigin

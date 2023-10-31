@@ -1,7 +1,9 @@
+let tabla = document.getElementById("tablaCuentas");
+
+// Esta funcion carga la tabla al abrir la pagina o al cambiar de rubro
 function buscarCuentasPorRubro() {
   const rubroSelect = document.getElementById("rubroBuscar");
   let rubro = rubroSelect.value;
-  let tabla = document.getElementById("tablaCuentas");
 
   // Borra el contenido existente de la tabla
   while (tabla.firstChild) {
@@ -24,17 +26,7 @@ function buscarCuentasPorRubro() {
     })
     .then((data) => {
       data.forEach((cuenta) => {
-        let tr = document.createElement("tr");
-        let numeroCuenta = document.createElement("td");
-        numeroCuenta.textContent = cuenta.nroCuenta;
-
-        let descripcion = document.createElement("td");
-        descripcion.textContent = cuenta.descripcion;
-
-        tr.appendChild(numeroCuenta);
-        tr.appendChild(descripcion);
-
-        tabla.appendChild(tr);
+        cargarTabla(cuenta);
       });
     })
     .catch((error) => {
@@ -43,29 +35,71 @@ function buscarCuentasPorRubro() {
 }
 
 
-
 function buscarCuentasPorNroCuenta() {
-  const nroCuenta = document.getElementById("nroCuentaBuscar").value;
+  const nroCuenta = document.getElementById("numeroCuentaBuscar").value;
 
-  fetch("http://localhost:8080/cuenta/nro/" + nroCuenta, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(
-          `Error al obtener datos (${response.status}): ${response.statusText}`
-        );
-      }
+  if (nroCuenta != "") {
+    while (tabla.firstChild) {
+      tabla.removeChild(tabla.firstChild);
+    }
+
+    fetch("http://localhost:8080/cuenta/nro_cuenta/" + nroCuenta, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     })
-    .then((data) => {
-      // Hacer una table o algo con los datos
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(
+            `Error al obtener datos (${response.status}): ${response.statusText}`
+          );
+        }
+        return response.json();
+      })
+      .then((data) => {
+        data.forEach((cuenta) => {
+          cargarTabla(cuenta);
+        });
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
+}
+
+function buscarCuentasPorDescripcion() {
+  let descripcion = document.getElementById("descripcionBuscar").value;
+
+  if (descripcion != "") {
+    while (tabla.firstChild) {
+      tabla.removeChild(tabla.firstChild);
+    }
+
+    fetch("http://localhost:8080/cuenta/descripcion/" + descripcion, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(
+            `Error al obtener datos (${response.status}): ${response.statusText}`
+          );
+        }
+        return response.json();
+      })
+      .then((data) => {
+        data.forEach((cuenta) => {
+          cargarTabla(cuenta);
+        });
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
 }
 
 function AñadirCuenta() {
@@ -82,6 +116,7 @@ function AñadirCuenta() {
   };
 
   limpiarCampos();
+
   fetch("http://localhost:8080/cuenta", {
     method: "POST",
     headers: {
@@ -145,7 +180,6 @@ function actualizarCuenta() {
     });
 }
 
-
 function eliminarCuenta() {
   var numeroCuenta = document.getElementById("numeroCuentaEliminar").value;
   fetch("http://localhost:8080/cuenta/" + numeroCuenta + "/delete", {
@@ -172,8 +206,22 @@ function eliminarCuenta() {
     });
 }
 
+function cargarTabla(dato) {
+  let tr = document.createElement("tr");
+  let numeroCuenta = document.createElement("td");
+  numeroCuenta.textContent = dato.nroCuenta;
+
+  let descripcion = document.createElement("td");
+  descripcion.textContent = dato.descripcion;
+
+  tr.appendChild(numeroCuenta);
+  tr.appendChild(descripcion);
+
+  tabla.appendChild(tr);
+}
+
 let botonAñadirCuenta = document.getElementById("añadirCuenta");
-let botonEliminarCuenta = document.getElementById("eliminarCuentaId");
+let botonEliminarCuenta = document.getElementById("eliminarCuenta");
 let botonModificarCuenta = document.getElementById("modificarCuenta");
 let botonConsultarCuenta = document.getElementById("consultarCuenta");
 
@@ -224,12 +272,12 @@ function botonConsultar() {
 }
 
 function botonCerrar() {
-  var iconoCerrar = document.getElementById("iconoCerrar");
+  var iconoCerrar = document.getElementsByClassName("iconoCerrar");
 
-  añadirCuenta.style.display = "none";
-  consultarCuenta.style.display = "none";
-  eliminarCuentaId.style.display = "none";
-  modificarCuenta.style.display = "none";
+  botonAñadirCuenta.style.display = "none";
+  botonConsultarCuenta.style.display = "none";
+  botonEliminarCuenta.style.display = "none";
+  botonModificarCuenta.style.display = "none";
 }
 
 function limpiarCampos() {
