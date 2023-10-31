@@ -58,11 +58,20 @@
         title="El número de cuenta debe ser un número de 4 dígitos." />
       <label for="descripcionAñadir">Descripción:</label>
       <textarea id="descripcionAñadir" rows="4" cols="50"></textarea><br />
-      <button type="button" onclick="AñadirCuenta()">Añadir cuenta</button>
+      <button id="btnAñadirCuenta" type="button" onclick="AñadirCuenta()">Añadir cuenta</button>
+      <!--MODAL-->
+      <div id="myModal" class="modal">
+        <div class="modal-content">
+          <h2 style="font-size: 50px;">¡ERROR!</h2>
+          <p style="font-size: 30px;">Sos peronista</p>
+          <button id="closeModalButton">OK</button>
+        </div>
+      </div>
+      <!--MODAL-->
     </form>
     <div class="result" id="resultadoAñadir"></div>
   </div>
-  <div id="eliminarCuenta">
+  <div id="eliminarCuentaId">
     <img width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply" class="iconoCerrar"
       onclick="botonCerrar()" />
 
@@ -73,9 +82,18 @@
       <datalist id="opcionesCuentaEliminar">
         <!-- ACA SE CARGAN LAS POSIBLES BUSQUEDAS -->
       </datalist>
-      <br><button type="button" onclick="eliminarCuenta()">
+      <br><button id="btnEliminarCuenta" type="button" onclick="eliminarCuenta()">
         Eliminar cuenta
       </button>
+      <!--MODAL-->
+      <div id="myModalE" class="modal">
+        <div class="modal-content">
+          <h2 style="font-size: 50px;">¡ERROR!</h2>
+          <p style="font-size: 30px;">Seguis siendo peronista</p>
+          <button id="closeModalButtonE">OK</button>
+        </div>
+      </div>
+      <!--MODAL-->
     </form>
     <div class="result" id="resultadoEliminar"></div>
   </div>
@@ -97,7 +115,16 @@
       <input type="text" id="numeroCuentaActualizar" required pattern="[0-9]" />
       <label for="descripcionActualizar">Descripción:</label>
       <textarea id="descripcionActualizar" rows="4" cols="50"></textarea><br />
-      <button type="button" onclick="actualizarCuenta()">Actualizar cuenta</button>
+      <button id="btnModificarCuenta" type="button" onclick="actualizarCuenta()">Actualizar cuenta</button>
+      <!--MODAL-->
+      <div id="myModalM" class="modal">
+        <div class="modal-content">
+          <h2 style="font-size: 50px;">¡ERROR!</h2>
+          <p style="font-size: 30px;">No hay nafta</p>
+          <button id="closeModalButtonM">OK</button>
+        </div>
+      </div>
+      <!--MODAL-->
     </form>
     <div class="result" id="resultadoActualizar"></div>
   </div>

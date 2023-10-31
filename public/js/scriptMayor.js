@@ -65,3 +65,21 @@ function buscarMayor() {
   });
 }
 */
+
+var openModalButton = document.getElementById("btnBuscar");
+var modal = document.getElementById("myModal");
+var closeModal = document.getElementById("closeModalButton");
+
+openModalButton.addEventListener("click", function() {
+  modal.style.display = "block";
+});
+
+closeModal.addEventListener("click", function() {
+  modal.style.display = "none"; // Oculta el modal
+});
+
+window.addEventListener("click", function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+});

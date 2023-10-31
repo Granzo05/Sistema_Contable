@@ -26,9 +26,10 @@ input, select, textarea {
 
 button {
     background-color: white;
+    margin: 10px;
     color: black;
     padding: 10px 20px;
-    width: 200px;
+    width: 250px;
     border: none;
     cursor: pointer;
     border-radius: 20px;
@@ -39,8 +40,17 @@ button {
 button:hover{
     background-color: black;
     color: white;
-    width: 150px;
+    width: 210px;
     transition: 0.5s;
+}
+
+#btnReiniciar{
+    display: flex;
+    width: 200px;
+}
+
+#btnReiniciar:hover{
+    width: 139px;
 }
 
 #añadirAsiento{
@@ -55,7 +65,7 @@ button:hover{
     color: black;
     cursor: pointer;
     position: fixed;
-    top: 139px;
+    top: 159px;
     right: 9px;
     width: 40px;
     height: 40px;
@@ -80,7 +90,7 @@ button:hover{
     color: black;
     cursor: pointer;
     position: fixed;
-    top: 139px;
+    top: 159px;
     right: 9px;
     width: 40px;
     height: 40px;
@@ -122,4 +132,43 @@ button:hover{
 
 .haber-container input{
     width: 70%;
+}
+
+.modal {
+    display: none; /* Oculta el modal de forma predeterminada */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro semitransparente */
+    z-index: 1;
+  }
+  
+.modal-content {
+    background-color: black;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 20%;
+    height: 30%;
+}
+  
+#closeModalButton {
+    background-color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 35px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+  
+#closeModalButton:hover {
+    background-color: #999;
+    color: black;
 }

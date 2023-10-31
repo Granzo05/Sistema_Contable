@@ -221,7 +221,7 @@ function cargarTabla(dato) {
 }
 
 let botonAñadirCuenta = document.getElementById("añadirCuenta");
-let botonEliminarCuenta = document.getElementById("eliminarCuenta");
+let botonEliminarCuenta = document.getElementById("eliminarCuentaId");
 let botonModificarCuenta = document.getElementById("modificarCuenta");
 let botonConsultarCuenta = document.getElementById("consultarCuenta");
 
@@ -302,3 +302,57 @@ function limpiarCampos() {
   numeroCuenta.value = "";
 
 }
+
+var openModalButton = document.getElementById("btnAñadirCuenta");
+var modal = document.getElementById("myModal");
+var closeModal = document.getElementById("closeModalButton");
+
+openModalButton.addEventListener("click", function() {
+  modal.style.display = "block";
+});
+
+closeModal.addEventListener("click", function() {
+  modal.style.display = "none"; // Oculta el modal
+});
+
+window.addEventListener("click", function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+});
+
+var openModalButtonE = document.getElementById("btnEliminarCuenta");
+var modalE = document.getElementById("myModalE");
+var closeModalE = document.getElementById("closeModalButtonE");
+
+openModalButtonE.addEventListener("click", function() {
+  modalE.style.display = "block";
+});
+
+closeModalE.addEventListener("click", function() {
+  modalE.style.display = "none"; // Oculta el modal
+});
+
+window.addEventListener("click", function(event) {
+  if (event.target == modalE) {
+    modalE.style.display = "none";
+  }
+});
+
+var openModalButtonM = document.getElementById("btnModificarCuenta");
+var modalM = document.getElementById("myModalM");
+var closeModalM = document.getElementById("closeModalButtonM");
+
+openModalButtonM.addEventListener("click", function() {
+  modalM.style.display = "block";
+});
+
+closeModalM.addEventListener("click", function() {
+  modalM.style.display = "none"; // Oculta el modal
+});
+
+window.addEventListener("click", function(event) {
+  if (event.target == modalM) {
+    modalM.style.display = "none";
+  }
+});

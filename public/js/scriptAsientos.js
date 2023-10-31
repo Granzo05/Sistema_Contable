@@ -209,3 +209,45 @@ function limpiarCampos() {
     element.value = "";
   });
 }
+
+function reiniciarAsiento(){
+    document.getElementById('añadirAsiento').style.display = 'block';
+    location.reload();
+}
+
+var openModalButtonA = document.getElementById("btnAñadirAsiento");
+var modalA = document.getElementById("myModalA");
+var closeModalA = document.getElementById("closeModalButtonA");
+
+openModalButtonA.addEventListener("click", function() {
+  modalA.style.display = "block";
+});
+
+closeModalA.addEventListener("click", function() {
+  modalA.style.display = "none"; // Oculta el modal
+});
+
+window.addEventListener("click", function(event) {
+  if (event.target == modalA) {
+    modalA.style.display = "none";
+  }
+});
+
+var openModalButtonC = document.getElementById("btnConsultarAsiento");
+var modalC = document.getElementById("myModalC");
+var closeModalC = document.getElementById("closeModalButtonC");
+
+openModalButtonC.addEventListener("click", function() {
+  modalC.style.display = "block";
+});
+
+closeModalC.addEventListener("click", function() {
+  modalC.style.display = "none"; // Oculta el modal
+});
+
+window.addEventListener("click", function(event) {
+  if (event.target == modalC) {
+    modalC.style.display = "none";
+  }
+});
+

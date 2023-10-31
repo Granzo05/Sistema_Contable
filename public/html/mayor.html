@@ -19,7 +19,16 @@
     <input type="number" name="mes" id="mes" placeholder="Mes">
     <input type="number" name="año" id="año" placeholder="Año">
     <br>
-    <button type="button" onclick="buscarMayor()">Buscar mayor</button>
+    <button id="btnBuscar" type="button" onclick="buscarMayor()">Buscar mayor</button>
+    <!--MODAL-->
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <h2 style="font-size: 50px;">¡ERROR!</h2>
+        <p style="font-size: 30px;">Quemaste a un judío</p>
+        <button id="closeModalButton">OK</button>
+      </div>
+    </div>
+    <!--MODAL-->
     <div class="result" id="resultadoBuscar"></div>
   </div>
 

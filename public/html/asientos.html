@@ -81,6 +81,19 @@
           </div>
         </div>
       </div>
+      <button id="btnAñadirAsiento" type="button" onclick="cargarAsiento()">
+        Cargar asiento
+      </button>
+      <!--MODAL-->
+      <div id="myModalA" class="modal">
+        <div class="modal-content">
+          <h2 style="font-size: 50px;">¡ERROR!</h2>
+          <p style="font-size: 30px;">Panqueques y polenta</p>
+          <button id="closeModalButtonA">OK</button>
+        </div>
+      </div>
+      <!--MODAL-->
+      <br><br>
       <button type="button" onclick="agregarInputsAsientoDebe()">
         Agregar fila de debe
       </button>
@@ -90,9 +103,8 @@
       <button type="button" onclick="agregarInputsAsientos()">
         Agregar fila para ambos
       </button>
-      <button type="button" onclick="cargarAsiento()">
-        Cargar asiento
-      </button>
+      <button id="btnReiniciar" type="button" onclick="reiniciarAsiento()">Reiniciar todo</button>
+      
     </form>
     <div class="result" id="resultadoAñadir"></div>
   </div>
@@ -109,7 +121,16 @@
       <input type="number" id="numeroCuentaBuscar" required pattern="[0-9]{4}"
         title="El número de cuenta debe ser un número de 4 dígitos." />
       <input type="date" id="fechaAsientoBuscar" /><br><br>
-      <button type="button" onclick="buscarAsiento()">Buscar Asiento</button>
+      <button id="btnConsultarAsiento" type="button" onclick="buscarAsiento()">Buscar Asiento</button>
+      <!--MODAL-->
+      <div id="myModalC" class="modal">
+        <div class="modal-content">
+          <h2 style="font-size: 50px;">¡ERROR!</h2>
+          <p style="font-size: 30px;">Votaste a Massa</p>
+          <button id="closeModalButtonC">OK</button>
+        </div>
+      </div>
+      <!--MODAL-->
     </form>
     <div class="result" id="resultadoBuscar"></div>
   </div>
