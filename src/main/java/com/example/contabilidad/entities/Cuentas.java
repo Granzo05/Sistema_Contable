@@ -2,8 +2,6 @@ package com.example.contabilidad.entities;
 
 import jakarta.persistence.*;
 
-import java.util.List;
-
 @Entity
 @Table(name = "cuentas")
 public class Cuentas {

@@ -11,24 +11,20 @@ function buscarAsiento() {
   let fechaFormateada = `${dia}/${mes}/${anio}`;
   let fechaFinalControlada = fechaFormateada.split("/");
 
-  /*
-  if (!nroCuenta) {
-    var mensaje = "El numero de cuenta es necesario para la carga";
-    var titulo = "Campo vacío";
-    abrirModalError(mensaje, titulo);
-  } else if (fechaFinalControlada[0] === "NaN" || fechaFinalControlada[1] === "NaN" || fechaFinalControlada[2] === "NaN") {
-    var mensaje = "La fecha del asiento es necesaria para la busqueda";
-    var titulo = "Campo vacío";
-    abrirModalError(mensaje, titulo);
-  } else 
-  */
 
-  if (!nroAsientos) {
+  if (!nroCuenta && (fechaFinalControlada[0] != "NaN" || fechaFinalControlada[1] != "NaN" || fechaFinalControlada[2] != "NaN") && !nroAsientos) {
+    var mensaje = "El numero de cuenta y la fecha son necesarios para la busqueda";
+    var titulo = "Campo vacío";
+    abrirModalError(mensaje, titulo);
+  } else if (!nroAsientos) {
     var mensaje = "El numero de asiento es necesario para la carga";
     var titulo = "Campo vacío";
     abrirModalError(mensaje, titulo);
   } else {
-    fetch("http://localhost:8080/asientos/" + nroAsientos, {
+    const data = { nroCuenta: nroCuenta, fecha: fechaFinalControlada, nroAsientos: nroAsientos };
+    const queryString = new URLSearchParams(data).toString();
+
+    fetch(`http://localhost:8080/asientos/busqueda/?${queryString}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -46,6 +42,14 @@ function buscarAsiento() {
         let divModal = document.getElementById("modal-asiento");
         // Reiniciamos el modal por si ya habia un asiento precargado no mostrarlo nuevamente
         divModal.innerHTML = "";
+
+        let fecha = document.createElement("p");
+        fecha.textContent = "Fecha: " + detalles[0].asiento.fechaRegistro;
+        divModal.appendChild(fecha);
+
+        let nroAsiento = document.createElement("p");
+        nroAsiento.textContent = "Numero de asiento: " + detalles[0].asiento.id;
+        divModal.appendChild(nroAsiento);
 
         let table = document.createElement("table");
         table.classList.add("modal-table");
@@ -213,6 +217,43 @@ function cargarAsiento() {
   }
 }
 
+function buscarCuentasPorNroCuenta() {
+  const nroCuenta = document.getElementById("numeroCuentaBuscarAsiento").value;
+
+  const datalist = document.getElementById("opcionesCuentas");
+  datalist.innerHTML = "";
+
+  if (nroCuenta != null || nroCuenta != "") {
+    fetch("http://localhost:8080/asientos/cuenta/nro_cuenta/" + nroCuenta, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(
+            `Error al obtener datos (${response.status}): ${response.statusText}`
+          );
+        }
+        return response.json();
+      })
+      .then((data) => {     
+        data.forEach((cuenta) => {
+          let option = document.createElement("option");
+          option.value = cuenta.nroCuenta;
+          option.textContent = cuenta.nroCuenta + " - " + cuenta.descripcion + " - " + cuenta.rubro;
+
+          datalist.appendChild(option);
+        });        
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
+}
+
 let añadirAsientos = document.getElementById("añadirAsiento");
 let consultarAsientos = document.getElementById("consultarAsiento");
 
@@ -226,9 +267,7 @@ function botonAñadir() {
   }
 }
 
-
 function botonConsultar() {
-  buscarCuentasPorRubro();
   if (consultarAsientos.style.display === "none") {
     consultarAsientos.style.display = "block";
     añadirAsientos.style.display = "none";
@@ -348,99 +387,9 @@ function abrirModalError(mensaje, titulo) {
   modal.style.display = "block";
 }
 
-
 function cerrarModalError() {
   let modal = document.getElementById("myModalAsientosError");
   modal.style = "display: none";
-}
-
-function buscarCuentasPorRubro() {
-  const rubroSelect = document.getElementById("rubroAsientos");
-  let rubro = rubroSelect.value;
-  const tabla = document.getElementById("tablaDeCuentasAsientos");
-
-  // Borra el contenido existente de la tabla
-  while (tabla.firstChild) {
-    tabla.removeChild(tabla.firstChild);
-  }
-
-  fetch("http://localhost:8080/cuenta/" + rubro, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(
-          `Error al obtener datos (${response.status}): ${response.statusText}`
-        );
-      }
-      return response.json();
-    })
-    .then((data) => {
-      data.forEach((cuenta) => {
-        let tr = document.createElement("tr");
-        let numeroCuenta = document.createElement("td");
-        numeroCuenta.textContent = cuenta.nroCuenta;
-
-        let descripcion = document.createElement("td");
-        descripcion.textContent = cuenta.descripcion;
-
-        tr.appendChild(numeroCuenta);
-        tr.appendChild(descripcion);
-
-        tabla.appendChild(tr);
-      });
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-}
-
-function buscarCuentasPorNroCuenta() {
-  const nroCuenta = document.getElementById("numeroCuentaBuscar").value;
-  const tabla = document.getElementById("tablaDeCuentasAsientos");
-
-  if (nroCuenta != "") {
-    while (tabla.firstChild) {
-      tabla.removeChild(tabla.firstChild);
-    }
-
-    fetch("http://localhost:8080/cuenta/nro_cuenta/" + nroCuenta, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(
-            `Error al obtener datos (${response.status}): ${response.statusText}`
-          );
-        }
-        return response.json();
-      })
-      .then((data) => {
-        data.forEach((cuenta) => {
-          let tr = document.createElement("tr");
-          let numeroCuenta = document.createElement("td");
-          numeroCuenta.textContent = cuenta.nroCuenta;
-
-          let descripcion = document.createElement("td");
-          descripcion.textContent = cuenta.descripcion;
-
-          tr.appendChild(numeroCuenta);
-          tr.appendChild(descripcion);
-
-          tabla.appendChild(tr);
-        });
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  }
-
 }
 
 function cerrarModalResultado() {

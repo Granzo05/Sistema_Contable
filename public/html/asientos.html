@@ -73,21 +73,12 @@
     <form id="AsientoFormBuscar">
       <label for="numeroAsientoBuscar">Número de Asiento:</label>
       <input type="number" id="numeroAsientoBuscar" required pattern="[0-9]" />
-      <label for="numeroCuentaBuscar">Número de cuenta:</label>
-      <input type="text" id="numeroCuentaBuscar" required pattern="[0-9]" oninput="buscarCuentasPorNroCuenta()" />
+      <label for="numeroCuentaBuscarAsiento">Número de cuenta:</label>
+      <input type="text" id="numeroCuentaBuscarAsiento" list="opcionesCuentas" oninput="buscarCuentasPorNroCuenta()" />
+      <datalist id="opcionesCuentas"></datalist>
       <input type="date" id="fechaAsientoBuscar" /><br><br>
       <button id="btnConsultarAsiento" type="button" onclick="buscarAsiento()">Buscar Asiento</button>
     </form>
-    <div class="result" id="resultadoBuscar"></div>
-    <label for="rubroAsientos">Rubro:</label>
-    <select id="rubroAsientos" onchange="buscarCuentasPorRubro()">
-      <option value="ACTIVO">Activo</option>
-      <option value="PASIVO">Pasivo</option>
-      <option value="PN">PN</option>
-      <option value="INGRESO">Ingreso</option>
-      <option value="EGRESO">Egreso</option>
-    </select>
-    <table id="tablaDeCuentasAsientos" style="border: 1px;"></table>
   </div>
 
   <!-- MODAL BUENO -->

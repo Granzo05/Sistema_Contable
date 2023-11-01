@@ -15,8 +15,19 @@ function buscarMayor() {
     var mensaje = "El año del mayor es necesario para la busqueda";
     var titulo = "Campo vacío";
     abrirModalError(mensaje, titulo);
+  } else if (parseInt(mes) > 12 || parseInt(mes) < 1) {
+    var mensaje = "El mes debe ser válido entre 1 y 12";
+    var titulo = "Valor erroneo";
+    abrirModalError(mensaje, titulo);
+  } else if (año > 2013 && año < 2000) {
+    var mensaje = "El año no puede ser mayor al actual o menor a 2013";
+    var titulo = "Valor erroneo";
+    abrirModalError(mensaje, titulo);
   } else {
-    fetch("http://localhost:8080/mayor/" + numeroCuenta + "/" + mes + "/" + año, {
+    const data = { nroCuenta: numeroCuenta, mes: mes, año: año };
+    const queryString = new URLSearchParams(data).toString();
+
+    fetch(`http://localhost:8080/mayor/?${queryString}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -137,4 +148,41 @@ function abrirModalResultado(data) {
 
   let modal = document.getElementById("myModalMayorResultado");
   modal.style = "display: block";
+}
+
+function buscarCuentasPorNroCuenta() {
+  const nroCuenta = document.getElementById("numeroCuentaMayor").value;
+
+  const datalist = document.getElementById("opcionesCuentasMayor");
+  datalist.innerHTML = "";
+
+  if (nroCuenta != null || nroCuenta != "") {
+    fetch("http://localhost:8080/asientos/cuenta/nro_cuenta/" + nroCuenta, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(
+            `Error al obtener datos (${response.status}): ${response.statusText}`
+          );
+        }
+        return response.json();
+      })
+      .then((data) => {
+        data.forEach((cuenta) => {
+          let option = document.createElement("option");
+          option.value = cuenta.nroCuenta;
+          option.textContent = cuenta.nroCuenta + " - " + cuenta.descripcion + " - " + cuenta.rubro;
+
+          datalist.appendChild(option);
+        });
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
 }

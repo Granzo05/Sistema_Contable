@@ -2,9 +2,6 @@ package com.example.contabilidad.entities;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Table(name = "mayor")
 public class Mayor {
@@ -24,14 +21,6 @@ public class Mayor {
     public Mayor() {
         this.debe = 0.0;
         this.haber = 0.0;
-    }
-
-    public void setDebe(Double debe) {
-        this.debe = debe;
-    }
-
-    public void setHaber(Double haber) {
-        this.haber = haber;
     }
 
     public Long getId() {
@@ -54,12 +43,20 @@ public class Mayor {
         return debe;
     }
 
+    public void setDebe(Double debe) {
+        this.debe = debe;
+    }
+
     public void setDebe(double debe) {
         this.debe = debe;
     }
 
     public double getHaber() {
         return haber;
+    }
+
+    public void setHaber(Double haber) {
+        this.haber = haber;
     }
 
     public void setHaber(double haber) {

@@ -29,6 +29,7 @@ public class DetalleAsiento {
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
+
     public Double getValor() {
         return valor;
     }

@@ -1,13 +1,13 @@
 package com.example.contabilidad.repositories;
 
 import com.example.contabilidad.entities.Cuentas;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface CuentasRepository extends JpaRepository<Cuentas, Long> {
@@ -24,6 +24,9 @@ public interface CuentasRepository extends JpaRepository<Cuentas, Long> {
 
     @Query("SELECT c FROM Cuentas c WHERE c.nroCuenta LIKE %:nroCuenta%")
     List<Cuentas> findByNroCuentaEquals(@Param("nroCuenta") String numeroCuenta);
+
+    @Query("SELECT c FROM Cuentas c WHERE c.nroCuenta LIKE %:nroCuenta%")
+    List<Cuentas> findByNroCuentaEqualsLimit(@Param("nroCuenta") String numeroCuenta, Pageable pageable);
 
     @Query("SELECT c FROM Cuentas c WHERE c.nroCuenta = :nroCuenta")
     Cuentas findByNroCuenta(@Param("nroCuenta") String numeroCuenta);

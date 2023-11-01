@@ -76,19 +76,36 @@ public class AsientosController {
     }
 
     @CrossOrigin
-    @GetMapping("/asientos/{nroAsientos}")
-    public List<DetalleAsiento> buscarAsiento(@PathVariable("nroAsientos") Long nroAsiento) {
-        // Esto es para buscar por fecha y nro de asiento, pero como uso el nro_asiento como id, no necesitaria la fecha pero la dejo por las dudas
-        /*
-        String[] fechaFinal = fecha.split("/");
-        int dia = Integer.valueOf(fechaFinal[0]);
-        int mes = Integer.valueOf(fechaFinal[1]);
-        int año = Integer.valueOf(fechaFinal[2]);
+    @GetMapping("/asientos/busqueda")
+    public List<DetalleAsiento> buscarAsiento(
+            @RequestParam("nroCuenta") String nroCuenta,
+            @RequestParam("fecha") String fecha,
+            @RequestParam("nroAsientos") Long nroAsiento) {
 
-        LocalDate fechaFormateada = LocalDate.of(año, mes, dia);
-        */
+        if (nroCuenta != null && fecha != null) {
+            List<DetalleAsiento> detalleBuscado = new ArrayList<>();
+            List<DetalleAsiento> detallesConNroAsiento = detalleAsientoRepository.findByNroCuenta(nroAsiento);
 
-        return detalleAsientoRepository.findByAsientoId(nroAsiento);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            Date date = null;
+            try {
+                date = sdf.parse(fecha);
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+
+            for (DetalleAsiento detalle : detallesConNroAsiento) {
+                if (detalle.getAsiento().getFechaRegistro().equals(date)) {
+                    detalleBuscado.add(detalle);
+                }
+            }
+
+            return detalleBuscado;
+        } else if (nroAsiento != null) {
+            return detalleAsientoRepository.findByAsientoId(nroAsiento);
+        }
+
+        return null;
     }
 
     private void cargaDelMayor(List<DetalleAsiento> detallesAsiento) {

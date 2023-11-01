@@ -2,13 +2,14 @@ package com.example.contabilidad.controllers;
 
 import com.example.contabilidad.entities.Cuentas;
 import com.example.contabilidad.repositories.CuentasRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 public class CuentasController {
@@ -35,8 +36,14 @@ public class CuentasController {
 
     @GetMapping("/cuenta/nro_cuenta/{nroCuenta}")
     public List<Cuentas> buscarPlanDeCuentasPorNroCuenta(@PathVariable String nroCuenta) {
-        List<Cuentas> cuentasFiltradas = cuentasRepository.findByNroCuentaEquals(nroCuenta);
-        return cuentasFiltradas;
+        return cuentasRepository.findByNroCuentaEquals(nroCuenta);
+    }
+
+    @GetMapping("/asientos/cuenta/nro_cuenta/{nroCuenta}")
+    public List<Cuentas> findByNroCuentaEqualsLimit(@PathVariable String nroCuenta) {
+        // Hacer un limit de 10 resultados ya que esto lo vamos a usar para mostrar una lista a la hora de buscar
+        Pageable pageable = PageRequest.of(0, 15);
+        return cuentasRepository.findByNroCuentaEqualsLimit(nroCuenta, pageable);
     }
 
     @GetMapping("/cuenta/descripcion/{descripcion}")

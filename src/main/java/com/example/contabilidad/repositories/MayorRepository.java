@@ -1,6 +1,5 @@
 package com.example.contabilidad.repositories;
 
-import com.example.contabilidad.entities.Cuentas;
 import com.example.contabilidad.entities.Mayor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,7 +14,6 @@ public interface MayorRepository extends JpaRepository<Mayor, Long> {
 
     @Query("SELECT m FROM Mayor m WHERE m.cuenta.descripcion = :descripcion")
     Mayor findByDescripcionCuenta(@Param("descripcion") String descripcion);
-
 
 
 }

@@ -1,6 +1,5 @@
 package com.example.contabilidad.controllers;
 
-import com.example.contabilidad.entities.Asientos;
 import com.example.contabilidad.entities.Cuentas;
 import com.example.contabilidad.entities.DetalleAsiento;
 import com.example.contabilidad.entities.MayorDTO;
@@ -9,7 +8,7 @@ import com.example.contabilidad.repositories.CuentasRepository;
 import com.example.contabilidad.repositories.DetalleAsientoRepository;
 import com.example.contabilidad.repositories.MayorRepository;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
@@ -35,10 +34,10 @@ public class MayorController {
         this.detalleAsientoRepository = detalleAsientoRepository;
     }
 
-    @GetMapping("/mayor/{nroCuenta}/{mes}/{año}")
-    public MayorDTO buscarMayor(@PathVariable("nroCuenta") String nroCuenta,
-                                @PathVariable("mes") int mes,
-                                @PathVariable("año") int anio) {
+    @GetMapping("/mayor/")
+    public MayorDTO buscarMayor(@RequestParam("nroCuenta") String nroCuenta,
+                                @RequestParam("mes") int mes,
+                                @RequestParam("año") int anio) {
 
         LocalDate mesInicial = LocalDate.of(anio, mes, 1);
         LocalDate mesFinal = mesInicial.plusMonths(1);
