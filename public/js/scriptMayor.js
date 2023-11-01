@@ -31,35 +31,7 @@ function buscarMayor() {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
-        let divModal = document.getElementById('myModalayorExito');
-
-        let h2 = document.getElementById("modalTitulo");
-        h2.innerHTML = data.cuenta.descripcion;
-
-        let p = document.getElementById("modalMensaje");
-        p.hidden = true;
-
-        let mes = document.createAttribute("h3");
-        mes.textContent = "Mes: " + data.mes;
-
-        let año = document.createAttribute("h3");
-        año.textContent = "Año: " + data.año;
-
-        let debe = document.createAttribute("h3");
-        debe.textContent = "Total debe: " + data.debe;
-
-        let haber = document.createAttribute("h3");
-        haber.textContent = "Total haber: " + data.haber;
-
-        let saldo = document.createAttribute("h3");
-        saldo.textContent = "Saldo: " + data.saldo;
-
-        divModal.appendChild(mes);
-        divModal.appendChild(año);
-        divModal.appendChild(debe);
-        divModal.appendChild(haber);
-
+        abrirModalResultado(data);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -99,4 +71,70 @@ function abrirModalError(mensaje, titulo) {
 function cerrarModalError() {
   let modal = document.getElementById("myModalMayorError");
   modal.style = "display: none";
+}
+
+function cerrarModalResultado() {
+  let modal = document.getElementById("myModalMayorResultado");
+  modal.style = "display: none";
+}
+
+function abrirModalResultado(data) {
+  let descripcion = document.getElementById("modalDescripcion");
+  descripcion.textContent = data.cuenta.descripcion;
+
+  let año = document.getElementById("modalAño");
+  año.textContent = "Año: " + data.año;
+
+  let mes = document.getElementById("modalMes");
+
+  switch (data.mes) {
+    case 1:
+      mes.textContent = "Mes: Enero";
+      break;
+    case 2:
+      mes.textContent = "Mes: Febrero";
+      break;
+    case 3:
+      mes.textContent = "Mes: Marzo";
+      break;
+    case 4:
+      mes.textContent = "Mes: Abril";
+      break;
+    case 5:
+      mes.textContent = "Mes: Mayo";
+      break;
+    case 6:
+      mes.textContent = "Mes: Junio";
+      break;
+    case 7:
+      mes.textContent = "Mes: Julio";
+      break;
+    case 8:
+      mes.textContent = "Mes: Agosto";
+      break;
+    case 9:
+      mes.textContent = "Mes: Septiembre";
+      break;
+    case 10:
+      mes.textContent = "Mes: Octubre";
+      break;
+    case 11:
+      mes.textContent = "Mes: Noviembre";
+      break;
+    case 12:
+      mes.textContent = "Mes: Diciembre";
+      break;
+  }
+
+  let debe = document.getElementById("modalDebe");
+  debe.textContent = "Total debe: " + data.debe;
+
+  let haber = document.getElementById("modalHaber");
+  haber.textContent = "Total haber: " + data.haber;
+
+  let saldo = document.getElementById("modalSaldo");
+  saldo.textContent = "Saldo: " + data.saldo;
+
+  let modal = document.getElementById("myModalMayorResultado");
+  modal.style = "display: block";
 }
