@@ -52,14 +52,5 @@ public class Asientos {
     public void addDetalles(DetalleAsiento detallesAsiento) {
         this.detallesAsiento.add(detallesAsiento);
     }
-
-    @Override
-    public String toString() {
-        return "Asientos{" +
-                "id=" + id +
-                ", fechaRegistro=" + fechaRegistro +
-                ", detallesAsiento=" + detallesAsiento +
-                '}';
-    }
 }
 

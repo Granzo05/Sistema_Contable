@@ -77,7 +77,7 @@ public class AsientosController {
 
     @CrossOrigin
     @GetMapping("/asientos/{nroAsientos}")
-    public AsientoDTO buscarAsiento(@PathVariable("nroAsientos") Long nroAsiento) {
+    public List<DetalleAsiento> buscarAsiento(@PathVariable("nroAsientos") Long nroAsiento) {
         // Esto es para buscar por fecha y nro de asiento, pero como uso el nro_asiento como id, no necesitaria la fecha pero la dejo por las dudas
         /*
         String[] fechaFinal = fecha.split("/");
@@ -87,19 +87,10 @@ public class AsientosController {
 
         LocalDate fechaFormateada = LocalDate.of(año, mes, dia);
         */
-        List<DetalleAsiento> detalles = detalleAsientoRepository.findByAsientoId(nroAsiento);
-        AsientoDTO asiento = new AsientoDTO();
 
-        for (DetalleAsiento detalle: detalles){
-            if (detalle.getCuenta().equals("DEBE")) {
-                asiento.setDetallesDebe(detalle.getAsiento().getDetallesAsiento());
-            } else if (detalle.getCuenta().equals("HABER")) {
-                asiento.setDetallesHaber(detalle.getAsiento().getDetallesAsiento());
-            }
-        }
-        //asiento.getDetallesHaber().get().getValor()
-        return asiento;
+        return detalleAsientoRepository.findByAsientoId(nroAsiento);
     }
+
     private void cargaDelMayor(List<DetalleAsiento> detallesAsiento) {
         for (DetalleAsiento detalle : detallesAsiento) {
             // Buscamos el mayor en la db

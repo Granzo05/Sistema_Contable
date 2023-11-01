@@ -74,8 +74,6 @@ button {
 button:hover {
     background-color: black;
     color: white;
-    width: 210px;
-    transition: 0.5s;
 }
 
 #btnReiniciar {

@@ -25,9 +25,7 @@ h1{
     font-size: 17px;
 }
 
-.btn:hover{
+.btn:hover {
     background-color: black;
     color: white;
-    width: 200px;
-    transition: 0.5s;
 }

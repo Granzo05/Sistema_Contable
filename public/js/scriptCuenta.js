@@ -325,15 +325,6 @@ function botonConsultar() {
   }
 }
 
-function botonCerrar() {
-  var iconoCerrar = document.getElementsByClassName("iconoCerrar");
-
-  botonAñadirCuenta.style.display = "none";
-  botonConsultarCuenta.style.display = "none";
-  botonEliminarCuenta.style.display = "none";
-  botonModificarCuenta.style.display = "none";
-}
-
 function limpiarCampos() {
   var numeroCuenta = document.getElementById("numeroCuentaActualizar");
   var descripcion = document.getElementById("descripcionActualizar");

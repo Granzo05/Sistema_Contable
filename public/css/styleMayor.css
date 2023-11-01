@@ -52,11 +52,9 @@ button {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-button:hover{
+button:hover {
     background-color: black;
     color: white;
-    width: 150px;
-    transition: 0.5s;
 }
 
 #añadirAsiento{

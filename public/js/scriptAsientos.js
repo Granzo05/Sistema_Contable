@@ -22,6 +22,7 @@ function buscarAsiento() {
     abrirModalError(mensaje, titulo);
   } else 
   */
+
   if (!nroAsientos) {
     var mensaje = "El numero de asiento es necesario para la carga";
     var titulo = "Campo vacío";
@@ -40,47 +41,71 @@ function buscarAsiento() {
       }
       return response.json();
     })
-      .then((data) => {
-        console.log(data);
-        let divResultado = document.getElementById("resultadoBuscar");
+      .then((detalles) => {
+        let divResultado = document.getElementById("myModalAsientoResultado");
+        let divModal = document.getElementById("modal-asiento");
+        // Reiniciamos el modal por si ya habia un asiento precargado no mostrarlo nuevamente
+        divModal.innerHTML = "";
 
-        let divDebe = document.createElement("div");
-        divDebe.className = "debeResultado";
+        let table = document.createElement("table");
+        table.classList.add("modal-table");
 
-        data.detallesDebe.forEach(detalle => {
-          let spanCuenta = document.createElement("span");
-          spanCuenta.textContent = detalle.cuenta.descripcion;
+        // Encabezado de la tabla
+        let encabezados = document.createElement("tr");
 
-          let spanValor = document.createElement("span");
-          spanValor.textContent = detalle.valor;
+        let encabezadoCuenta = document.createElement("th");
+        encabezadoCuenta.textContent = "CUENTA";
 
-          divDebe.appendChild(spanCuenta);
-          divDebe.appendChild(spanValor);
-          divDebe.appendChild(document.createAttribute("br"));
+        let encabezadoDebe = document.createElement("th");
+        encabezadoDebe.textContent = "DEBE";
+
+        let encabezadoHaber = document.createElement("th");
+        encabezadoHaber.textContent = "HABER";
+
+        encabezados.appendChild(encabezadoCuenta);
+        encabezados.appendChild(encabezadoDebe);
+        encabezados.appendChild(encabezadoHaber);
+
+        table.appendChild(encabezados);
+
+        detalles.forEach(detalle => {
+          let fila = document.createElement("tr");
+
+          let cuenta = document.createElement("td");
+          cuenta.textContent = detalle.cuenta.descripcion;
+          fila.appendChild(cuenta);
+
+          // DEBE o HABER
+          let debeValor = document.createElement("td");
+          let haberValor = document.createElement("td");
+
+          if (detalle.tipo === "DEBE") {
+            debeValor.textContent = detalle.valor;
+          } else if (detalle.tipo === "HABER") {
+            haberValor.textContent = detalle.valor;
+          }
+
+          fila.appendChild(debeValor);
+          fila.appendChild(haberValor);
+
+          table.appendChild(fila);
         });
 
-        let divHaber = document.createElement("div");
-        divHaber.className = "haberResultado";
+        divModal.appendChild(table);
 
-        data.detallesHaber.forEach(detalle => {
-          let spanCuenta = document.createElement("span");
-          spanCuenta.textContent = detalle.cuenta.descripcion;
+        let buttonCerrar = document.createElement("button");
+        buttonCerrar.textContent = "Listo";
+        buttonCerrar.onclick = function () {
+          cerrarModalResultado();
+        }
+        divModal.appendChild(buttonCerrar);
 
-          let spanValor = document.createElement("span");
-          spanValor.textContent = detalle.valor;
-
-          divHaber.appendChild(spanCuenta);
-          divHaber.appendChild(spanValor);
-          divHaber.appendChild(document.createAttribute("br"));
-        });
-
-        divResultado.appendChild(divDebe);
-        divResultado.appendChild(divHaber);
-
+        divResultado.style.display = "block";
       })
       .catch((error) => {
         console.error("Error:", error);
       });
+
   }
 }
 
@@ -210,13 +235,6 @@ function botonConsultar() {
   } else {
     consultarAsientos.style.display = "none";
   }
-}
-
-function botonCerrar() {
-  var iconoCerrar = document.getElementById("iconoCerrar");
-
-  añadirAsientos.style.display = "none";
-  consultarAsientos.style.display = "none";
 }
 
 function agregarInputsAsientoHaber() {
@@ -423,4 +441,9 @@ function buscarCuentasPorNroCuenta() {
       });
   }
 
+}
+
+function cerrarModalResultado() {
+  let modal = document.getElementById("myModalAsientoResultado");
+  modal.style = "display: none";
 }
