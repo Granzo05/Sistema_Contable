@@ -16,7 +16,7 @@ public interface DetalleAsientoRepository extends JpaRepository<DetalleAsiento, 
     List<DetalleAsiento> findByAsientoIdYNroCuenta(@Param("idAsiento") Long idAsiento, @Param("idCuenta") Long idCuenta);
 
     @Query("SELECT d FROM DetalleAsiento d WHERE d.cuenta.id = :idCuenta")
-    List<DetalleAsiento> findByNroCuenta(@Param("idCuenta") Long idCuenta);
+    List<DetalleAsiento> findByIdCuenta(@Param("idCuenta") Long idCuenta);
 
     @Query("SELECT d FROM DetalleAsiento d WHERE d.asiento.id = :idAsiento")
     List<DetalleAsiento> findByAsientoId(@Param("idAsiento") Long idAsiento);

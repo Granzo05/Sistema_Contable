@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class AsientosController {
         Asientos asiento = new Asientos();
         // Formateo la fecha
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Date date = null;
+        Date date;
         try {
             date = sdf.parse(asientoDTO.getFechaRegistro());
         } catch (ParseException e) {
@@ -76,37 +77,67 @@ public class AsientosController {
     }
 
     @CrossOrigin
-    @GetMapping("/asientos/busqueda")
+    @GetMapping("/asientos/busqueda/")
     public List<DetalleAsiento> buscarAsiento(
-            @RequestParam("nroCuenta") String nroCuenta,
             @RequestParam("fecha") String fecha,
-            @RequestParam("nroAsientos") Long nroAsiento) {
+            @RequestParam("nroCuenta") String nroCuenta
+    ) {
 
-        if (nroCuenta != null && fecha != null) {
-            List<DetalleAsiento> detalleBuscado = new ArrayList<>();
-            List<DetalleAsiento> detallesConNroAsiento = detalleAsientoRepository.findByNroCuenta(nroAsiento);
+        List<DetalleAsiento> detalleBuscado = new ArrayList<>();
+        Cuentas cuenta = cuentasRepository.findByNroCuenta(nroCuenta);
+        List<DetalleAsiento> detallesConNroAsiento = detalleAsientoRepository.findByIdCuenta(cuenta.getId());
 
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            Date date = null;
-            try {
-                date = sdf.parse(fecha);
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
+        fecha = fecha.replace("-", "/");
 
-            for (DetalleAsiento detalle : detallesConNroAsiento) {
-                if (detalle.getAsiento().getFechaRegistro().equals(date)) {
-                    detalleBuscado.add(detalle);
-                }
-            }
-
-            return detalleBuscado;
-        } else if (nroAsiento != null) {
-            return detalleAsientoRepository.findByAsientoId(nroAsiento);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date date;
+        try {
+            date = sdf.parse(fecha);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
         }
 
-        return null;
+        for (DetalleAsiento detalle : detallesConNroAsiento) {
+            if (detalle.getAsiento().getFechaRegistro().equals(date)) {
+                detalle.getAsiento().setFechaFormateada(fecha);
+                detalleBuscado.add(detalle);
+            }
+        }
+        return detalleBuscado;
     }
+
+    @CrossOrigin
+    @GetMapping("/asientos/nroAsiento/{nroAsiento}")
+    public List<DetalleAsiento> buscarAsiento(
+            @PathVariable("nroAsiento") Long nroAsiento
+    ) {
+        List<DetalleAsiento> detalles = detalleAsientoRepository.findByAsientoId(nroAsiento);
+
+        for (DetalleAsiento detalle : detalles) {
+            Date fechaRegistro = detalle.getAsiento().getFechaRegistro();
+
+            // Crear un objeto Calendar y establecer la fecha
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(fechaRegistro);
+
+            // Establecer la hora, los minutos y los segundos en 0 para eliminar la hora
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+
+            // Formatear la fecha sin hora en "dd/MM/yyyy"
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            String fechaFormateada = sdf.format(calendar.getTime());
+
+            // Ahora tienes la fecha formateada en "dd/MM/yyyy" en una cadena
+
+            // Asignar la fecha formateada a la propiedad en tu clase, si es necesario
+            detalle.getAsiento().setFechaFormateada(fechaFormateada);
+        }
+
+        return detalles;
+    }
+
 
     private void cargaDelMayor(List<DetalleAsiento> detallesAsiento) {
         for (DetalleAsiento detalle : detallesAsiento) {

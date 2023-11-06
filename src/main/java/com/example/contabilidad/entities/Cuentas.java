@@ -22,9 +22,6 @@ public class Cuentas {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getNroCuenta() {
         return nroCuenta;
@@ -48,15 +45,5 @@ public class Cuentas {
 
     public void setRubro(String rubro) {
         this.rubro = rubro;
-    }
-
-    @Override
-    public String toString() {
-        return "Cuentas{" +
-                "id=" + id +
-                ", rubro='" + rubro + '\'' +
-                ", nroCuenta='" + nroCuenta + '\'' +
-                ", descripcion='" + descripcion + '\'' +
-                '}';
     }
 }

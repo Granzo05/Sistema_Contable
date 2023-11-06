@@ -1,7 +1,7 @@
 function buscarAsiento() {
   const nroAsientos = document.getElementById("numeroAsientoBuscar").value;
   const fechaInput = document.getElementById("fechaAsientoBuscar").value;
-  const nroCuenta = document.getElementById("numeroCuentaBuscar").value;
+  const nroCuenta = document.getElementById("numeroCuentaBuscarAsiento").value;
 
   let fecha = new Date(fechaInput);
   let dia = fecha.getDate() + 1;
@@ -18,12 +18,13 @@ function buscarAsiento() {
     var mensaje = "El numero de asiento es necesario para la busqueda";
     var titulo = "Campo vacío";
     abrirModalError(mensaje, titulo);
-  } else if (nroAsientos) {
+  } else if (nroAsientos && (!nroCuenta && (fechaFinalControlada[0] === "NaN" || fechaFinalControlada[1] === "NaN" || fechaFinalControlada[2] === "NaN"))) {
     busquedaPorAsiento(nroAsientos);
   }
 }
 
 function crearModalAsiento(detalles) {
+  console.log(detalles)
   let divResultado = document.getElementById("myModalAsientoResultado");
   let divModal = document.getElementById("modal-asiento");
   // Reiniciamos el modal por si ya habia un asiento precargado no mostrarlo nuevamente
@@ -31,7 +32,7 @@ function crearModalAsiento(detalles) {
 
   let fecha = document.createElement("p");
   detalles.forEach(detalle => {
-    fecha.textContent = "Fecha: " + detalle.asiento.fechaRegistro;
+    fecha.textContent = "Fecha: " + detalle.asiento.fechaFormateada;
   });
   divModal.appendChild(fecha);
 
@@ -95,11 +96,14 @@ function crearModalAsiento(detalles) {
   divModal.appendChild(buttonCerrar);
 
   divResultado.style.display = "block";
+
+  limpiarCampos();
 }
 
 
 function busquedaPorCuentaYfecha(nroCuenta, fecha) {
-  const data = { nroCuenta: nroCuenta, fecha: fechaFinalControlada.replace("/", "-") };
+  var fechaFinal = fecha[0] + "-" + fecha[1] + "-" + fecha[2];
+  const data = { nroCuenta: nroCuenta, fecha: fechaFinal };
   const queryString = new URLSearchParams(data).toString();
   fetch(`http://localhost:8080/asientos/busqueda/?${queryString}`, {
     method: "GET",
@@ -255,7 +259,7 @@ function buscarCuentasPorNroCuenta() {
   const datalist = document.getElementById("opcionesCuentas");
   datalist.innerHTML = "";
 
-  if (nroCuenta != null || nroCuenta != "") {
+  if (nroCuenta) {
     fetch("http://localhost:8080/asientos/cuenta/nro_cuenta/" + nroCuenta, {
       method: "GET",
       headers: {
@@ -382,6 +386,15 @@ function limpiarCampos() {
   valorHaberInputs.forEach(element => {
     element.value = "";
   });
+
+
+  var fecha = document.getElementById("fechaAsientoBuscar");
+  var cuenta = document.getElementById("numeroCuentaBuscarAsiento");
+  var asiento = document.getElementById("numeroAsientoBuscar");
+
+  fecha.value = "";
+  cuenta.value = "";
+  asiento.value = "";
 }
 
 function reiniciarAsiento() {

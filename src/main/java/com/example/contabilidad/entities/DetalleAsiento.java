@@ -38,14 +38,6 @@ public class DetalleAsiento {
         this.valor = valor;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Asientos getAsiento() {
         return asiento;
     }
@@ -66,19 +58,4 @@ public class DetalleAsiento {
         return descripcion;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    @Override
-    public String toString() {
-        return "DetalleAsiento{" +
-                "id=" + id +
-                ", asiento=" + asiento +
-                ", cuenta=" + cuenta +
-                ", descripcion='" + descripcion + '\'' +
-                ", tipo='" + tipo + '\'' +
-                ", valor=" + valor +
-                '}';
-    }
 }

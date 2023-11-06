@@ -21,15 +21,13 @@ public class Asientos {
     @JsonIgnore
     private List<DetalleAsiento> detallesAsiento = new ArrayList<>();
 
+    private String fechaFormateada;
+
     public Asientos() {
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public void setFechaFormateada(String fechaFormateada) {
+        this.fechaFormateada = fechaFormateada;
     }
 
     public Date getFechaRegistro() {
@@ -48,8 +46,5 @@ public class Asientos {
         this.detallesAsiento = detallesAsiento;
     }
 
-    public void addDetalles(DetalleAsiento detallesAsiento) {
-        this.detallesAsiento.add(detallesAsiento);
-    }
 }
 
