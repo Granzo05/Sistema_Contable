@@ -12,106 +12,138 @@ function buscarAsiento() {
   let fechaFinalControlada = fechaFormateada.split("/");
 
 
-  if (!nroCuenta && (fechaFinalControlada[0] != "NaN" || fechaFinalControlada[1] != "NaN" || fechaFinalControlada[2] != "NaN") && !nroAsientos) {
-    var mensaje = "El numero de cuenta y la fecha son necesarios para la busqueda";
+  if ((nroCuenta && (fechaFinalControlada[0] != "NaN" || fechaFinalControlada[1] != "NaN" || fechaFinalControlada[2] != "NaN")) && !nroAsientos) {
+    busquedaPorCuentaYfecha(nroCuenta, fechaFinalControlada);
+  } else if (!nroAsientos && (!nroCuenta && (fechaFinalControlada[0] === "NaN" || fechaFinalControlada[1] === "NaN" || fechaFinalControlada[2] === "NaN"))) {
+    var mensaje = "El numero de asiento es necesario para la busqueda";
     var titulo = "Campo vacío";
     abrirModalError(mensaje, titulo);
-  } else if (!nroAsientos) {
-    var mensaje = "El numero de asiento es necesario para la carga";
-    var titulo = "Campo vacío";
-    abrirModalError(mensaje, titulo);
-  } else {
-    const data = { nroCuenta: nroCuenta, fecha: fechaFinalControlada, nroAsientos: nroAsientos };
-    const queryString = new URLSearchParams(data).toString();
-
-    fetch(`http://localhost:8080/asientos/busqueda/?${queryString}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((response) => {
-      if (!response.ok) {
-        var mensaje = "No se ha encontrado ningun asiento con esos datos";
-        var titulo = "Asiento no existente";
-        abrirModalError(mensaje, titulo);
-      }
-      return response.json();
-    })
-      .then((detalles) => {
-        let divResultado = document.getElementById("myModalAsientoResultado");
-        let divModal = document.getElementById("modal-asiento");
-        // Reiniciamos el modal por si ya habia un asiento precargado no mostrarlo nuevamente
-        divModal.innerHTML = "";
-
-        let fecha = document.createElement("p");
-        fecha.textContent = "Fecha: " + detalles[0].asiento.fechaRegistro;
-        divModal.appendChild(fecha);
-
-        let nroAsiento = document.createElement("p");
-        nroAsiento.textContent = "Numero de asiento: " + detalles[0].asiento.id;
-        divModal.appendChild(nroAsiento);
-
-        let table = document.createElement("table");
-        table.classList.add("modal-table");
-
-        // Encabezado de la tabla
-        let encabezados = document.createElement("tr");
-
-        let encabezadoCuenta = document.createElement("th");
-        encabezadoCuenta.textContent = "CUENTA";
-
-        let encabezadoDebe = document.createElement("th");
-        encabezadoDebe.textContent = "DEBE";
-
-        let encabezadoHaber = document.createElement("th");
-        encabezadoHaber.textContent = "HABER";
-
-        encabezados.appendChild(encabezadoCuenta);
-        encabezados.appendChild(encabezadoDebe);
-        encabezados.appendChild(encabezadoHaber);
-
-        table.appendChild(encabezados);
-
-        detalles.forEach(detalle => {
-          let fila = document.createElement("tr");
-
-          let cuenta = document.createElement("td");
-          cuenta.textContent = detalle.cuenta.descripcion;
-          fila.appendChild(cuenta);
-
-          // DEBE o HABER
-          let debeValor = document.createElement("td");
-          let haberValor = document.createElement("td");
-
-          if (detalle.tipo === "DEBE") {
-            debeValor.textContent = detalle.valor;
-          } else if (detalle.tipo === "HABER") {
-            haberValor.textContent = detalle.valor;
-          }
-
-          fila.appendChild(debeValor);
-          fila.appendChild(haberValor);
-
-          table.appendChild(fila);
-        });
-
-        divModal.appendChild(table);
-
-        let buttonCerrar = document.createElement("button");
-        buttonCerrar.textContent = "Listo";
-        buttonCerrar.onclick = function () {
-          cerrarModalResultado();
-        }
-        divModal.appendChild(buttonCerrar);
-
-        divResultado.style.display = "block";
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-
+  } else if (nroAsientos) {
+    busquedaPorAsiento(nroAsientos);
   }
 }
+
+function crearModalAsiento(detalles) {
+  let divResultado = document.getElementById("myModalAsientoResultado");
+  let divModal = document.getElementById("modal-asiento");
+  // Reiniciamos el modal por si ya habia un asiento precargado no mostrarlo nuevamente
+  divModal.innerHTML = "";
+
+  let fecha = document.createElement("p");
+  detalles.forEach(detalle => {
+    fecha.textContent = "Fecha: " + detalle.asiento.fechaRegistro;
+  });
+  divModal.appendChild(fecha);
+
+  let nroAsiento = document.createElement("p");
+  detalles.forEach(detalle => {
+    nroAsiento.textContent = "Numero de asiento: " + detalle.asiento.id;
+  });
+  divModal.appendChild(nroAsiento);
+
+  let table = document.createElement("table");
+  table.classList.add("modal-table");
+
+  // Encabezado de la tabla
+  let encabezados = document.createElement("tr");
+
+  let encabezadoCuenta = document.createElement("th");
+  encabezadoCuenta.textContent = "CUENTA";
+
+  let encabezadoDebe = document.createElement("th");
+  encabezadoDebe.textContent = "DEBE";
+
+  let encabezadoHaber = document.createElement("th");
+  encabezadoHaber.textContent = "HABER";
+
+  encabezados.appendChild(encabezadoCuenta);
+  encabezados.appendChild(encabezadoDebe);
+  encabezados.appendChild(encabezadoHaber);
+
+  table.appendChild(encabezados);
+
+  detalles.forEach(detalle => {
+    let fila = document.createElement("tr");
+
+    let cuenta = document.createElement("td");
+    cuenta.textContent = detalle.cuenta.descripcion;
+    fila.appendChild(cuenta);
+
+    // DEBE o HABER
+    let debeValor = document.createElement("td");
+    let haberValor = document.createElement("td");
+
+    if (detalle.tipo === "DEBE") {
+      debeValor.textContent = detalle.valor;
+    } else if (detalle.tipo === "HABER") {
+      haberValor.textContent = detalle.valor;
+    }
+
+    fila.appendChild(debeValor);
+    fila.appendChild(haberValor);
+
+    table.appendChild(fila);
+  });
+
+  divModal.appendChild(table);
+
+  let buttonCerrar = document.createElement("button");
+  buttonCerrar.textContent = "Listo";
+  buttonCerrar.onclick = function () {
+    cerrarModalResultado();
+  }
+  divModal.appendChild(buttonCerrar);
+
+  divResultado.style.display = "block";
+}
+
+
+function busquedaPorCuentaYfecha(nroCuenta, fecha) {
+  const data = { nroCuenta: nroCuenta, fecha: fechaFinalControlada.replace("/", "-") };
+  const queryString = new URLSearchParams(data).toString();
+  fetch(`http://localhost:8080/asientos/busqueda/?${queryString}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((response) => {
+    if (!response.ok) {
+      var mensaje = "No se ha encontrado ningun asiento con esos datos";
+      var titulo = "Asiento no existente";
+      abrirModalError(mensaje, titulo);
+    }
+    return response.json();
+  })
+    .then((detalles) => {
+      crearModalAsiento(detalles);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
+
+function busquedaPorAsiento(nroAsiento) {
+  fetch(`http://localhost:8080/asientos/nroAsiento/` + nroAsiento, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((response) => {
+    if (!response.ok) {
+      var mensaje = "No se ha encontrado ningun asiento con esos datos";
+      var titulo = "Asiento no existente";
+      abrirModalError(mensaje, titulo);
+    }
+    return response.json();
+  })
+    .then((detalles) => {
+      crearModalAsiento(detalles);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
+
 
 function cargarAsiento() {
   const fechaInput = document.getElementById("fechaAsientoAñadir").value;
@@ -238,14 +270,14 @@ function buscarCuentasPorNroCuenta() {
         }
         return response.json();
       })
-      .then((data) => {     
+      .then((data) => {
         data.forEach((cuenta) => {
           let option = document.createElement("option");
           option.value = cuenta.nroCuenta;
           option.textContent = cuenta.nroCuenta + " - " + cuenta.descripcion + " - " + cuenta.rubro;
 
           datalist.appendChild(option);
-        });        
+        });
       })
       .catch((error) => {
         console.error("Error:", error);
