@@ -11,7 +11,7 @@ body .left {
     margin-right: auto;
     color: white;
     text-decoration: none;
-    position: fixed;
+    position: absolute;
     margin-top: 0px;
 }
 
@@ -71,7 +71,7 @@ button:hover {
     display: flex;
     color: black;
     cursor: pointer;
-    position: fixed;
+    position: absolute;
     top: 139px;
     right: 9px;
     width: 40px;
@@ -95,7 +95,7 @@ button:hover {
     display: flex;
     color: black;
     cursor: pointer;
-    position: fixed;
+    position: absolute;
     top: 139px;
     right: 9px;
     width: 40px;
@@ -125,7 +125,7 @@ button:hover {
     display: flex;
     color: black;
     cursor: pointer;
-    position: fixed;
+    position: absolute;
     top: 139px;
     right: 9px;
     width: 40px;
@@ -156,7 +156,7 @@ button:hover {
     display: flex;
     color: black;
     cursor: pointer;
-    position: fixed;
+    position: absolute;
     top: 139px;
     right: 9px;
     width: 40px;
@@ -166,4 +166,23 @@ button:hover {
 #consultarCuenta img:hover {
     background-color: rgb(255, 255, 255);
     border-top-right-radius: 20px;
+}
+
+#tablaCuentas{
+    border-collapse: collapse;
+    width: 70%;
+    text-align: center;
+    margin: 0 auto;
+    background-color: white;
+    color: black;
+}
+
+#tablaCuentas th, td{
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+}
+
+#tablaCuentas th{
+    background-color: #f2f2f2;
 }

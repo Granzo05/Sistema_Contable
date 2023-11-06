@@ -43,7 +43,7 @@
     <div class="result" id="resultadoAñadir"></div>
   </div>
   <div id="eliminarCuentaId">
-    <img width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply" class="iconoCerrar"
+    <img style="display:  none;"width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply" class="iconoCerrar"
       onclick="botonCerrar()" />
 
     <h2>- Eliminar cuenta -</h2>
@@ -60,7 +60,7 @@
     <div class="result" id="resultadoEliminar"></div>
   </div>
   <div id="modificarCuenta">
-    <img width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply" class="iconoCerrar"
+    <img style="display:  none;"width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply" class="iconoCerrar"
       onclick="botonCerrar()" />
 
     <h2>- Actualizar cuenta -</h2>
@@ -80,7 +80,7 @@
     <div class="result" id="resultadoActualizar"></div>
   </div>
   <div id="consultarCuenta">
-    <img width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply" class="iconoCerrar"
+    <img style="display:  none;" width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply" class="iconoCerrar"
       onclick="botonCerrar()" />
 
     <h2>- Buscar cuenta -</h2>
@@ -97,9 +97,10 @@
         placeholder="Número de cuenta" />
       <textarea id="descripcionBuscar" rows="1" cols="50" oninput="buscarCuentasPorDescripcion()"
         placeholder="Descripción"></textarea><br />
-      <table id="tablaCuentas" style="border: 1px;">
-      </table>
     </form>
+    <h2 style="text-align: center;">Cuentas</h2>
+    <table id="tablaCuentas" style="border: 1px;">
+    </table>
     <div class="result" id="resultadoBuscar"></div>
   </div>
 

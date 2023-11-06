@@ -83,6 +83,10 @@
 
 }
 
+#tablaCuentas{
+  border: none;
+}
+
 /* PARA EL HTML DE ASIENTOS NA MAS*/
 .modal-table {
   width: 100%;

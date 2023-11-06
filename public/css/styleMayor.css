@@ -11,7 +11,7 @@ body .left{
     margin-right: auto;
     color: white;
     text-decoration: none;
-    position: fixed;
+    position: absolute;
     margin-top: 0px;
   }
 
