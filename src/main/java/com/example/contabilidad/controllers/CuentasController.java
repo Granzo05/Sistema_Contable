@@ -4,6 +4,7 @@ import com.example.contabilidad.entities.Cuentas;
 import com.example.contabilidad.repositories.CuentasRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +23,9 @@ public class CuentasController {
     @PostMapping("/cuenta")
     public ResponseEntity<String> crearCuenta(@RequestBody Cuentas cuentasDetails) {
         List<Cuentas> planDeCuentas = cuentasRepository.findByDescripcionAndNroCuenta(cuentasDetails.getDescripcion(), cuentasDetails.getNroCuenta());
-        System.out.println(cuentasDetails.getRubro());
-        System.out.println(cuentasDetails.getNroCuenta());
-        System.out.println(cuentasDetails.getDescripcion());
-
         if (planDeCuentas.isEmpty()) {
             cuentasRepository.save(cuentasDetails);
-            return new ResponseEntity<>("El plan de cuentas ha sido añadido correctamente", HttpStatus.CREATED);
+            return new ResponseEntity<>("El plan de cuentas ha sido añadido correctamente", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("El plan de cuentas ya existe", HttpStatus.BAD_REQUEST);
         }
@@ -42,7 +39,8 @@ public class CuentasController {
     @GetMapping("/asientos/cuenta/nro_cuenta/{nroCuenta}")
     public List<Cuentas> findByNroCuentaEqualsLimit(@PathVariable String nroCuenta) {
         // Hacer un limit de 10 resultados ya que esto lo vamos a usar para mostrar una lista a la hora de buscar
-        Pageable pageable = PageRequest.of(0, 15);
+        Sort sort = Sort.by(Sort.Order.asc("nro_cuenta"));
+        Pageable pageable = PageRequest.of(0, 50);
         return cuentasRepository.findByNroCuentaEqualsLimit(nroCuenta, pageable);
     }
 
@@ -61,26 +59,25 @@ public class CuentasController {
     }
 
     @PutMapping("/cuenta/{nroCuenta}/update")
-    public ResponseEntity<Cuentas> updatePlanDeCuentas(@PathVariable String nroCuenta, @RequestBody Map<String, String> requestData) {
+    public ResponseEntity<Void> updatePlanDeCuentas(@PathVariable String nroCuenta, @RequestBody Map<String, String> requestData) {
         Cuentas cuenta = cuentasRepository.findByNroCuenta(nroCuenta);
         if (cuenta == null) {
             cuenta = cuentasRepository.findByDescripcion(requestData.get("descripcion"));
             if (cuenta == null) {
                 return ResponseEntity.notFound().build();
             }
-            if (requestData.containsKey("descripcion")) {
-                cuenta.setDescripcion(requestData.get("descripcion"));
-            }
-            if (requestData.containsKey("rubro")) {
-                cuenta.setRubro(requestData.get("rubro"));
-            }
-            cuenta.setNroCuenta(nroCuenta);
+        }
+
+        if (requestData.containsKey("descripcion")) {
+            cuenta.setDescripcion(requestData.get("descripcion"));
+        }
+        if (requestData.containsKey("rubro")) {
+            cuenta.setRubro(requestData.get("rubro"));
         }
 
         cuentasRepository.save(cuenta);
         return ResponseEntity.ok().build();
     }
-
 
     @DeleteMapping("/cuenta/{nroCuenta}/delete")
     public ResponseEntity<?> borrarPlanDeCuentas(@PathVariable String nroCuenta) {

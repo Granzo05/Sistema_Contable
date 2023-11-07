@@ -86,7 +86,7 @@ public class MayorController {
         mayorFiltrado.setAño(anio);
         mayorFiltrado.setDescripcion(cuenta.getDescripcion());
         mayorFiltrado.setMes(mes);
-
+        System.out.println(mayorFiltrado);
         return mayorFiltrado;
     }
 }

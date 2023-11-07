@@ -17,18 +17,6 @@ public class MayorDTO {
         this.cuenta = cuenta;
     }
 
-    public void setMes(int mes) {
-        this.mes = mes;
-    }
-
-    public void setAño(int año) {
-        this.año = año;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
     public Double getDebe() {
         return debe;
     }
@@ -45,7 +33,48 @@ public class MayorDTO {
         this.haber = haber;
     }
 
+    public int getMes() {
+        return mes;
+    }
+
+    public void setMes(int mes) {
+        this.mes = mes;
+    }
+
+    public int getAño() {
+        return año;
+    }
+
+    public void setAño(int año) {
+        this.año = año;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getSaldo() {
+        return saldo;
+    }
+
     public void setSaldo(String saldo) {
         this.saldo = saldo;
+    }
+
+    @Override
+    public String toString() {
+        return "MayorDTO{" +
+                "cuenta=" + cuenta +
+                ", mes=" + mes +
+                ", año=" + año +
+                ", descripcion='" + descripcion + '\'' +
+                ", debe=" + debe +
+                ", haber=" + haber +
+                ", saldo='" + saldo + '\'' +
+                '}';
     }
 }

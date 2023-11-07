@@ -34,11 +34,85 @@ function buscarCuentasPorRubro() {
     });
 }
 
+function buscarCuentasPorNroCuentaSelectEliminar() {
+  const nroCuenta = document.getElementById("numeroCuentaEliminar").value;
+
+  const datalist = document.getElementById("opcionesCuentaEliminar");
+  datalist.innerHTML = "";
+
+  if (nroCuenta) {
+    fetch("http://localhost:8080/asientos/cuenta/nro_cuenta/" + nroCuenta, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(
+            `Error al obtener datos (${response.status}): ${response.statusText}`
+          );
+        }
+        return response.json();
+      })
+      .then((data) => {
+        data.forEach((cuenta) => {
+          let option = document.createElement("option");
+          option.value = cuenta.nroCuenta;
+          option.textContent = cuenta.nroCuenta + " - " + cuenta.descripcion + " - " + cuenta.rubro;
+
+          datalist.appendChild(option);
+        });
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
+}
+
+function buscarCuentasPorNroCuentaSelectModificar() {
+  const nroCuenta = document.getElementById("numeroCuentaModificar").value;
+
+  const datalist = document.getElementById("opcionesCuentaModificar");
+  datalist.innerHTML = "";
+
+  if (nroCuenta) {
+    fetch("http://localhost:8080/asientos/cuenta/nro_cuenta/" + nroCuenta, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(
+            `Error al obtener datos (${response.status}): ${response.statusText}`
+          );
+        }
+        return response.json();
+      })
+      .then((data) => {
+        data.forEach((cuenta) => {
+          let option = document.createElement("option");
+          option.value = cuenta.nroCuenta;
+          option.textContent = cuenta.nroCuenta + " - " + cuenta.descripcion + " - " + cuenta.rubro;
+
+          datalist.appendChild(option);
+        });
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
+}
+
 
 function buscarCuentasPorNroCuenta() {
   const nroCuenta = document.getElementById("numeroCuentaBuscar").value;
 
-  if (nroCuenta != "") {
+  if (nroCuenta) {
     while (tabla.firstChild) {
       tabla.removeChild(tabla.firstChild);
     }
@@ -72,7 +146,7 @@ function buscarCuentasPorNroCuenta() {
 function buscarCuentasPorDescripcion() {
   let descripcion = document.getElementById("descripcionBuscar").value;
 
-  if (descripcion != "") {
+  if (descripcion) {
     while (tabla.firstChild) {
       tabla.removeChild(tabla.firstChild);
     }
@@ -132,11 +206,12 @@ function AñadirCuenta() {
       body: JSON.stringify(cuentaData),
     })
       .then((response) => {
-        if (!response.ok) {
+        console.log(response)
+        if (response.status === 400) {
           var mensaje = "La descripcion o el numero de cuenta ya ha sido cargado";
           var titulo = "Cuenta repetida";
           abrirModalError(mensaje, titulo);
-        } else {
+        } else if (response.status === 200) {
           limpiarCampos();
           var mensaje = "La cuenta ha sido añadida correctamente";
           var titulo = "Carga con exito";
@@ -150,7 +225,7 @@ function AñadirCuenta() {
 }
 
 function actualizarCuenta() {
-  var numeroCuenta = document.getElementById("numeroCuentaActualizar").value;
+  var numeroCuenta = document.getElementById("numeroCuentaModificar").value;
   var descripcion = document.getElementById("descripcionActualizar").value;
   var rubro = document.getElementById("rubroActualizar").value;
   if (!numeroCuenta) {
@@ -318,15 +393,13 @@ function botonConsultar() {
     botonEliminarCuenta.style.display = "none";
     botonModificarCuenta.style.display = "none";
     botonAñadirCuenta.style.display = "none";
-
-    buscarCuentasPorRubro();
   } else {
     botonConsultarCuenta.style.display = "none";
   }
 }
 
 function limpiarCampos() {
-  var numeroCuenta = document.getElementById("numeroCuentaActualizar");
+  var numeroCuenta = document.getElementById("numeroCuentaModificar");
   var descripcion = document.getElementById("descripcionActualizar");
   var rubro = document.getElementById("rubroActualizar");
 

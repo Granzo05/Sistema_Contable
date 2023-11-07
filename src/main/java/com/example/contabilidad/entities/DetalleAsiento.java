@@ -15,7 +15,7 @@ public class DetalleAsiento {
     @JoinColumn(name = "cuenta_id")
     private Cuentas cuenta;
     @Transient
-    private String descripcion;
+    private String nroCuenta;
     @Column(name = "tipo_cuenta")
     private String tipo;
 
@@ -54,8 +54,23 @@ public class DetalleAsiento {
         this.cuenta = cuenta;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public String getNroCuenta() {
+        return nroCuenta;
     }
 
+    public void setNroCuenta(String nroCuenta) {
+        this.nroCuenta = nroCuenta;
+    }
+
+    @Override
+    public String toString() {
+        return "DetalleAsiento{" +
+                "id=" + id +
+                ", asiento=" + asiento +
+                ", cuenta=" + cuenta +
+                ", nroCuenta='" + nroCuenta + '\'' +
+                ", tipo='" + tipo + '\'' +
+                ", valor=" + valor +
+                '}';
+    }
 }

@@ -20,7 +20,7 @@
     <button type="button" id="modificar" onclick="botonModificar()">
       Modificar
     </button>
-    <button type="button" id="consultar" onclick="botonConsultar()">
+    <button type="button" id="consultar" onclick="botonConsultar()" onfocus="buscarCuentasPorRubro()">
       Consultar
     </button>
   </div>
@@ -43,16 +43,14 @@
     <div class="result" id="resultadoAñadir"></div>
   </div>
   <div id="eliminarCuentaId">
-    <img style="display:  none;"width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply" class="iconoCerrar"
-      onclick="botonCerrar()" />
+    <img style="display:  none;" width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply"
+      class="iconoCerrar" onclick="botonCerrar()" />
 
     <h2>- Eliminar cuenta -</h2>
     <form id="cuentaFormEliminar">
       <input type="text" id="numeroCuentaEliminar" list="opcionesCuentaEliminar" required pattern="[0-9]"
-        oninput="mostrarPosiblesResultados()" placeholder="Número de cuenta" />
-      <datalist id="opcionesCuentaEliminar">
-        <!-- ACA SE CARGAN LAS POSIBLES BUSQUEDAS -->
-      </datalist>
+        oninput="buscarCuentasPorNroCuentaSelectEliminar()" placeholder="Número de cuenta" />
+      <datalist id="opcionesCuentaEliminar"></datalist>
       <br><button id="btnEliminarCuenta" type="button" onclick="eliminarCuenta()">
         Eliminar cuenta
       </button>
@@ -60,8 +58,8 @@
     <div class="result" id="resultadoEliminar"></div>
   </div>
   <div id="modificarCuenta">
-    <img style="display:  none;"width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply" class="iconoCerrar"
-      onclick="botonCerrar()" />
+    <img style="display:  none;" width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply"
+      class="iconoCerrar" onclick="botonCerrar()" />
 
     <h2>- Actualizar cuenta -</h2>
     <form id="cuentaFormActualizar">
@@ -73,15 +71,17 @@
         <option value="INGRESO">Ingreso</option>
         <option value="EGRESO">Egreso</option>
       </select>
-      <input type="text" id="numeroCuentaActualizar" required pattern="[0-9]" placeholder="Número de cuenta" />
+      <input type="text" id="numeroCuentaModificar" list="opcionesCuentaModificar" required pattern="[0-9]"
+        placeholder="Número de cuenta" oninput="buscarCuentasPorNroCuentaSelectModificar()" />
+      <datalist id="opcionesCuentaModificar"></datalist>
       <textarea id="descripcionActualizar" rows="4" cols="50" placeholder="Descripción"></textarea><br />
       <button id="btnModificarCuenta" type="button" onclick="actualizarCuenta()">Actualizar cuenta</button>
     </form>
     <div class="result" id="resultadoActualizar"></div>
   </div>
   <div id="consultarCuenta">
-    <img style="display:  none;" width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply" class="iconoCerrar"
-      onclick="botonCerrar()" />
+    <img style="display:  none;" width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply"
+      class="iconoCerrar" onclick="botonCerrar()" />
 
     <h2>- Buscar cuenta -</h2>
     <form id="cuentaFormBuscar">
@@ -93,8 +93,8 @@
         <option value="INGRESO">Ingreso</option>
         <option value="EGRESO">Egreso</option>
       </select>
-      <input type="text" id="numeroCuentaBuscar" required pattern="[0-9]" oninput="buscarCuentasPorNroCuenta()"
-        placeholder="Número de cuenta" />
+      <input type="text" id="numeroCuentaBuscar" required pattern="[0-9]"
+        oninput="buscarCuentasPorNroCuentaSelectModificar()" placeholder="Número de cuenta" />
       <textarea id="descripcionBuscar" rows="1" cols="50" oninput="buscarCuentasPorDescripcion()"
         placeholder="Descripción"></textarea><br />
     </form>

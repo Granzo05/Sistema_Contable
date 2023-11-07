@@ -19,8 +19,8 @@
   </div>
 
   <div id="añadirAsiento">
-    <img style="display:  none;"width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply" class="iconoCerrar"
-      onclick="botonCerrar()" />
+    <img style="display:  none;" width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply"
+      class="iconoCerrar" onclick="botonCerrar()" />
     <h2>- Añadir Asiento -</h2>
     <br><br>
     <form id="AsientoFormAñadir">
@@ -28,10 +28,12 @@
 
       <div class="asiento-container">
         <div class="cuenta-container">
-          <input type="text" placeholder="Cuenta del debe" class="cuentaDebe">
+          <input type="text" placeholder="Cuenta del debe" list="opcionesCuentasDebe" class="cuentaDebe" oninput="buscarCuentasPorNroCuentaDebe()">
+          <datalist id="opcionesCuentasDebe"></datalist>
           <div id="cuenta-cointainer-debe">
           </div>
-          <input type="text" placeholder="Cuenta del haber" class="cuentaHaber" style="direction: rtl">
+          <input type="text" placeholder="Cuenta del haber" list="opcionesCuentasHaber" class="cuentaHaber" style="direction: rtl" oninput="buscarCuentasPorNroCuentaHaber()">
+          <datalist id="opcionesCuentasHaber" style="direction: ltr;"></datalist>
           <div id="cuenta-cointainer-haber">
           </div>
         </div>
@@ -71,8 +73,9 @@
   <div id="consultarAsiento">
     <h2>- Buscar Asiento -</h2>
     <form id="AsientoFormBuscar">
-      <input type="number" id="numeroAsientoBuscar" required pattern="[0-9]" placeholder="Número de Asiento"/>
-      <input type="text" id="numeroCuentaBuscarAsiento" list="opcionesCuentas" oninput="buscarCuentasPorNroCuenta()" placeholder="Número de cuenta"/>
+      <input type="number" id="numeroAsientoBuscar" required pattern="[0-9]" placeholder="Número de Asiento" />
+      <input type="text" id="numeroCuentaBuscarAsiento" list="opcionesCuentas" oninput="buscarCuentasPorNroCuenta()"
+        placeholder="Número de cuenta" />
       <datalist id="opcionesCuentas"></datalist>
       <input type="date" id="fechaAsientoBuscar" /><br><br>
       <button id="btnConsultarAsiento" type="button" onclick="buscarAsiento()">Buscar Asiento</button>
@@ -106,7 +109,10 @@
     </div>
   </div>
 
-  <script src="/public/js/scriptAsientos.js"></script>
+  <script src="/public/js/scriptAsientos.js">
+
+
+  </script>
 </body>
 
 </html>

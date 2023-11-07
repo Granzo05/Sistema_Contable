@@ -1,28 +1,57 @@
+function validarNumeroCuenta(numeroCuenta) {
+  if (!numeroCuenta) {
+    return "El número de cuenta es necesario para la búsqueda";
+  }
+  // Puedes agregar más validaciones específicas aquí si es necesario
+  return null; // Indica que la validación es exitosa
+}
+
+function validarMes(mes) {
+  if (!mes) {
+    return "El mes del mayor es necesario para la búsqueda";
+  }
+  if (parseInt(mes) > 12 || parseInt(mes) < 1) {
+    return "El mes debe ser válido entre 1 y 12";
+  }
+  return null;
+}
+
+function validarAño(año) {
+  if (!año) {
+    return "El año del mayor es necesario para la búsqueda";
+  }
+  if (año > 2023 || año < 2013) {
+    return "El año no puede ser mayor al actual o menor a 2013";
+  }
+  return null;
+}
+
 function buscarMayor() {
-  const numeroCuenta = document.getElementById("numeroCuenta").value;
+  const numeroCuenta = document.getElementById("numeroCuentaMayor").value;
   const mes = document.getElementById("mes").value;
   const año = document.getElementById("año").value;
 
-  if (!numeroCuenta) {
-    var mensaje = "El numero de cuenta es necesario para la busqueda";
-    var titulo = "Campo vacío";
-    abrirModalError(mensaje, titulo);
-  } else if (!mes) {
-    var mensaje = "El mes del mayor es necesario para la busqueda";
-    var titulo = "Campo vacío";
-    abrirModalError(mensaje, titulo);
-  } else if (!año) {
-    var mensaje = "El año del mayor es necesario para la busqueda";
-    var titulo = "Campo vacío";
-    abrirModalError(mensaje, titulo);
-  } else if (parseInt(mes) > 12 || parseInt(mes) < 1) {
-    var mensaje = "El mes debe ser válido entre 1 y 12";
-    var titulo = "Valor erroneo";
-    abrirModalError(mensaje, titulo);
-  } else if (año > 2013 && año < 2000) {
-    var mensaje = "El año no puede ser mayor al actual o menor a 2013";
-    var titulo = "Valor erroneo";
-    abrirModalError(mensaje, titulo);
+  const errores = [];
+
+  const numeroCuentaError = validarNumeroCuenta(numeroCuenta);
+  if (numeroCuentaError) {
+    errores.push(numeroCuentaError);
+  }
+
+  const mesError = validarMes(mes);
+  if (mesError) {
+    errores.push(mesError);
+  }
+
+  const añoError = validarAño(año);
+  if (añoError) {
+    errores.push(añoError);
+  }
+
+  if (errores.length > 0) {
+    for (const error of errores) {
+      abrirModalError(error, "Campo vacío o incorrecto");
+    }
   } else {
     const data = { nroCuenta: numeroCuenta, mes: mes, año: año };
     const queryString = new URLSearchParams(data).toString();
@@ -42,6 +71,7 @@ function buscarMayor() {
         return response.json();
       })
       .then((data) => {
+        console.log(data);
         abrirModalResultado(data);
       })
       .catch((error) => {

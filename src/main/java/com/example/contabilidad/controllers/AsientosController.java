@@ -78,28 +78,24 @@ public class AsientosController {
 
     @CrossOrigin
     @GetMapping("/asientos/busqueda/")
-    public List<DetalleAsiento> buscarAsiento(
+    public List<DetalleAsiento> buscarAsientoPorNumeroCuentaYFecha(
             @RequestParam("fecha") String fecha,
             @RequestParam("nroCuenta") String nroCuenta
     ) {
-
-        List<DetalleAsiento> detalleBuscado = new ArrayList<>();
-        Cuentas cuenta = cuentasRepository.findByNroCuenta(nroCuenta);
-        List<DetalleAsiento> detallesConNroAsiento = detalleAsientoRepository.findByIdCuenta(cuenta.getId());
-
-        fecha = fecha.replace("-", "/");
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Date date;
-        try {
-            date = sdf.parse(fecha);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
+        String[] fechaFormateada = fecha.split("-");
+        // Si el dia es entre 1 y 9 le agrega un 0 adelante
+        if (fechaFormateada[2].length() == 1) {
+            fechaFormateada[2] = 0 + fechaFormateada[2];
         }
 
+        List<DetalleAsiento> detalleBuscado = new ArrayList<>();
+
+        Cuentas cuenta = cuentasRepository.findByNroCuenta(nroCuenta);
+
+        List<DetalleAsiento> detallesConNroAsiento = detalleAsientoRepository.findByIdCuenta(cuenta.getId());
         for (DetalleAsiento detalle : detallesConNroAsiento) {
-            if (detalle.getAsiento().getFechaRegistro().equals(date)) {
-                detalle.getAsiento().setFechaFormateada(fecha);
+            if (detalle.getAsiento().getFechaRegistro().toString().equals(fechaFormateada[0] + "-" + fechaFormateada[1] + "-" + fechaFormateada[2])) {
+                detalle.getAsiento().setFechaFormateada(fechaFormateada[2] + "-" + fechaFormateada[1] + "-" + fechaFormateada[0]);
                 detalleBuscado.add(detalle);
             }
         }
@@ -108,7 +104,7 @@ public class AsientosController {
 
     @CrossOrigin
     @GetMapping("/asientos/nroAsiento/{nroAsiento}")
-    public List<DetalleAsiento> buscarAsiento(
+    public List<DetalleAsiento> buscarAsientoPorNumeroAsiento(
             @PathVariable("nroAsiento") Long nroAsiento
     ) {
         List<DetalleAsiento> detalles = detalleAsientoRepository.findByAsientoId(nroAsiento);
@@ -138,7 +134,6 @@ public class AsientosController {
         return detalles;
     }
 
-
     private void cargaDelMayor(List<DetalleAsiento> detallesAsiento) {
         for (DetalleAsiento detalle : detallesAsiento) {
             // Buscamos el mayor en la db
@@ -149,6 +144,7 @@ public class AsientosController {
                 // Asignamos la cuenta que va a tener asociada
                 mayor.setCuenta(detalle.getCuenta());
             }
+
             // Asignamos el valor que se haya registrado en el cliente sobre el mayor de cada una de las cuentas
             if (detalle.getTipo().equals("DEBE")) {
                 mayor.setDebe(mayor.getDebe() + detalle.getValor());
@@ -177,7 +173,7 @@ public class AsientosController {
     private DetalleAsiento cargarDetallesAsiento(String tipoCuenta, DetalleAsiento detalle, Asientos asiento) {
 
         // Busco la cuenta en el plan de cuentas, la que por ahora va a ser nula mientras no existan cuentas
-        Cuentas cuenta = cuentasRepository.findByDescripcion(detalle.getDescripcion());
+        Cuentas cuenta = cuentasRepository.findByNroCuenta(detalle.getNroCuenta());
         // Almaceno cada uno de los detalles del lado del debe para luego almacenarlos en el array que se le asigna al asiento
         DetalleAsiento detalleFinal = new DetalleAsiento();
         detalleFinal.setTipo(tipoCuenta);
