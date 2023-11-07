@@ -168,39 +168,55 @@ function cargarAsiento() {
     detallesHaber: [],
   };
 
-  var sumaValorDebe = parseFloat(0);
-  var sumaValorHaber = parseFloat(0);
+  // Variables para sumar los valores de debe y haber
+  let sumaValorDebe = 0;
+  let sumaValorHaber = 0;
 
+  // Obtener los valores de las cuentas de debe
   let cuentaDebeInputs = document.querySelectorAll(".cuentaDebe");
   let valorDebeInputs = document.querySelectorAll(".valorDebe");
 
   for (let i = 0; i < cuentaDebeInputs.length; i++) {
     let nroCuenta = cuentaDebeInputs[i].value;
-    let valor = valorDebeInputs[i].value;
-    if (parseFloat(valor) < 0) {
-      var mensaje = "El valor de la cuenta " + nroCuenta + " no puede ser negativo";
-      var titulo = "Valor erroneo";
+    let valor = parseFloat(valorDebeInputs[i].value);
+
+    if (isNaN(valor) || valor < 0) {
+      var mensaje = "El valor de la cuenta " + nroCuenta + " no es válido";
+      var titulo = "Valor incorrecto";
       abrirModalError(mensaje, titulo);
       break;
     }
-    sumaValorDebe = parseFloat(valor);
+
+    sumaValorDebe += valor;
     asientosData.detallesDebe.push({ nroCuenta, valor });
   }
 
+  // Obtener los valores de las cuentas de haber
   let cuentaHaberInputs = document.querySelectorAll(".cuentaHaber");
   let valorHaberInputs = document.querySelectorAll(".valorHaber");
 
   for (let i = 0; i < cuentaHaberInputs.length; i++) {
     let nroCuenta = cuentaHaberInputs[i].value;
-    let valor = valorHaberInputs[i].value;
-    if (parseFloat(valor) < 0) {
-      var mensaje = "El valor de la cuenta " + nroCuenta + " no puede ser negativo";
-      var titulo = "Valor erroneo";
+    let valor = parseFloat(valorHaberInputs[i].value);
+
+    if (isNaN(valor) || valor < 0) {
+      var mensaje = "El valor de la cuenta " + nroCuenta + " no es válido";
+      var titulo = "Valor incorrecto";
       abrirModalError(mensaje, titulo);
       break;
     }
-    sumaValorHaber = parseFloat(valor);
+
+    sumaValorHaber += valor;
     asientosData.detallesHaber.push({ nroCuenta, valor });
+  }
+
+  // Verificar que las sumas sean iguales
+  if (sumaValorDebe === sumaValorHaber) {
+    // Las sumas son iguales, proceder con la lógica deseada
+  } else {
+    var mensaje = "La suma de los valores en cuentas de debe y haber no es igual";
+    var titulo = "Error de balance";
+    abrirModalError(mensaje, titulo);
   }
 
   let fechaFinalControlada = fechaFormateada.split("/");
@@ -293,8 +309,9 @@ function buscarCuentasPorNroCuenta() {
 
 function buscarCuentasPorNroCuentaDebe() {
   const elementosCuentaDebe = document.getElementsByClassName("cuentaDebe");
-  if (elementosCuentaDebe.length > 0) {
-    const nroCuenta = elementosCuentaDebe[0].value;
+
+  for (let i = 0; i < elementosCuentaDebe.length; i++) {
+    const nroCuenta = elementosCuentaDebe[i].value;
     const datalist = document.getElementById("opcionesCuentasDebe");
     datalist.innerHTML = "";
 
@@ -331,8 +348,8 @@ function buscarCuentasPorNroCuentaDebe() {
 
 function buscarCuentasPorNroCuentaHaber() {
   const elementosCuentaDebe = document.getElementsByClassName("cuentaHaber");
-  if (elementosCuentaDebe.length > 0) {
-    const nroCuenta = elementosCuentaDebe[0].value;
+  for (let i = 0; i < elementosCuentaDebe.length; i++) {
+    const nroCuenta = elementosCuentaDebe[i].value;
     const datalist = document.getElementById("opcionesCuentasHaber");
     datalist.innerHTML = "";
 
@@ -394,9 +411,14 @@ function agregarInputsAsientoHaber() {
 
   let cuentaHaber = document.createElement("input");
   cuentaHaber.type = "text";
-  cuentaHaber.placeholder = "Cuenta al haber"
+  cuentaHaber.placeholder = "Cuenta del haber";
   cuentaHaber.className = "cuentaHaber";
-  cuentaHaber.style = "direction: rtl"
+  cuentaHaber.style.direction = "rtl";
+  cuentaHaber.oninput = function () {
+    buscarCuentasPorNroCuentaHaber();
+  }
+  cuentaHaber.setAttribute("list", "opcionesCuentasHaber");
+
 
   divCuentasHaber.appendChild(cuentaHaber);
 
@@ -406,9 +428,6 @@ function agregarInputsAsientoHaber() {
   valorHaber.type = "number";
   valorHaber.placeholder = "Valor del haber";
   valorHaber.className = "valorHaber";
-  valorHaber.onchange = function () {
-    agregarInputsAsiento();
-  }
 
   divValorHaber.appendChild(valorHaber);
 }
@@ -418,8 +437,12 @@ function agregarInputsAsientoDebe() {
 
   let cuentaDebe = document.createElement("input");
   cuentaDebe.type = "text";
-  cuentaDebe.placeholder = "Cuenta al debe"
+  cuentaDebe.placeholder = "Cuenta del debe";
   cuentaDebe.className = "cuentaDebe";
+  cuentaDebe.setAttribute("list", "opcionesCuentasDebe");
+  cuentaDebe.oninput = function () {
+    buscarCuentasPorNroCuentaDebe();
+  }
 
   divCuentasDebe.appendChild(cuentaDebe);
 
