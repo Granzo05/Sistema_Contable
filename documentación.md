@@ -36,6 +36,8 @@ Controladores de la API:
 
 AsientosController:
 
+### Método: crearAsientos
+
     @PostMapping("/asientos")
   - crearAsientos(@RequestBody AsientoDTO asientoDTO):
      1) Recibe un body con la fecha, un List<DetallesAsiento> con detalles del debe y un List<DetallesAsiento> con los detalles del haber.
@@ -55,6 +57,8 @@ AsientosController:
      6) Guarda el mayor.
      7) Guarda el detalle, al recorrer un for por todos los detalles nos aseguramos que todo esto se realice por cada una de las cuentas involucradas.
 
+### Método: buscarAsientoPorNumeroCuentaYFecha
+
     @GetMapping("/asientos/busqueda/")
   - buscarAsientoPorNumeroCuentaYFecha(@RequestParam("fecha") String fecha,@RequestParam("nroCuenta") String nroCuenta):
      1) Recibe como parámetros la fecha y la cuenta a buscar.
@@ -65,12 +69,16 @@ AsientosController:
      6) Recorremos cada uno y guardamos únicamente los que coincidan con la fecha buscada.
      7) Devolvemos esta lista hacia el cliente.
 
+### Método: buscarAsientoPorNumeroAsiento
+
     @GetMapping("/asientos/nroAsiento/{nroAsiento}")
   - buscarAsientoPorNumeroAsiento(@PathVariable("nroAsiento") Long nroAsiento):
      1) Recibe como parámetro el número de asiento, el cual manejamos como ID dentro de la tabla asientos.
      2) Buscamos los detalles asientos que contengan el asiento_id que recibimos.
      3) Formateamos la fecha de yyyy-mm-dd a dd/mm/yyyy.
      4) Devolvemos el detalle del asiento.
+
+ ### Método: cargarDetallesAsiento
  
   - cargarDetallesAsiento(String tipoCuenta, DetalleAsiento detalle, Asientos asiento):
      1) Recibe como parámetro el asiento, los detalles de la cuenta y el tipo de cuenta(Debe o Haber).
@@ -80,11 +88,15 @@ AsientosController:
  
 
 CuentasController:
+
+### Método: crearCuenta
     @PostMapping("/cuenta")
   - crearCuenta(@RequestBody Cuentas cuentasDetails):
      1) Recibe el numero de cuenta, la descripción y el rubro de la cuenta.
      2) Busca si existe una en la base de datos.
      3) Si ya existe una devuelve un error, si no existe la carga a la base de datos.
+
+### Método: buscarPlanDeCuentasPorNroCuenta
 
     @GetMapping("/cuenta/nro_cuenta/{nroCuenta}")
   - buscarPlanDeCuentasPorNroCuenta(@PathVariable String nroCuenta):
@@ -92,10 +104,14 @@ CuentasController:
      2) Devuelve todas las cuentas que sean similares a ese nroCuenta utilizando un LIKE %nro%.
      3) Se usa para cargar dinámicamente la tabla a mostrar cuando el usuario comienza a escribir un número de cuenta para ir filtrando los resultados.
 
+### Método: findByNroCuentaEqualsLimit
+
     @GetMapping("/asientos/cuenta/nro_cuenta/{nroCuenta}")
   - findByNroCuentaEqualsLimit(@PathVariable String nroCuenta):
      1) Recibe el numero de cuenta.
      2) Devuelve todas las cuentas que sean similares a ese nroCuenta utilizando un LIKE %nro% pero con un máximo de 50 resultados.
+
+### Método: buscarPlanDeCuentasPorDescripcion
 
     @GetMapping("/cuenta/descripcion/{descripcion}")
   - buscarPlanDeCuentasPorDescripcion(@PathVariable String descripcion):
@@ -103,17 +119,23 @@ CuentasController:
      2) Devuelve todas las cuentas que sean similares a esa descripcion utilizando un LIKE %descripcion%.
      3) Se usa para cargar dinámicamente la tabla a mostrar cuando el usuario comienza a escribir una descripción para ir filtrando los resultados.
 
+### Método: buscarPlanDeCuentasPorRubro
+
     @GetMapping("/cuenta/{rubro}")
   - buscarPlanDeCuentasPorRubro(@PathVariable String rubro):
      1) Recibe el rubro.
      2) Devuelve todas las cuentas que posean ese rubro.
      3) Esto se utiliza al cambiar el select del lado del cliente, en el cual va a devolver todas las cuentas que pertenezcan a un rubro en específico.
-        
+
+### Método: updatePlanDeCuentas
+
     @PutMapping("/cuenta/{nroCuenta}/update")
   - updatePlanDeCuentas(@PathVariable String nroCuenta, @RequestBody Map<String, String> requestData):
      1) Recibe el número de cuenta, y si es posible la descripción o el rubro, al ser opcional se usa un Map.
      2) Busca por el número de cuenta.
      3) Si no encuentra una cuenta entonces la busca por la descripción, esto puede servir cuando a una cuenta se le quiere cambiar el número.
+        
+### Método: borrarPlanDeCuentas
 
     @DeleteMapping("/cuenta/{nroCuenta}/delete")
   - borrarPlanDeCuentas(@PathVariable String nroCuenta):
@@ -121,6 +143,9 @@ CuentasController:
      2) Busca la cuenta asociada y en caso de existir la borra.
    
 CuentasController:
+
+### Método: buscarMayor
+
     @GetMapping("/mayor/")
   - buscarMayor(@RequestParam("nroCuenta") String nroCuenta, @RequestParam("mes") int mes, @RequestParam("año") int anio):
      1) Recibe el numero de cuenta, un mes y un año.
