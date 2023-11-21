@@ -22,7 +22,7 @@ Proyecto que simula un sistema contable básico donde se puede interactuar con u
    - Colocar tu usuario y contraseña
 5) Abrir el archivo "Query SQL" que se encuentra en la carpeta del proyecto y ejecutarlo con tu programa de manejo de base de datos, en mi caso es Workbench. Esto creará la base de datos y cargará un plan de cuentas resumido para que puedas probar que se accede a la base de datos correctamente más adelante.
 6) Navegar a src\main\java\com\example\contabilidad\main y ejecutarlo, esto va a encargarse de crear las tablas necesarias para el proyecto.
-7) Abrir la carpeta que extrajiste al principio con Visual Studio Code (Es necesario que tengas la extensión de Live Server).
+7) Abrir la carpeta que extrajiste al principio (Sistema_Contable-main) con Visual Studio Code (Es necesario que tengas la extensión de Live Server).
 8) Navegar a public\html\main.html y hacerle click derecho, seleccionar donde dice "Open with Live Server".
 
 Listo, ahora podes navegar por las diferentes páginas e interactuar con los datos.
