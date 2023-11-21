@@ -1,8 +1,11 @@
 Requisitos:
 
 JDK de Java: 19
+Visual Studio Code
+Live Server(Extensión de Visual Studio)
+MySQL Workbench o similar
 
-Instrucciones de instalación y configuración.
+### Código
 
 Diagrama de Clases:
 
