@@ -1,3 +1,18 @@
+const mensajeErrorFecha = "La fecha completa es necesaria para la busqueda";
+const mensajeErrorAsiento = "El número de asiento es necesario para la busqueda";
+const mensajeErrorCuenta = "El número de cuenta es necesario para la busqueda";
+const mensajeErrorBusqueda = "No se ha encontrado ningún resultado con los datos ingresados";
+const mensajeErrorCuentaDebe = "Campo de cuenta del debe vacío";
+const mensajeErrorCuentaHaber = "Campo de cuenta del haber vacío";
+const mensajeErrorValorDebe = "Campo de valor del debe vacío o negativo";
+const mensajeErrorValorHaber = "Campo de valor del haber vacío o negativo";
+const mensajeErrorSumaValores = "Los valores del debe y el haber deben ser iguales";
+const mensajeExito = "No hubo errores al procesar la tarea";
+const tituloErrorBalance = "Cuenta doble errónea";
+const tituloErrorVacio = "El campo está vacío";
+const tituloErrorBusquedaNula = "Búsqueda sin resultados";
+const tituloExito = "Tarea exitosa";
+
 function buscarAsiento() {
   const nroAsientos = document.getElementById("numeroAsientoBuscar").value;
   const fechaInput = document.getElementById("fechaAsientoBuscar").value;
@@ -11,99 +26,20 @@ function buscarAsiento() {
   let fechaFormateada = `${anio}/${mes}/${dia}`;
   let fechaFinalControlada = fechaFormateada.split("/");
 
-
+  // Comprobamos si se busca por número de cuenta o por fecha y número de asiento, es decir si nroAsiento posee texto y tanto la fecha como el nroCuenta estan vacíos se busca por uno
+  // o por otro. Al buscar por número de cuenta y fecha se pueden ver todos los asientos de ese día que involucren esa cuenta en específico, dando el asientoId con el cual
+  // se puede buscar como nroAsiento y ver todas las cuentas que involucran ese asiento. Con fecha y cuenta se busca solo esa cuenta, con asiento id todas las cuentas de un asiento.
   if ((nroCuenta && (fechaFinalControlada[0] != "NaN" || fechaFinalControlada[1] != "NaN" || fechaFinalControlada[2] != "NaN")) && !nroAsientos) {
     busquedaPorCuentaYfecha(nroCuenta, fechaFinalControlada);
   } else if (!nroAsientos && (!nroCuenta && (fechaFinalControlada[0] === "NaN" || fechaFinalControlada[1] === "NaN" || fechaFinalControlada[2] === "NaN"))) {
-    var mensaje = "El numero de asiento es necesario para la busqueda";
-    var titulo = "Campo vacío";
-    abrirModalError(mensaje, titulo);
+    abrirModalError(mensajeErrorAsiento, tituloErrorVacio);
   } else if (nroAsientos && (!nroCuenta && (fechaFinalControlada[0] === "NaN" || fechaFinalControlada[1] === "NaN" || fechaFinalControlada[2] === "NaN"))) {
     busquedaPorAsiento(nroAsientos);
   }
 }
 
-function crearModalAsiento(detalles) {
-  console.log(detalles)
-  let divResultado = document.getElementById("myModalAsientoResultado");
-  let divModal = document.getElementById("modal-asiento");
-  // Reiniciamos el modal por si ya habia un asiento precargado no mostrarlo nuevamente
-  divModal.innerHTML = "";
-
-  let fecha = document.createElement("p");
-  detalles.forEach(detalle => {
-    var fechaDB = detalle.asiento.fechaRegistro;
-    var fechaDB = fechaDB.split("-");
-    fecha.textContent = "Fecha: " + fechaDB[2] + "/" + fechaDB[1] + "/" + fechaDB[0];
-  });
-  divModal.appendChild(fecha);
-
-  let nroAsiento = document.createElement("p");
-  detalles.forEach(detalle => {
-    nroAsiento.textContent = "Numero de asiento: " + detalle.asiento.id;
-  });
-  divModal.appendChild(nroAsiento);
-
-  let table = document.createElement("table");
-  table.classList.add("modal-table");
-
-  // Encabezado de la tabla
-  let encabezados = document.createElement("tr");
-
-  let encabezadoCuenta = document.createElement("th");
-  encabezadoCuenta.textContent = "CUENTA";
-
-  let encabezadoDebe = document.createElement("th");
-  encabezadoDebe.textContent = "DEBE";
-
-  let encabezadoHaber = document.createElement("th");
-  encabezadoHaber.textContent = "HABER";
-
-  encabezados.appendChild(encabezadoCuenta);
-  encabezados.appendChild(encabezadoDebe);
-  encabezados.appendChild(encabezadoHaber);
-
-  table.appendChild(encabezados);
-
-  detalles.forEach(detalle => {
-    let fila = document.createElement("tr");
-
-    let cuenta = document.createElement("td");
-    cuenta.textContent = detalle.cuenta.descripcion;
-    fila.appendChild(cuenta);
-
-    // DEBE o HABER
-    let debeValor = document.createElement("td");
-    let haberValor = document.createElement("td");
-
-    if (detalle.tipo === "DEBE") {
-      debeValor.textContent = detalle.valor;
-    } else if (detalle.tipo === "HABER") {
-      haberValor.textContent = detalle.valor;
-    }
-
-    fila.appendChild(debeValor);
-    fila.appendChild(haberValor);
-
-    table.appendChild(fila);
-  });
-
-  divModal.appendChild(table);
-
-  let buttonCerrar = document.createElement("button");
-  buttonCerrar.textContent = "Listo";
-  buttonCerrar.onclick = function () {
-    cerrarModalResultado();
-  }
-  divModal.appendChild(buttonCerrar);
-
-  divResultado.style.display = "block";
-
-  limpiarCampos();
-}
-
-
 function busquedaPorCuentaYfecha(nroCuenta, fecha) {
+  // Parseo la fecha para almacenarla como dd-mm-yyyy
   var fechaFinal = fecha[0] + "-" + fecha[1] + "-" + fecha[2];
   const data = { nroCuenta: nroCuenta, fecha: fechaFinal };
   const queryString = new URLSearchParams(data).toString();
@@ -114,9 +50,7 @@ function busquedaPorCuentaYfecha(nroCuenta, fecha) {
     },
   }).then((response) => {
     if (!response.ok) {
-      var mensaje = "No se ha encontrado ningun asiento con esos datos";
-      var titulo = "Asiento no existente";
-      abrirModalError(mensaje, titulo);
+      abrirModalError(mensajeErrorBusqueda, tituloErrorBusquedaNula);
     }
     return response.json();
   })
@@ -136,9 +70,7 @@ function busquedaPorAsiento(nroAsiento) {
     },
   }).then((response) => {
     if (!response.ok) {
-      var mensaje = "No se ha encontrado ningun asiento con esos datos";
-      var titulo = "Asiento no existente";
-      abrirModalError(mensaje, titulo);
+      abrirModalError(mensajeErrorBusqueda, tituloErrorBusquedaNula);
     }
     return response.json();
   })
@@ -149,7 +81,6 @@ function busquedaPorAsiento(nroAsiento) {
       console.error("Error:", error);
     });
 }
-
 
 function cargarAsiento() {
   const fechaInput = document.getElementById("fechaAsientoAñadir").value;
@@ -168,7 +99,6 @@ function cargarAsiento() {
     detallesHaber: [],
   };
 
-  // Variables para sumar los valores de debe y haber
   let sumaValorDebe = 0;
   let sumaValorHaber = 0;
 
@@ -181,12 +111,10 @@ function cargarAsiento() {
     let valor = parseFloat(valorDebeInputs[i].value);
 
     if (isNaN(valor) || valor < 0) {
-      var mensaje = "El valor de la cuenta " + nroCuenta + " no es válido";
-      var titulo = "Valor incorrecto";
-      abrirModalError(mensaje, titulo);
+      abrirModalError(mensajeErrorValorDebe, tituloErrorVacio);
       break;
     }
-
+    // Sumamos para ver si ambas cuentas coinciden en valor al final
     sumaValorDebe += valor;
     asientosData.detallesDebe.push({ nroCuenta, valor });
   }
@@ -200,9 +128,7 @@ function cargarAsiento() {
     let valor = parseFloat(valorHaberInputs[i].value);
 
     if (isNaN(valor) || valor < 0) {
-      var mensaje = "El valor de la cuenta " + nroCuenta + " no es válido";
-      var titulo = "Valor incorrecto";
-      abrirModalError(mensaje, titulo);
+      abrirModalError(mensajeErrorValorHaber, tituloErrorVacio);
       break;
     }
 
@@ -212,62 +138,44 @@ function cargarAsiento() {
 
   // Verificar que las sumas sean iguales
   if (sumaValorDebe === sumaValorHaber) {
-    // Las sumas son iguales, proceder con la lógica deseada
-  } else {
-    var mensaje = "La suma de los valores en cuentas de debe y haber no es igual";
-    var titulo = "Error de balance";
-    abrirModalError(mensaje, titulo);
-  }
+    let fechaFinalControlada = fechaFormateada.split("/");
 
-  let fechaFinalControlada = fechaFormateada.split("/");
-
-  if (fechaFinalControlada[0] === "NaN" || fechaFinalControlada[1] === "NaN" || fechaFinalControlada[2] === "NaN") {
-    var mensaje = "La fecha del asiento es necesaria para la carga";
-    var titulo = "Campo vacío";
-    abrirModalError(mensaje, titulo);
-  } else if (!valorHaberInputs) {
-    var mensaje = "La cuenta del haber debe tener valor";
-    var titulo = "Campo vacío";
-    abrirModalError(mensaje, titulo);
-  } else if (!cuentaHaberInputs) {
-    var mensaje = "Debe haber una cuenta hacia el haber";
-    var titulo = "Campo vacío";
-    abrirModalError(mensaje, titulo);
-  } else if (!cuentaDebeInputs) {
-    var mensaje = "Debe haber una cuenta hacia el haber";
-    var titulo = "Campo vacío";
-    abrirModalError(mensaje, titulo);
-  } else if (!valorDebeInputs) {
-    var mensaje = "La cuenta del debe debe tener valor";
-    var titulo = "Campo vacío";
-    abrirModalError(mensaje, titulo);
-  } else if (sumaValorDebe != sumaValorHaber) {
-    var mensaje = "Ambas cuentas deben cancelarse, los valores ingresados son incorrectos o falta una cuenta";
-    var titulo = "Partida doble erronea";
-    abrirModalError(mensaje, titulo);
-  } else {
-    fetch("http://localhost:8080/asientos", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(asientosData),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          var mensaje = "Las cuentas ingresadas no son correctas";
-          var titulo = "Error al cargar asiento";
-          abrirModalError(mensaje, titulo);
-        } else {
-          limpiarCampos();
-          var mensaje = "Carga con exito";
-          var titulo = "Asiento cargado satisfactoriamente";
-          abrirModalExito(mensaje, titulo);
-        }
+    if (fechaFinalControlada[0] === "NaN" || fechaFinalControlada[1] === "NaN" || fechaFinalControlada[2] === "NaN") {
+      // Fecha incorrecta
+      abrirModalError(mensajeErrorFecha, tituloErrorVacio);
+    } else if (!valorHaberInputs) {
+      // Valores vacios o negativos
+      abrirModalError(mensajeErrorValorHaber, tituloErrorVacio);
+    } else if (!cuentaHaberInputs) {
+      // Cuentas vacías
+      abrirModalError(mensajeErrorCuentaHaber, tituloErrorVacio);
+    } else if (!cuentaDebeInputs) {
+      abrirModalError(mensajeErrorCuentaDebe, tituloErrorVacio);
+    } else if (!valorDebeInputs) {
+      abrirModalError(mensajeErrorValorDebe, tituloErrorVacio);
+    } else {
+      fetch("http://localhost:8080/asientos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(asientosData),
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+        .then((response) => {
+          if (!response.ok) {
+            abrirModalError(mensajeErrorBusqueda, tituloErrorBusquedaNula);
+          } else {
+            limpiarCampos();
+            abrirModalExito(mensajeExito, tituloExito);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+  } else {
+    // Valores entre debe y haber no coinciden
+    abrirModalError(mensajeErrorSumaValores, tituloErrorBalance);
   }
 }
 
@@ -278,32 +186,7 @@ function buscarCuentasPorNroCuenta() {
   datalist.innerHTML = "";
 
   if (nroCuenta) {
-    fetch("http://localhost:8080/asientos/cuenta/nro_cuenta/" + nroCuenta, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(
-            `Error al obtener datos (${response.status}): ${response.statusText}`
-          );
-        }
-        return response.json();
-      })
-      .then((data) => {
-        data.forEach((cuenta) => {
-          let option = document.createElement("option");
-          option.value = cuenta.nroCuenta;
-          option.textContent = cuenta.nroCuenta + " - " + cuenta.descripcion + " - " + cuenta.rubro;
-
-          datalist.appendChild(option);
-        });
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+    buscarPorNroCuenta(nroCuenta, datalist);
   }
 }
 
@@ -316,32 +199,7 @@ function buscarCuentasPorNroCuentaDebe() {
     datalist.innerHTML = "";
 
     if (nroCuenta) {
-      fetch("http://localhost:8080/asientos/cuenta/nro_cuenta/" + nroCuenta, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(
-              `Error al obtener datos (${response.status}): ${response.statusText}`
-            );
-          }
-          return response.json();
-        })
-        .then((data) => {
-          data.forEach((cuenta) => {
-            let option = document.createElement("option");
-            option.value = cuenta.nroCuenta;
-            option.textContent = cuenta.nroCuenta + " - " + cuenta.descripcion + " - " + cuenta.rubro;
-
-            datalist.appendChild(option);
-          });
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+      buscarPorNroCuenta(nroCuenta, datalist);
     }
   }
 }
@@ -354,56 +212,37 @@ function buscarCuentasPorNroCuentaHaber() {
     datalist.innerHTML = "";
 
     if (nroCuenta) {
-      fetch("http://localhost:8080/asientos/cuenta/nro_cuenta/" + nroCuenta, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(
-              `Error al obtener datos (${response.status}): ${response.statusText}`
-            );
-          }
-          return response.json();
-        })
-        .then((data) => {
-          data.forEach((cuenta) => {
-            let option = document.createElement("option");
-            option.value = cuenta.nroCuenta;
-            option.textContent = cuenta.nroCuenta + " - " + cuenta.descripcion + " - " + cuenta.rubro;
-
-            datalist.appendChild(option);
-          });
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+      buscarPorNroCuenta(nroCuenta, datalist);
     }
   }
 }
 
-let añadirAsientos = document.getElementById("añadirAsiento");
-let consultarAsientos = document.getElementById("consultarAsiento");
+// Esta función se encarga de ir buscando y rellenando los inputs con la cuenta buscada utilizando un LIKE y trayendo todas las cuentas similares
+function buscarPorNroCuenta(nroCuenta, datalist) {
+  fetch("http://localhost:8080/asientos/cuenta/nro_cuenta/" + nroCuenta, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        abrirModalError(mensajeErrorBusqueda, tituloErrorBusquedaNula);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      data.forEach((cuenta) => {
+        let option = document.createElement("option");
+        option.value = cuenta.nroCuenta;
+        option.textContent = cuenta.nroCuenta + " - " + cuenta.descripcion + " - " + cuenta.rubro;
 
-function botonAñadir() {
-
-  if (añadirAsientos.style.display === "none") {
-    añadirAsientos.style.display = "block";
-    consultarAsientos.style.display = "none";
-  } else {
-    añadirAsientos.style.display = "none";
-  }
-}
-
-function botonConsultar() {
-  if (consultarAsientos.style.display === "none") {
-    consultarAsientos.style.display = "block";
-    añadirAsientos.style.display = "none";
-  } else {
-    consultarAsientos.style.display = "none";
-  }
+        datalist.appendChild(option);
+      });
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 }
 
 function agregarInputsAsientoHaber() {
@@ -461,40 +300,17 @@ function agregarInputsAsientos() {
   agregarInputsAsientoHaber();
 }
 
+// Vaciado de campos
 function limpiarCampos() {
-  var fechaInput = document.getElementById("fechaAsientoAñadir");
+  limpiarCamposPorId("fechaAsientoAñadir");
+  limpiarCamposPorClase(".cuentaDebe");
+  limpiarCamposPorClase(".valorDebe");
+  limpiarCamposPorClase(".cuentaHaber");
+  limpiarCamposPorClase(".valorHaber");
 
-  let cuentaDebeInputs = document.querySelectorAll(".cuentaDebe");
-  let valorDebeInputs = document.querySelectorAll(".valorDebe");
-  let cuentaHaberInputs = document.querySelectorAll(".cuentaHaber");
-  let valorHaberInputs = document.querySelectorAll(".valorHaber");
-
-  fechaInput.value = "";
-
-  cuentaDebeInputs.forEach(element => {
-    element.value = "";
-  });
-
-  valorDebeInputs.forEach(element => {
-    element.value = "";
-  });
-
-  cuentaHaberInputs.forEach(element => {
-    element.value = "";
-  });
-
-  valorHaberInputs.forEach(element => {
-    element.value = "";
-  });
-
-
-  var fecha = document.getElementById("fechaAsientoBuscar");
-  var cuenta = document.getElementById("numeroCuentaBuscarAsiento");
-  var asiento = document.getElementById("numeroAsientoBuscar");
-
-  fecha.value = "";
-  cuenta.value = "";
-  asiento.value = "";
+  limpiarCamposPorId("fechaAsientoBuscar");
+  limpiarCamposPorId("numeroCuentaBuscarAsiento");
+  limpiarCamposPorId("numeroAsientoBuscar");
 }
 
 function reiniciarAsiento() {
@@ -502,42 +318,25 @@ function reiniciarAsiento() {
   location.reload();
 }
 
-function abrirModalExito(mensaje, titulo) {
-  let modal = document.getElementById("myModalAsientosExito");
+// Navegabilidad
+let añadirAsientos = document.getElementById("añadirAsiento");
+let consultarAsientos = document.getElementById("consultarAsiento");
 
-  let tituloModal = modal.querySelector(".modalTitulo");
-  let mensajeModal = modal.querySelector(".modalMensaje");
+function botonAñadir() {
 
-  tituloModal.innerHTML = titulo;
-  mensajeModal.innerHTML = mensaje;
-
-  modal.style.display = "block";
+  if (añadirAsientos.style.display === "none") {
+    añadirAsientos.style.display = "block";
+    consultarAsientos.style.display = "none";
+  } else {
+    añadirAsientos.style.display = "none";
+  }
 }
 
-
-function cerrarModalExito() {
-  let modal = document.getElementById("myModalAsientosExito");
-  modal.style = "display: none";
-}
-
-function abrirModalError(mensaje, titulo) {
-  let modal = document.getElementById("myModalAsientosError");
-
-  let tituloModal = modal.querySelector(".modalTitulo");
-  let mensajeModal = modal.querySelector(".modalMensaje");
-
-  tituloModal.innerHTML = titulo;
-  mensajeModal.innerHTML = mensaje;
-
-  modal.style.display = "block";
-}
-
-function cerrarModalError() {
-  let modal = document.getElementById("myModalAsientosError");
-  modal.style = "display: none";
-}
-
-function cerrarModalResultado() {
-  let modal = document.getElementById("myModalAsientoResultado");
-  modal.style = "display: none";
+function botonConsultar() {
+  if (consultarAsientos.style.display === "none") {
+    consultarAsientos.style.display = "block";
+    añadirAsientos.style.display = "none";
+  } else {
+    consultarAsientos.style.display = "none";
+  }
 }

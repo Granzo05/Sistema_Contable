@@ -12,7 +12,7 @@ h1{
     
 }
 
-.btn{
+.button{
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     background-color: white;
     color: black;
@@ -25,7 +25,7 @@ h1{
     font-size: 17px;
 }
 
-.btn:hover {
+.button:hover {
     background-color: black;
     color: white;
 }

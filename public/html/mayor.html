@@ -4,13 +4,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sistema Contable</title>
+  <title>Libro mayor</title>
   <link rel="stylesheet" href="/public/css/styleMayor.css" />
   <link rel="stylesheet" href="/public/css/styleModal.css" />
 </head>
 
 <body>
-  <h1><a href="main.html" class="left">XenoverseCount</a></h1>
+  <h1><a href="main.html" class="left">Contabilidad</a></h1>
   <h1 class="center">- MAYOR -</h1>
   <div id="consultarMayor">
     <input type="text" id="numeroCuentaMayor" list="opcionesCuentasMayor" oninput="buscarCuentasPorNroCuenta()"
@@ -19,7 +19,7 @@
     <input type="number" name="mes" id="mes" placeholder="Mes">
     <input type="number" name="año" id="año" placeholder="Año">
     <br>
-    <button id="btnBuscar" type="button" onclick="buscarMayor()">Buscar mayor</button>
+    <button id="buttonBuscar" type="button" onclick="buscarMayor()">Buscar mayor</button>
   </div>
 
   <table id="resultadoMayor">
@@ -27,7 +27,7 @@
   </table>
 
   <!-- MODAL BUENO -->
-  <div id="myModalayorExito" class="modal" style="display: none;">
+  <div id="modalExito" class="modal" style="display: none;">
     <div class="modal-content">
       <div class="success-icon">✔</div>
       <h2 style="font-size: 40px;" class="modalTitulo"></h2>
@@ -38,7 +38,7 @@
 
 
   <!-- MODAL DE ERROR -->
-  <div id="myModalMayorError" class="modal" style="display: none;">
+  <div id="modalError" class="modal" style="display: none;">
     <div class="modal-content">
       <div class="error-icon">✖</div>
       <h2 style="font-size: 40px; color: #FF0000;" class="modalTitulo"></h2>
@@ -48,7 +48,7 @@
   </div>
 
   <!-- MODAL DE RESULTADO -->
-  <div id="myModalMayorResultado" class="modal" style="display: none;">
+  <div id="modalResultado" class="modal" style="display: none;">
     <div class="modal-content">
       <h2 style="font-size: 40px;" id="modalDescripcion"></h2>
       <p style="font-size: 20px;" id="modalAño"></p>
@@ -61,6 +61,7 @@
   </div>
 
   <script src="/public/js/scriptMayor.js"></script>
+  <script src="/public/js/scriptModal.js"></script>
 
 </body>
 

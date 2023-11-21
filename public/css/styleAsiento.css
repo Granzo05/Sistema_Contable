@@ -76,12 +76,12 @@ button:hover {
     color: white;
 }
 
-#btnReiniciar {
+#buttonReiniciar {
     display: flex;
     width: 200px;
 }
 
-#btnReiniciar:hover {
+#buttonReiniciar:hover {
     width: 139px;
 }
 

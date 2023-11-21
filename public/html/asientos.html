@@ -4,14 +4,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sistema Contable</title>
+  <title>Asientos</title>
   <link rel="stylesheet" href="/public/css/styleAsiento.css" />
   <link rel="stylesheet" href="/public/css/styleModal.css" />
 
 </head>
 
 <body>
-  <h1><a href="main.html" class="left">XenoverseCount</a></h1>
+  <h1><a href="main.html" class="left">Contabilidad</a></h1>
   <h1 class="center">- ASIENTOS -</h1>
   <div id="acciones">
     <button type="button" id="botonAñadir" onclick="botonAñadir()">Añadir</button>
@@ -28,11 +28,13 @@
 
       <div class="asiento-container">
         <div class="cuenta-container">
-          <input type="text" placeholder="Cuenta del debe" list="opcionesCuentasDebe" class="cuentaDebe" oninput="buscarCuentasPorNroCuentaDebe()">
+          <input type="text" placeholder="Cuenta del debe" list="opcionesCuentasDebe" class="cuentaDebe"
+            oninput="buscarCuentasPorNroCuentaDebe()">
           <datalist id="opcionesCuentasDebe"></datalist>
           <div id="cuenta-cointainer-debe">
           </div>
-          <input type="text" placeholder="Cuenta del haber" list="opcionesCuentasHaber" class="cuentaHaber" style="direction: rtl" oninput="buscarCuentasPorNroCuentaHaber()">
+          <input type="text" placeholder="Cuenta del haber" list="opcionesCuentasHaber" class="cuentaHaber"
+            style="direction: rtl" oninput="buscarCuentasPorNroCuentaHaber()">
           <datalist id="opcionesCuentasHaber" style="direction: ltr;"></datalist>
           <div id="cuenta-cointainer-haber">
           </div>
@@ -51,7 +53,7 @@
           </div>
         </div>
       </div>
-      <button id="btnAñadirAsiento" type="button" onclick="cargarAsiento()">
+      <button id="buttonAñadirAsiento" type="button" onclick="cargarAsiento()">
         Cargar asiento
       </button>
       <br><br>
@@ -64,7 +66,7 @@
       <button type="button" onclick="agregarInputsAsientos()">
         Agregar fila para ambos
       </button>
-      <button id="btnReiniciar" type="button" onclick="reiniciarAsiento()">Reiniciar todo</button>
+      <button id="buttonReiniciar" type="button" onclick="reiniciarAsiento()">Reiniciar todo</button>
 
     </form>
     <div class="result" id="resultadoAñadir"></div>
@@ -78,12 +80,12 @@
         placeholder="Número de cuenta" />
       <datalist id="opcionesCuentas"></datalist>
       <input type="date" id="fechaAsientoBuscar" /><br><br>
-      <button id="btnConsultarAsiento" type="button" onclick="buscarAsiento()">Buscar Asiento</button>
+      <button id="buttonConsultarAsiento" type="button" onclick="buscarAsiento()">Buscar Asiento</button>
     </form>
   </div>
 
   <!-- MODAL BUENO -->
-  <div id="myModalAsientosExito" class="modal" style="display: none;">
+  <div id="modalExito" class="modal" style="display: none;">
     <div class="modal-content">
       <div class="success-icon">✔</div>
       <h2 style="font-size: 40px;" class="modalTitulo"></h2>
@@ -94,7 +96,7 @@
 
 
   <!-- MODAL DE ERROR -->
-  <div id="myModalAsientosError" class="modal" style="display: none;">
+  <div id="modalError" class="modal" style="display: none;">
     <div class="modal-content">
       <div class="error-icon">✖</div>
       <h2 style="font-size: 40px; color: #FF0000;" class="modalTitulo"></h2>
@@ -104,15 +106,15 @@
   </div>
 
   <!-- MODAL DE RESULTADO -->
-  <div id="myModalAsientoResultado" class="modal" style="display: none;">
+  <div id="modalResultado" class="modal" style="display: none;">
     <div id="modal-asiento" class="modal-content">
     </div>
   </div>
 
-  <script src="/public/js/scriptAsientos.js">
+  <script src="/public/js/scriptAsientos.js"></script>
+  <script src="/public/js/scriptModal.js"></script>
+  <script src="/public/js/scriptLimpiarCampos.js"></script>
 
-
-  </script>
 </body>
 
 </html>

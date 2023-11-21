@@ -13,7 +13,6 @@ import java.util.List;
 public interface AsientosRepository extends JpaRepository<Asientos, Long> {
     List<Asientos> findAll();
 
-    // Busqueda nativa para no tener los joins de todas las entidades relaciondas ya que solo necesito el id para manejar mejor la busqueda
     @Query("SELECT a.id FROM Asientos a WHERE a.fechaRegistro BETWEEN :startDate AND :endDate")
     List<Long> findAsientoIdsByFechaRegistroBetween(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 

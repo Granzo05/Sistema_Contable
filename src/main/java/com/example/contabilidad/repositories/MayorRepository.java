@@ -14,6 +14,4 @@ public interface MayorRepository extends JpaRepository<Mayor, Long> {
 
     @Query("SELECT m FROM Mayor m WHERE m.cuenta.descripcion = :descripcion")
     Mayor findByDescripcionCuenta(@Param("descripcion") String descripcion);
-
-
 }

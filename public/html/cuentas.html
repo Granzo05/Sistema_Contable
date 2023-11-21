@@ -2,131 +2,134 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sistema Contable</title>
-  <link rel="stylesheet" href="/public/css/styleCuenta.css" />
-  <link rel="stylesheet" href="/public/css/styleModal.css" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Cuentas</title>
+    <link rel="stylesheet" href="/public/css/styleCuenta.css"/>
+    <link rel="stylesheet" href="/public/css/styleModal.css"/>
 </head>
 
 <body>
-  <h1><a href="main.html" class="left">XenoverseCount</a></h1>
-  <h1 class="center">- PLAN DE CUENTAS -</h1>
-  <div id="acciones">
+<h1><a href="main.html" class="left">Contabilidad</a></h1>
+<h1 class="center">- PLAN DE CUENTAS -</h1>
+<div id="acciones">
     <button type="button" id="añadir" onclick="botonAñadir()">Añadir</button>
     <button type="button" id="eliminar" onclick="botonEliminar()">
-      Eliminar
+        Eliminar
     </button>
     <button type="button" id="modificar" onclick="botonModificar()">
-      Modificar
+        Modificar
     </button>
     <button type="button" id="consultar" onclick="botonConsultar()" onfocus="buscarCuentasPorRubro()">
-      Consultar
+        Consultar
     </button>
-  </div>
+</div>
 
-  <div id="añadirCuenta">
+<div id="añadirCuenta">
     <h2>- Añadir cuenta -</h2>
     <form id="cuentaFormAñadir">
-      <label for="rubroAñadir">Rubro:</label>
-      <select id="rubroAñadir">
-        <option value="ACTIVO">Activo</option>
-        <option value="PASIVO">Pasivo</option>
-        <option value="PN">PN</option>
-        <option value="INGRESO">Ingreso</option>
-        <option value="EGRESO">Egreso</option>
-      </select>
-      <input type="text" id="numeroCuentaAñadir" required pattern="[0-9]" placeholder="Número de cuenta" />
-      <textarea id="descripcionAñadir" rows="4" cols="50" placeholder="Descripción"></textarea><br />
-      <button id="btnAñadirCuenta" type="button" onclick="AñadirCuenta()">Añadir cuenta</button>
+        <label for="rubroAñadir">Rubro:</label>
+        <select id="rubroAñadir">
+            <option value="ACTIVO">Activo</option>
+            <option value="PASIVO">Pasivo</option>
+            <option value="PN">PN</option>
+            <option value="INGRESO">Ingreso</option>
+            <option value="EGRESO">Egreso</option>
+        </select>
+        <input type="text" id="numeroCuentaAñadir" required pattern="[0-9]" placeholder="Número de cuenta"/>
+        <input type="text" id="descripcionAñadir" placeholder="Descripción"> <br/>
+        <button id="buttonAñadirCuenta" type="button" onclick="AñadirCuenta()">Añadir cuenta</button>
     </form>
     <div class="result" id="resultadoAñadir"></div>
-  </div>
-  <div id="eliminarCuentaId">
+</div>
+<div id="eliminarCuentaId">
     <img style="display:  none;" width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply"
-      class="iconoCerrar" onclick="botonCerrar()" />
+         class="iconoCerrar" onclick="botonCerrar()"/>
 
     <h2>- Eliminar cuenta -</h2>
     <form id="cuentaFormEliminar">
-      <input type="text" id="numeroCuentaEliminar" list="opcionesCuentaEliminar" required pattern="[0-9]"
-        oninput="buscarCuentasPorNroCuentaSelectEliminar()" placeholder="Número de cuenta" />
-      <datalist id="opcionesCuentaEliminar"></datalist>
-      <br><button id="btnEliminarCuenta" type="button" onclick="eliminarCuenta()">
-        Eliminar cuenta
-      </button>
+        <input type="text" id="numeroCuentaEliminar" list="opcionesCuentaEliminar" required pattern="[0-9]"
+               oninput="buscarCuentaEliminar()" placeholder="Número de cuenta"/>
+        <datalist id="opcionesCuentaEliminar"></datalist>
+        <br>
+        <button id="buttonEliminarCuenta" type="button" onclick="eliminarCuenta()">
+            Eliminar cuenta
+        </button>
     </form>
     <div class="result" id="resultadoEliminar"></div>
-  </div>
-  <div id="modificarCuenta">
+</div>
+<div id="modificarCuenta">
     <img style="display:  none;" width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply"
-      class="iconoCerrar" onclick="botonCerrar()" />
+         class="iconoCerrar" onclick="botonCerrar()"/>
 
-    <h2>- Actualizar cuenta -</h2>
-    <form id="cuentaFormActualizar">
-      <label for="rubroActualizar">Rubro:</label>
-      <select id="rubroActualizar">
-        <option value="ACTIVO">Activo</option>
-        <option value="PASIVO">Pasivo</option>
-        <option value="PN">PN</option>
-        <option value="INGRESO">Ingreso</option>
-        <option value="EGRESO">Egreso</option>
-      </select>
-      <input type="text" id="numeroCuentaModificar" list="opcionesCuentaModificar" required pattern="[0-9]"
-        placeholder="Número de cuenta" oninput="buscarCuentasPorNroCuentaSelectModificar()" />
-      <datalist id="opcionesCuentaModificar"></datalist>
-      <textarea id="descripcionActualizar" rows="4" cols="50" placeholder="Descripción"></textarea><br />
-      <button id="btnModificarCuenta" type="button" onclick="actualizarCuenta()">Actualizar cuenta</button>
+    <h2>- Modificar cuenta -</h2>
+    <form id="cuentaFormModificar">
+        <label for="rubroModificar">Rubro:</label>
+        <select id="rubroModificar">
+            <option value="ACTIVO">Activo</option>
+            <option value="PASIVO">Pasivo</option>
+            <option value="PN">PN</option>
+            <option value="INGRESO">Ingreso</option>
+            <option value="EGRESO">Egreso</option>
+        </select>
+        <input type="text" id="numeroCuentaModificar" list="opcionesCuentaModificar" required pattern="[0-9]"
+               placeholder="Número de cuenta" oninput="buscarCuentaModificar()"/>
+        <datalist id="opcionesCuentaModificar"></datalist>
+        <input type="text" id="descripcionModificar" placeholder="Descripción"> <br/>
+        <button id="buttonModificarCuenta" type="button" onclick="actualizarCuenta()">Modificar cuenta</button>
     </form>
-    <div class="result" id="resultadoActualizar"></div>
-  </div>
-  <div id="consultarCuenta">
+    <div class="result" id="resultadoModificar"></div>
+</div>
+<div id="consultarCuenta">
     <img style="display:  none;" width="30" height="30" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply"
-      class="iconoCerrar" onclick="botonCerrar()" />
+         class="iconoCerrar" onclick="botonCerrar()"/>
 
     <h2>- Buscar cuenta -</h2>
     <form id="cuentaFormBuscar">
-      <label for="rubroBuscar">Rubro:</label>
-      <select id="rubroBuscar" onchange="buscarCuentasPorRubro()">
-        <option value="ACTIVO">Activo</option>
-        <option value="PASIVO">Pasivo</option>
-        <option value="PN">PN</option>
-        <option value="INGRESO">Ingreso</option>
-        <option value="EGRESO">Egreso</option>
-      </select>
-      <input type="text" id="numeroCuentaBuscar" required pattern="[0-9]"
-        oninput="buscarCuentasPorNroCuentaSelectModificar()" placeholder="Número de cuenta" />
-      <textarea id="descripcionBuscar" rows="1" cols="50" oninput="buscarCuentasPorDescripcion()"
-        placeholder="Descripción"></textarea><br />
+        <label for="rubroBuscar">Rubro:</label>
+        <select id="rubroBuscar" onchange="buscarCuentasPorRubro()">
+            <option value="ACTIVO">Activo</option>
+            <option value="PASIVO">Pasivo</option>
+            <option value="PN">PN</option>
+            <option value="INGRESO">Ingreso</option>
+            <option value="EGRESO">Egreso</option>
+        </select>
+        <input type="text" id="numeroCuentaBuscar" required pattern="[0-9]" oninput="buscarCuentasPorNroCuenta()"
+               placeholder="Número de cuenta"/>
+        <input type="text" id="descripcionBuscar" oninput="buscarCuentasPorDescripcion()"
+               placeholder="Descripción"> <br/>
     </form>
     <h2 style="text-align: center;">Cuentas</h2>
     <table id="tablaCuentas" style="border: 1px;">
     </table>
     <div class="result" id="resultadoBuscar"></div>
-  </div>
+</div>
 
 
-  <!-- MODAL BUENO -->
-  <div id="myModalCuentasExito" class="modal" style="display: none;">
+<!-- MODAL BUENO -->
+<div id="modalExito" class="modal" style="display: none;">
     <div class="modal-content">
-      <div class="success-icon">✔</div>
-      <h2 style="font-size: 40px;" class="modalTitulo"></h2>
-      <p style="font-size: 20px;" class="modalMensaje"></p>
-      <button onclick="cerrarModalExito()">Entendido</button>
+        <div class="success-icon">✔</div>
+        <h2 style="font-size: 40px;" class="modalTitulo"></h2>
+        <p style="font-size: 20px;" class="modalMensaje"></p>
+        <button onclick="cerrarModalExito()">Entendido</button>
     </div>
-  </div>
+</div>
 
 
-  <!-- MODAL DE ERROR -->
-  <div id="myModalCuentasError" class="modal" style="display: none;">
+<!-- MODAL DE ERROR -->
+<div id="modalError" class="modal" style="display: none;">
     <div class="modal-content">
-      <div class="error-icon">✖</div>
-      <h2 style="font-size: 40px; color: #FF0000;" class="modalTitulo"></h2>
-      <p style="font-size: 20px; color: #FF0000;" class="modalMensaje"></p>
-      <button onclick="cerrarModalError()">Entendido</button>
+        <div class="error-icon">✖</div>
+        <h2 style="font-size: 40px; color: #FF0000;" class="modalTitulo"></h2>
+        <p style="font-size: 20px; color: #FF0000;" class="modalMensaje"></p>
+        <button onclick="cerrarModalError()">Entendido</button>
     </div>
-  </div>
+</div>
 
-  <script src="/public/js/scriptCuenta.js"></script>
+<script src="/public/js/scriptCuenta.js"></script>
+<script src="/public/js/scriptModal.js"></script>
+<script src="/public/js/scriptLimpiarCampos.js"></script>
 
 </body>
 

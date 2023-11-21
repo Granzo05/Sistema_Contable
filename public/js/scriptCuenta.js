@@ -1,5 +1,23 @@
 let tabla = document.getElementById("tablaCuentas");
 
+const mensajeErrorDescripcion = "La descripcion no debe estar vacía";
+const mensajeErrorCuenta = "El número de cuenta es necesario para la busqueda";
+const mensajeErrorBusqueda = "No se ha encontrado ningún resultado con los datos ingresados";
+const mensajeErrorRepetido = "La cuenta ingresada ya existe";
+const mensajeExito = "No hubo errores al procesar la tarea";
+const tituloErrorVacio = "El campo está vacío";
+const tituloErrorBusquedaNula = "Búsqueda sin resultados";
+const tituloErrorRepetido = "Valor repetido";
+const tituloExito = "Tarea exitosa";
+const tituloInicialErroneo = "Valor inicial erroneo";
+
+// Valores a verificar antes de la carga de una nueva cuenta
+const valorInicialActivo = "1";
+const valorInicialPasivo = "2";
+const valorInicialPatrimonio = "3";
+const valorInicialIngreso = "4";
+const valorInicialEgreso = "5";
+
 // Esta funcion carga la tabla al abrir la pagina o al cambiar de rubro
 function buscarCuentasPorRubro() {
   const rubroSelect = document.getElementById("rubroBuscar");
@@ -18,9 +36,7 @@ function buscarCuentasPorRubro() {
   })
     .then((response) => {
       if (!response.ok) {
-        throw new Error(
-          `Error al obtener datos (${response.status}): ${response.statusText}`
-        );
+        abrirModalError(mensajeErrorBusqueda, tituloErrorBusquedaNula);
       }
       return response.json();
     })
@@ -34,7 +50,7 @@ function buscarCuentasPorRubro() {
     });
 }
 
-function buscarCuentasPorNroCuentaSelectEliminar() {
+function buscarCuentaEliminar() {
   const nroCuenta = document.getElementById("numeroCuentaEliminar").value;
 
   const datalist = document.getElementById("opcionesCuentaEliminar");
@@ -49,19 +65,13 @@ function buscarCuentasPorNroCuentaSelectEliminar() {
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error(
-            `Error al obtener datos (${response.status}): ${response.statusText}`
-          );
+          abrirModalError(mensajeErrorBusqueda, tituloErrorBusquedaNula);
         }
         return response.json();
       })
       .then((data) => {
         data.forEach((cuenta) => {
-          let option = document.createElement("option");
-          option.value = cuenta.nroCuenta;
-          option.textContent = cuenta.nroCuenta + " - " + cuenta.descripcion + " - " + cuenta.rubro;
-
-          datalist.appendChild(option);
+          llenarDataList(cuenta, null, datalist);
         });
       })
       .catch((error) => {
@@ -71,14 +81,14 @@ function buscarCuentasPorNroCuentaSelectEliminar() {
 
 }
 
-function buscarCuentasPorNroCuentaSelectModificar() {
-  const nroCuenta = document.getElementById("numeroCuentaModificar").value;
-
+function buscarCuentaModificar() {
+  const nroCuentaInput = document.getElementById("numeroCuentaModificar");
+  const descripcionInput = document.getElementById("descripcionModificar");
   const datalist = document.getElementById("opcionesCuentaModificar");
   datalist.innerHTML = "";
 
-  if (nroCuenta) {
-    fetch("http://localhost:8080/asientos/cuenta/nro_cuenta/" + nroCuenta, {
+  if (nroCuentaInput.value) {
+    fetch("http://localhost:8080/asientos/cuenta/nro_cuenta/" + nroCuentaInput.value, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -86,28 +96,33 @@ function buscarCuentasPorNroCuentaSelectModificar() {
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error(
-            `Error al obtener datos (${response.status}): ${response.statusText}`
-          );
+          abrirModalError(mensajeErrorBusqueda, tituloErrorBusquedaNula);
         }
         return response.json();
       })
       .then((data) => {
         data.forEach((cuenta) => {
-          let option = document.createElement("option");
-          option.value = cuenta.nroCuenta;
-          option.textContent = cuenta.nroCuenta + " - " + cuenta.descripcion + " - " + cuenta.rubro;
-
-          datalist.appendChild(option);
+          llenarDataList(cuenta, descripcionInput, datalist);
         });
       })
       .catch((error) => {
         console.error("Error:", error);
       });
   }
-
 }
 
+function llenarDataList(cuenta, descripcionInput = null, datalist) {
+  let option = document.createElement("option");
+  option.value = cuenta.nroCuenta;
+  option.textContent = cuenta.nroCuenta + " - " + cuenta.descripcion + " - " + cuenta.rubro;
+
+  if (descripcionInput) {
+    descripcionInput.value = cuenta.descripcion;
+    descripcionInput.textContent = cuenta.descripcion;
+  }
+
+  datalist.appendChild(option);
+}
 
 function buscarCuentasPorNroCuenta() {
   const nroCuenta = document.getElementById("numeroCuentaBuscar").value;
@@ -125,9 +140,7 @@ function buscarCuentasPorNroCuenta() {
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error(
-            `Error al obtener datos (${response.status}): ${response.statusText}`
-          );
+          abrirModalError(mensajeErrorBusqueda, tituloErrorBusquedaNula);
         }
         return response.json();
       })
@@ -159,9 +172,7 @@ function buscarCuentasPorDescripcion() {
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error(
-            `Error al obtener datos (${response.status}): ${response.statusText}`
-          );
+          abrirModalError(mensajeErrorBusqueda, tituloErrorBusquedaNula);
         }
         return response.json();
       })
@@ -184,13 +195,9 @@ function AñadirCuenta() {
   var descripcion = document.getElementById("descripcionAñadir").value;
 
   if (!numeroCuenta) {
-    var mensaje = "El numero de cuenta es necesario para la carga";
-    var titulo = "Campo vacío";
-    abrirModalError(mensaje, titulo);
+    abrirModalError(mensajeErrorCuenta, tituloErrorVacio);
   } else if (!descripcion) {
-    var mensaje = "La descripcion de la cuenta es necesaria para la carga";
-    var titulo = "Campo vacío";
-    abrirModalError(mensaje, titulo);
+    abrirModalError(mensajeErrorDescripcion, tituloErrorVacio);
   } else if (verificarRubroYNroCuenta(rubro, numeroCuenta)) {
     let cuentaData = {
       rubro: rubro,
@@ -206,16 +213,11 @@ function AñadirCuenta() {
       body: JSON.stringify(cuentaData),
     })
       .then((response) => {
-        console.log(response)
         if (response.status === 400) {
-          var mensaje = "La descripcion o el numero de cuenta ya ha sido cargado";
-          var titulo = "Cuenta repetida";
-          abrirModalError(mensaje, titulo);
+          abrirModalError(mensajeErrorRepetido, tituloErrorRepetido);
         } else if (response.status === 200) {
           limpiarCampos();
-          var mensaje = "La cuenta ha sido añadida correctamente";
-          var titulo = "Carga con exito";
-          abrirModalExito(mensaje, titulo);
+          abrirModalExito(mensajeExito, tituloExito);
         }
       })
       .catch((error) => {
@@ -226,16 +228,12 @@ function AñadirCuenta() {
 
 function actualizarCuenta() {
   var numeroCuenta = document.getElementById("numeroCuentaModificar").value;
-  var descripcion = document.getElementById("descripcionActualizar").value;
-  var rubro = document.getElementById("rubroActualizar").value;
+  var descripcion = document.getElementById("descripcionModificar").value;
+  var rubro = document.getElementById("rubroModificar").value;
   if (!numeroCuenta) {
-    var mensaje = "El numero de cuenta es necesario para la carga";
-    var titulo = "Campo vacío";
-    abrirModalError(mensaje, titulo);
+    abrirModalError(mensajeErrorCuenta, tituloErrorVacio);
   } else if (!descripcion) {
-    var mensaje = "La descripcion de la cuenta es necesaria para la carga";
-    var titulo = "Campo vacío";
-    abrirModalError(mensaje, titulo);
+    abrirModalError(mensajeErrorDescripcion, tituloErrorVacio);
   } else if (verificarRubroYNroCuenta(rubro, numeroCuenta)) {
     let data = {
       nroCuenta: numeroCuenta,
@@ -251,19 +249,14 @@ function actualizarCuenta() {
     })
       .then((response) => {
         if (!response.ok) {
-          var mensaje = "Ha habido un error al intentar actualizar la cuenta";
-          var titulo = "Error";
-          abrirModalError(mensaje, titulo);
+          abrirModalError(mensajeErrorBusqueda, tituloErrorBusquedaNula);
         } else {
           limpiarCampos();
-          var mensaje = "Cuenta actualizada con éxito";
-          var titulo = "Actualizacion completada";
-          abrirModalExito(mensaje, titulo);
+          abrirModalExito(mensajeExito, tituloExito);
         }
       })
-      .catch((error) => {
-        console.error("Error:", error);
-        alert("Ocurrió un error al actualizar la cuenta. Por favor, inténtelo de nuevo más tarde.");
+      .catch(() => {
+        abrirModalError(mensajeErrorBusqueda, tituloErrorBusquedaNula);
       });
   }
 }
@@ -272,9 +265,7 @@ function eliminarCuenta() {
   var numeroCuenta = document.getElementById("numeroCuentaEliminar").value;
 
   if (!numeroCuenta) {
-    var mensaje = "El numero de cuenta es necesaria para la eliminar la cuenta";
-    var titulo = "Campo vacío";
-    abrirModalError(mensaje, titulo);
+    abrirModalError(mensajeErrorCuenta, tituloErrorVacio);
   } else {
     fetch("http://localhost:8080/cuenta/" + numeroCuenta + "/delete", {
       method: "DELETE",
@@ -284,14 +275,10 @@ function eliminarCuenta() {
     })
       .then((response) => {
         if (!response.ok) {
-          var mensaje = "Ha ocurrido un error";
-          var titulo = "Eliminacion fallida";
-          abrirModalError(mensaje, titulo);
+          abrirModalError(mensajeErrorBusqueda, tituloErrorBusquedaNula);
         } else {
           limpiarCampos();
-          var mensaje = "La cuenta ha sido eliminada correctamente";
-          var titulo = "Eliminacion con exito";
-          abrirModalExito(mensaje, titulo);
+          abrirModalExito(mensajeExito, tituloExito);
         }
       })
       .catch((error) => {
@@ -300,35 +287,27 @@ function eliminarCuenta() {
   }
 }
 
+// Cada cuenta debe comenzar con un valor específico, por lo tanto al intentar añadir una cuenta se debe verificar
 function verificarRubroYNroCuenta(rubro, numeroCuenta) {
-  if (rubro === "ACTIVO" && numeroCuenta[0] != "1") {
+  if (rubro === "ACTIVO" && numeroCuenta[0] != valorInicialActivo) {
     var mensaje = "El numero de cuenta del activo debe empezar con 1 obligatoriamente";
-    var titulo = "Valor inicial erroneo";
-    abrirModalError(mensaje, titulo);
+    abrirModalError(mensaje, tituloInicialErroneo);
     return false;
-
-  } else if (rubro === "PASIVO" && numeroCuenta[0] != "2") {
+  } else if (rubro === "PASIVO" && numeroCuenta[0] != valorInicialPasivo) {
     var mensaje = "El numero de cuenta del pasivo debe empezar con 2 obligatoriamente";
-    var titulo = "Valor inicial erroneo";
-    abrirModalError(mensaje, titulo);
+    abrirModalError(mensaje, tituloInicialErroneo);
     return false;
-
-  } else if (rubro === "PN" && numeroCuenta[0] != "3") {
+  } else if (rubro === "PN" && numeroCuenta[0] != valorInicialPatrimonio) {
     var mensaje = "El numero de cuenta del patrimonio neto debe empezar con 3 obligatoriamente";
-    var titulo = "Valor inicial erroneo";
-    abrirModalError(mensaje, titulo);
+    abrirModalError(mensaje, tituloInicialErroneo);
     return false;
-
-  } else if (rubro === "INGRESO" && numeroCuenta[0] != "4") {
+  } else if (rubro === "INGRESO" && numeroCuenta[0] != valorInicialIngreso) {
     var mensaje = "El numero de cuenta del ingreso debe empezar con 4 obligatoriamente";
-    var titulo = "Valor inicial erroneo";
-    abrirModalError(mensaje, titulo);
+    abrirModalError(mensaje, tituloInicialErroneo);
     return false;
-
-  } else if (rubro === "EGRESO" && numeroCuenta[0] != "5") {
+  } else if (rubro === "EGRESO" && numeroCuenta[0] != valorInicialEgreso) {
     var mensaje = "El numero de cuenta del egreso debe empezar con 5 obligatoriamente";
-    var titulo = "Valor inicial erroneo";
-    abrirModalError(mensaje, titulo);
+    abrirModalError(mensaje, tituloInicialErroneo);
     return false;
   } else {
     return true;
@@ -349,6 +328,17 @@ function cargarTabla(dato) {
   tabla.appendChild(tr);
 }
 
+function limpiarCampos() {
+  limpiarCamposPorId("numeroCuentaAñadir");
+  limpiarCamposPorId("descripcionAñadir");
+  limpiarCamposPorId("numeroCuentaEliminar");
+  limpiarCamposPorId("numeroCuentaModificar");
+  limpiarCamposPorId("descripcionModificar");
+  var rubro = document.getElementById("rubroModificar");
+  rubro.value = "ACTIVO";
+}
+
+// Navegabilidad
 let botonAñadirCuenta = document.getElementById("añadirCuenta");
 let botonEliminarCuenta = document.getElementById("eliminarCuentaId");
 let botonModificarCuenta = document.getElementById("modificarCuenta");
@@ -396,63 +386,4 @@ function botonConsultar() {
   } else {
     botonConsultarCuenta.style.display = "none";
   }
-}
-
-function limpiarCampos() {
-  var numeroCuenta = document.getElementById("numeroCuentaModificar");
-  var descripcion = document.getElementById("descripcionActualizar");
-  var rubro = document.getElementById("rubroActualizar");
-
-  numeroCuenta.value = "";
-  descripcion.value = "";
-  rubro.value = "ACTIVO";
-
-  var numeroCuenta = document.getElementById("numeroCuentaAñadir");
-  var descripcion = document.getElementById("descripcionAñadir");
-  var rubro = document.getElementById("rubroAñadir");
-
-  numeroCuenta.value = "";
-  descripcion.value = "";
-  rubro.value = "ACTIVO";
-
-  var numeroCuenta = document.getElementById("numeroCuentaEliminar");
-
-  numeroCuenta.value = "";
-
-}
-
-function abrirModalExito(mensaje, titulo) {
-  let modal = document.getElementById("myModalCuentasExito");
-
-  let tituloModal = modal.querySelector(".modalTitulo");
-  let mensajeModal = modal.querySelector(".modalMensaje");
-
-  tituloModal.innerHTML = titulo;
-  mensajeModal.innerHTML = mensaje;
-
-  modal.style.display = "block";
-}
-
-
-function cerrarModalExito() {
-  let modal = document.getElementById("myModalCuentasExito");
-  modal.style = "display: none";
-}
-
-function abrirModalError(mensaje, titulo) {
-  let modal = document.getElementById("myModalCuentasError");
-
-  let tituloModal = modal.querySelector(".modalTitulo");
-  let mensajeModal = modal.querySelector(".modalMensaje");
-
-  tituloModal.innerHTML = titulo;
-  mensajeModal.innerHTML = mensaje;
-
-  modal.style.display = "block";
-}
-
-
-function cerrarModalError() {
-  let modal = document.getElementById("myModalCuentasError");
-  modal.style = "display: none";
 }
