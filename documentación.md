@@ -1,6 +1,7 @@
 Requisitos:
 
 JDK de Java: 19
+
 Instrucciones de instalación y configuración.
 
 Diagrama de Clases:
