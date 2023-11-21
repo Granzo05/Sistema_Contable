@@ -35,6 +35,7 @@ Diagrama de Base de Datos:
 Controladores de la API:
 
 AsientosController:
+
     @PostMapping("/asientos")
   - crearAsientos(@RequestBody AsientoDTO asientoDTO):
      1) Recibe un body con la fecha, un List<DetallesAsiento> con detalles del debe y un List<DetallesAsiento> con los detalles del haber.
@@ -44,7 +45,9 @@ AsientosController:
      5) Se crea la List con los detalles del ID del asiento y el detalle de este para obtener la descripción de la cuenta para buscarla en la tabla 'cuentas'.
      6) [Carga el mayor](#cargadelmayor) con los valores de cada detalle y al finalizar carga por separado cada uno de los detalles con el ID del asiento, el ID de la cuenta, los valores que interviene en esa cuenta (Debe o Haber).
 
-  - cargaDelMayor(List<DetalleAsiento> detallesAsiento): <a name="cargadelmayor"></a>
+### Método: cargaDelMayor <a name="cargadelmayor"></a>
+
+  - cargaDelMayor(List<DetalleAsiento> detallesAsiento):
      1) Recibe todos los detalles del asiento, tanto los del debe como los del haber. Además de la cuenta asociada a cada detalle.
      2) Busca si esa cuenta ya tiene un mayor, en caso de tenerlo lo actualiza y en caso de ser nulo crea un nuevo mayor y lo asocia a esa cuenta.
      3) Verifica que detalle es el que está recorriendo el for, para ello busca el tipo que solo puede ser 'DEBE' o 'HABER'.
