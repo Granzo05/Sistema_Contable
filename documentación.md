@@ -23,7 +23,7 @@ Cuentas:
   - La relación con la clase 'DetalleAsiento' es UNO a MUCHOS ya que una sola cuenta puede existir en diversos detalles, pero a la hora de almacenar un detalle este solo se puede realizar por una única cuenta.
 
 Mayor:
-  - Al cargarse un asiento, se utiliza la misma [función](#cargaDelMayor) para actualizar los valores en el mayor de esa cuenta.
+  - Al cargarse un asiento, se utiliza la misma [función](#cargadelmayor) para actualizar los valores en el mayor de esa cuenta.
   - La relación es únicamente con la clase Cuentas
 
 
@@ -42,9 +42,9 @@ AsientosController:
      3) Guarda el asiento.
      4) Recupera el asiento para obtener el ID que se le asignó a este en la base de datos.
      5) Se crea la List con los detalles del ID del asiento y el detalle de este para obtener la descripción de la cuenta para buscarla en la tabla 'cuentas'.
-     6) [Carga el mayor](#cargaDelMayor) con los valores de cada detalle y al finalizar carga por separado cada uno de los detalles con el ID del asiento, el ID de la cuenta, los valores que interviene en esa cuenta (Debe o Haber).
+     6) [Carga el mayor](#cargadelmayor) con los valores de cada detalle y al finalizar carga por separado cada uno de los detalles con el ID del asiento, el ID de la cuenta, los valores que interviene en esa cuenta (Debe o Haber).
 
-  - cargaDelMayor(List<DetalleAsiento> detallesAsiento):
+  - cargaDelMayor(List<DetalleAsiento> detallesAsiento): <a name="cargadelmayor"></a>
      1) Recibe todos los detalles del asiento, tanto los del debe como los del haber. Además de la cuenta asociada a cada detalle.
      2) Busca si esa cuenta ya tiene un mayor, en caso de tenerlo lo actualiza y en caso de ser nulo crea un nuevo mayor y lo asocia a esa cuenta.
      3) Verifica que detalle es el que está recorriendo el for, para ello busca el tipo que solo puede ser 'DEBE' o 'HABER'.
