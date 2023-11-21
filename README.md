@@ -26,3 +26,5 @@ Proyecto que simula un sistema contable básico donde se puede interactuar con u
 8) Navegar a public\html\main.html y hacerle click derecho, seleccionar donde dice "Open with Live Server".
 
 Listo, ahora podes navegar por las diferentes páginas e interactuar con los datos.
+
+![image](https://github.com/Granzo05/Sistema_Contable/assets/121827648/8eeb33a4-932b-4a34-96b8-f7d9bd459e02)
