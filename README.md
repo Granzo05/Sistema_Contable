@@ -17,8 +17,8 @@ Proyecto que simula un sistema contable básico donde se puede interactuar con u
 1) Descargar .zip del proyecto.
 2) Descomprimir el archivo descargado.
 3) Abrir con tu IDE preferido para java, en mi caso es Intellij.
-4) Navegar hasta Sistema src\main\resources\application.properties
-   - Reemplazar "puerto" por el puerto que uses para MySQL (spring.datasource.url=jdbc:mysql://localhost:puerto/contabilidad), normalmente es el 3306.
+4) Navegar hasta src\main\resources\application.properties
+   - Reemplazar "puerto" por el puerto que uses para MySQL (spring.datasource.url=jdbc:mysql://localhost:"puerto"/contabilidad), normalmente es el 3306.
    - Colocar tu usuario y contraseña
 5) Abrir el archivo "Query SQL" que se encuentra en la carpeta del proyecto y ejecutarlo con tu programa de manejo de base de datos, en mi caso es Workbench. Esto creará la base de datos y cargará un plan de cuentas resumido para que puedas probar que se accede a la base de datos correctamente más adelante.
 6) Navegar a src\main\java\com\example\contabilidad\main y ejecutarlo, esto va a encargarse de crear las tablas necesarias para el proyecto.
