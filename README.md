@@ -27,4 +27,5 @@ Proyecto que simula un sistema contable básico donde se puede interactuar con u
 
 Listo, ahora podes navegar por las diferentes páginas e interactuar con los datos.
 
-![image](https://github.com/Granzo05/Sistema_Contable/assets/121827648/8eeb33a4-932b-4a34-96b8-f7d9bd459e02)
+![image](https://github.com/Granzo05/Sistema_Contable/assets/121827648/1a50bc98-5702-4437-a55a-b0c54807cd26)
+
