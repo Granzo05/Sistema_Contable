@@ -3,8 +3,9 @@ Requisitos:
 JDK de Java: 19
 Instrucciones de instalación y configuración.
 
-Diagrama de Clases:
-![image](https://github.com/Granzo05/Sistema_Contable/assets/121827648/dd558645-4bd6-46d4-bb83-bb77d64f15a4)
+Diagrama de Clases \n:
+
+  ![image](https://github.com/Granzo05/Sistema_Contable/assets/121827648/dd558645-4bd6-46d4-bb83-bb77d64f15a4)
 
 
 Explicación de clases de la API:
