@@ -1,8 +1,11 @@
-Requisitos:
+### Requisitos
 
 JDK de Java: 19
+
 Visual Studio Code
+
 Live Server(Extensión de Visual Studio)
+
 MySQL Workbench o similar
 
 ### Código
