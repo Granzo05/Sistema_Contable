@@ -169,6 +169,32 @@ CuentasController:
 
 Descripción del cliente web:
 
+  HTML:
+  
+    ### main.html
+      Es el que provee de navegabilidad a toda la aplicación. Se vuelve a este presionando en el label de 'Contabilidad'.
+    
+    ### cuentas.html
+      Posee un sistema CRUD para poder manejar la información del plan de cuentas, a su vez en los inputs posee una funcionabilidad en la que al escribir se autocompleta con posibles resultados. 
+      En el espacio de BUSCAR la tabla se actualiza dinámicamente al escribir sobre el input de número de cuenta o de la descripción.
+    
+    ### asientos.html  
+      Permite la carga de asientos brindando la fecha, una cuenta del debe y otra del haber obligatoriamente que se cancelen entre si en los valores. A su vez, permite añadir nuevos campos de ser necesario para cargar mas cuentas al asiento.
+      A la hora de buscar se puede hacer de dos maneras:
+        - Sabiendo el número de asiento, el cual está compuesto por el ID de la tabla asientos en la base de datos. Al ingresar el ID va a recuperar todo el asiento completo con la fecha, las cuentas involucradas y los valores de cada una.
+        - Sin saber el número de asiento pero sabiendo la fecha se puede buscar por el número de cuenta y la fecha específica, con la cual va a traer todos los asientos del dia que contengan solo esa cuenta y el ID de cada asiento. Con el cual, de ser     
+          necesario, se puede buscar con ese ID todo el asiento completo para verlo más en detalle. Ya que solo buscando de esta forma, el asiento que se va a ver es parcial, solo es visible la cuenta y el valor de esta pero no el asiento completo.
+    
+    ### mayor.html  
+      Permite la busqueda del valor de una cuenta específica en un determinado mes de un año, esta trae los datos de la cuenta, los valores del debe y haber y su saldo en ese período.
+
+  JS:
+  
+  ### scriptCuenta.js
+  
+
+
+  
 Lista de endpoints:
 
 
