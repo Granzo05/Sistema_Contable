@@ -17,10 +17,10 @@
 
 * Explicación de clases de la API:
 
-  - Asientos: 
+* Asientos: 
     - Al cargar un asiento se crea un nuevo asiento el cual solo contiene el id y la fecha para poder filtrarlo de una forma más rápida al buscar por un dia específico.
     
-  - DetalleAsiento:
+* DetalleAsiento:
     - Para una mejor estructura y entendimiento de tablas se crea un detalle del asiento por cada cuenta utilizada, es decir que si el asiento ID:1 tiene dos cuentas por el debe y una cuenta por el haber, van a crearse tres detalles del asiento con ID:1 con        los respectivos valores númericos a debitar o acreditar.
     - La relación con la clase Asientos es de muchos a uno, ya que un Asiento va a tener obligatoriamente 2 o más detalles por carga.      
 
