@@ -1,49 +1,49 @@
 ### Requisitos
 
-JDK de Java: 19
+  - JDK de Java: 19
 
-Visual Studio Code
+  - Visual Studio Code
 
-Live Server(Extensión de Visual Studio)
+  - Live Server(Extensión de Visual Studio)
 
-MySQL Workbench o similar
+  - MySQL Workbench o similar
 
 ### Código
 
-Diagrama de Clases:
+* Diagrama de Clases:
 
   ![image](https://github.com/Granzo05/Sistema_Contable/assets/121827648/dd558645-4bd6-46d4-bb83-bb77d64f15a4)
 
 
-Explicación de clases de la API:
+* Explicación de clases de la API:
 
-Asientos: 
-  - Al cargar un asiento se crea un nuevo asiento el cual solo contiene el id y la fecha para poder filtrarlo de una forma más rápida al buscar por un dia específico.
+  - Asientos: 
+    - Al cargar un asiento se crea un nuevo asiento el cual solo contiene el id y la fecha para poder filtrarlo de una forma más rápida al buscar por un dia específico.
     
-DetalleAsiento:
-  - Para una mejor estructura y entendimiento de tablas se crea un detalle del asiento por cada cuenta utilizada, es decir que si el asiento ID:1 tiene dos cuentas por el debe y una cuenta por el haber, van a crearse tres detalles del asiento con ID:1 con los respectivos valores númericos a debitar o acreditar.
-  - La relación con la clase Asientos es de muchos a uno, ya que un Asiento va a tener obligatoriamente 2 o más detalles por carga.      
+  - DetalleAsiento:
+    - Para una mejor estructura y entendimiento de tablas se crea un detalle del asiento por cada cuenta utilizada, es decir que si el asiento ID:1 tiene dos cuentas por el debe y una cuenta por el haber, van a crearse tres detalles del asiento con ID:1 con        los respectivos valores númericos a debitar o acreditar.
+    - La relación con la clase Asientos es de muchos a uno, ya que un Asiento va a tener obligatoriamente 2 o más detalles por carga.      
 
-Cuentas:
-  - Encargada de administrar, con funcionabilidad CRUD, las cuentas de la empresa.
-  - La relación con la clase 'Mayor' es UNO a UNO ya que una cuenta solo puede tener un mayor el cual va variando los valores mediante los asientos que se asocian con esa cuenta.
-  - La relación con la clase 'DetalleAsiento' es UNO a MUCHOS ya que una sola cuenta puede existir en diversos detalles, pero a la hora de almacenar un detalle este solo se puede realizar por una única cuenta.
+* Cuentas:
+    - Encargada de administrar, con funcionabilidad CRUD, las cuentas de la empresa.
+    - La relación con la clase 'Mayor' es UNO a UNO ya que una cuenta solo puede tener un mayor el cual va variando los valores mediante los asientos que se asocian con esa cuenta.
+    - La relación con la clase 'DetalleAsiento' es UNO a MUCHOS ya que una sola cuenta puede existir en diversos detalles, pero a la hora de almacenar un detalle este solo se puede realizar por una única cuenta.
 
-Mayor:
-  - Al cargarse un asiento, se utiliza la misma [función](#cargadelmayor) para actualizar los valores en el mayor de esa cuenta.
-  - La relación es únicamente con la clase Cuentas
+* Mayor:
+    - Al cargarse un asiento, se utiliza la misma [función](#cargadelmayor) para actualizar los valores en el mayor de esa cuenta.
+    - La relación es únicamente con la clase Cuentas
 
 
-Diagrama de Base de Datos:
+* Diagrama de Base de Datos:
 
   ![image](https://github.com/Granzo05/Sistema_Contable/assets/121827648/0086f911-5b6e-4634-87b5-8a8dd396be8b)
 
 
-Controladores de la API:
+* Controladores de la API:
 
-AsientosController:
+  - AsientosController:
 
-### Método: crearAsientos <a name="crearasientos"></a>
+  ### Método: crearAsientos <a name="crearasientos"></a>
 
     @PostMapping("/asientos")
   - crearAsientos(@RequestBody AsientoDTO asientoDTO):
@@ -54,7 +54,7 @@ AsientosController:
      5) Se crea la List con los detalles del ID del asiento y el detalle de este para obtener la descripción de la cuenta para buscarla en la tabla 'cuentas'.
      6) [Carga el mayor](#cargadelmayor) con los valores de cada detalle y al finalizar carga por separado cada uno de los detalles con el ID del asiento, el ID de la cuenta, los valores que interviene en esa cuenta (Debe o Haber).
 
-### Método: cargaDelMayor <a name="cargadelmayor"></a>
+  ### Método: cargaDelMayor <a name="cargadelmayor"></a>
 
   - cargaDelMayor(List<DetalleAsiento> detallesAsiento):
      1) Recibe todos los detalles del asiento, tanto los del debe como los del haber. Además de la cuenta asociada a cada detalle.
@@ -64,7 +64,7 @@ AsientosController:
      6) Guarda el mayor.
      7) Guarda el detalle, al recorrer un for por todos los detalles nos aseguramos que todo esto se realice por cada una de las cuentas involucradas.
 
-### Método: buscarAsientoPorNumeroCuentaYFecha <a name="buscarasientopornumerocuentayfecha"></a>
+  ### Método: buscarAsientoPorNumeroCuentaYFecha <a name="buscarasientopornumerocuentayfecha"></a>
 
     @GetMapping("/asientos/busqueda/")
   - buscarAsientoPorNumeroCuentaYFecha(@RequestParam("fecha") String fecha,@RequestParam("nroCuenta") String nroCuenta):
@@ -76,7 +76,7 @@ AsientosController:
      6) Recorremos cada uno y guardamos únicamente los que coincidan con la fecha buscada.
      7) Devolvemos esta lista hacia el cliente.
 
-### Método: buscarAsientoPorNumeroAsiento <a name="buscarasientopornumeroasiento"></a>
+  ### Método: buscarAsientoPorNumeroAsiento <a name="buscarasientopornumeroasiento"></a>
 
     @GetMapping("/asientos/nroAsiento/{nroAsiento}")
   - buscarAsientoPorNumeroAsiento(@PathVariable("nroAsiento") Long nroAsiento):
@@ -85,7 +85,7 @@ AsientosController:
      3) Formateamos la fecha de yyyy-mm-dd a dd/mm/yyyy.
      4) Devolvemos el detalle del asiento.
 
- ### Método: cargarDetallesAsiento <a name="cargardetallesasiento"></a>
+  ### Método: cargarDetallesAsiento <a name="cargardetallesasiento"></a>
  
   - cargarDetallesAsiento(String tipoCuenta, DetalleAsiento detalle, Asientos asiento):
      1) Recibe como parámetro el asiento, los detalles de la cuenta y el tipo de cuenta(Debe o Haber).
@@ -94,16 +94,16 @@ AsientosController:
      4) Con estos detalles podemos cargar a futuro el mayor y finalmente cargar estos datos en la base de datos
  
 
-CuentasController:
+* CuentasController:
 
-### Método: crearCuenta <a name="crearcuenta"></a>
+  ### Método: crearCuenta <a name="crearcuenta"></a>
     @PostMapping("/cuenta")
   - crearCuenta(@RequestBody Cuentas cuentasDetails):
      1) Recibe el numero de cuenta, la descripción y el rubro de la cuenta.
      2) Busca si existe una en la base de datos.
      3) Si ya existe una devuelve un error, si no existe la carga a la base de datos.
 
-### Método: buscarPlanDeCuentasPorNroCuenta <a name="buscarplandecuentaspornrocuenta"></a>
+  ### Método: buscarPlanDeCuentasPorNroCuenta <a name="buscarplandecuentaspornrocuenta"></a>
 
     @GetMapping("/cuenta/nro_cuenta/{nroCuenta}")
   - buscarPlanDeCuentasPorNroCuenta(@PathVariable String nroCuenta):
@@ -111,14 +111,14 @@ CuentasController:
      2) Devuelve todas las cuentas que sean similares a ese nroCuenta utilizando un LIKE %nro%.
      3) Se usa para cargar dinámicamente la tabla a mostrar cuando el usuario comienza a escribir un número de cuenta para ir filtrando los resultados.
 
-### Método: findByNroCuentaEqualsLimit <a name="findbynrocuentaequalslimit"></a>
+  ### Método: findByNroCuentaEqualsLimit <a name="findbynrocuentaequalslimit"></a>
 
     @GetMapping("/asientos/cuenta/nro_cuenta/{nroCuenta}")
   - findByNroCuentaEqualsLimit(@PathVariable String nroCuenta):
      1) Recibe el numero de cuenta.
      2) Devuelve todas las cuentas que sean similares a ese nroCuenta utilizando un LIKE %nro% pero con un máximo de 50 resultados.
 
-### Método: buscarPlanDeCuentasPorDescripcion <a name="buscarplandecuentaspordescripcion"></a>
+  ### Método: buscarPlanDeCuentasPorDescripcion <a name="buscarplandecuentaspordescripcion"></a>
 
     @GetMapping("/cuenta/descripcion/{descripcion}")
   - buscarPlanDeCuentasPorDescripcion(@PathVariable String descripcion):
@@ -126,7 +126,7 @@ CuentasController:
      2) Devuelve todas las cuentas que sean similares a esa descripcion utilizando un LIKE %descripcion%.
      3) Se usa para cargar dinámicamente la tabla a mostrar cuando el usuario comienza a escribir una descripción para ir filtrando los resultados.
 
-### Método: buscarPlanDeCuentasPorRubro <a name="buscarplandecuentasporrubro"></a>
+  ### Método: buscarPlanDeCuentasPorRubro <a name="buscarplandecuentasporrubro"></a>
 
     @GetMapping("/cuenta/{rubro}")
   - buscarPlanDeCuentasPorRubro(@PathVariable String rubro):
@@ -134,7 +134,7 @@ CuentasController:
      2) Devuelve todas las cuentas que posean ese rubro.
      3) Esto se utiliza al cambiar el select del lado del cliente, en el cual va a devolver todas las cuentas que pertenezcan a un rubro en específico.
 
-### Método: updatePlanDeCuentas <a name="updateplandecuentas"></a>
+  ### Método: updatePlanDeCuentas <a name="updateplandecuentas"></a>
  
     @PutMapping("/cuenta/{nroCuenta}/update")
   - updatePlanDeCuentas(@PathVariable String nroCuenta, @RequestBody Map<String, String> requestData):
@@ -142,16 +142,16 @@ CuentasController:
      2) Busca por el número de cuenta.
      3) Si no encuentra una cuenta entonces la busca por la descripción, esto puede servir cuando a una cuenta se le quiere cambiar el número.
         
-### Método: borrarPlanDeCuentas <a name="borrarplandecuentas"></a>
+  ### Método: borrarPlanDeCuentas <a name="borrarplandecuentas"></a>
 
     @DeleteMapping("/cuenta/{nroCuenta}/delete")
   - borrarPlanDeCuentas(@PathVariable String nroCuenta):
      1) Recibe el número de cuenta.
      2) Busca la cuenta asociada y en caso de existir la borra.
    
-MayorController:
+* MayorController:
 
-### Método: buscarMayor <a name="buscarmayor"></a>
+  ### Método: buscarMayor <a name="buscarmayor"></a>
 
     @GetMapping("/mayor/")
   - buscarMayor(@RequestParam("nroCuenta") String nroCuenta, @RequestParam("mes") int mes, @RequestParam("año") int anio):
@@ -167,9 +167,9 @@ MayorController:
      10) Se envía el Mayor al cliente para mostrar los resultados de la cuenta en ese mes específico con los valores del debe y el haber.
    
 
-Descripción del cliente web:
+* Descripción del cliente web:
 
-  HTML
+  * HTML
   
   ### main.html
       Es el que provee de navegabilidad a toda la aplicación. Se vuelve a este presionando en el label de 'Contabilidad'.
@@ -188,7 +188,7 @@ Descripción del cliente web:
   ### mayor.html  
       Permite la busqueda del valor de una cuenta específica en un determinado mes de un año, esta trae los datos de la cuenta, los valores del debe y haber y su saldo en ese período.
 
-  JAVASCRIPT    
+  * JAVASCRIPT    
   
   ### scriptCuenta.js
   
@@ -196,8 +196,8 @@ Descripción del cliente web:
 
   - función buscarCuentasPorRubro(): esta interactúa con el SELECT ya que al cambiar la opción trae de la base de datos todas las cuentas que pertenezcan a cada rubro(Activo, pasivo, patrimonio neto, ingreso o egreso), más que nada para no mostrar una tabla tan amplia, filtrando por cada rubro. [Accede a esta ruta de la API](#buscarplandecuentasporrubro) y [completa la lista de resultados con esta función](#llenardatalist). 
   - función buscarCuentaEliminar(): esta da el posible resultado a ingresar cuando se comienza a escribir el número de la cuenta a eliminar, realizando un SELECT a la base de datos con un límite de resultados para no generar una lista tan extensa. [Accede a esta ruta de la API](#findbynrocuentaequalslimit). 
-  - función buscarCuentaModificar(): mismo funcionamiento que el anterior, pero al acceder a otros elementos HTML preferí dejarlos por separados para no agregar varios condicionales dependiendo del elemento que quiero buscar, me parece que permite entender       el código de forma más sencilla, y son pocas líneas que podría ahorrar. [Accede a esta ruta de la API](#findbynrocuentaequalslimit). 
-  - función llenarDataList(): esta recibe las cuentas desde la API y rellena la lista de posibles resultados a ingresar en el input. <a name="llenardatalist"></a>
+  - función buscarCuentaModificar(): mismo funcionamiento que el anterior, pero al acceder a otros elementos HTML preferí dejarlos por separados para no agregar varios condicionales dependiendo del elemento que quiero buscar, me parece que permite entender       el código de forma más sencilla, y son pocas líneas que podría ahorrar. [Accede a esta ruta de la API](#findbynrocuentaequalslimit). <a name="llenardatalist"></a>
+  - función llenarDataList(): esta recibe las cuentas desde la API y rellena la lista de posibles resultados a ingresar en el input. 
   - función buscarCuentasPorNroCuenta(): esta solo interactúa para filtrar dinámicamente la tabla a medida que el usuario ingresa un número de cuenta en el input 'numeroCuentaBuscar' a buscar para ir reduciendo la búsqueda a medida que escribe.
   - función buscarCuentasPorDescripcion(): exactamente igual que el anterior pero interactuando con el elemento html de la descripción de la cuenta en el input 'descripcionBuscar'.
   - función AñadirCuenta(): recupera el rubro 'rubroAñadir', el número de cuenta 'numeroCuentaAñadir' y la descripción 'descripcionAñadir', verifica que no estén vacíos y luego los envía a la API. [Accede a esta ruta de la API](#crearcuenta).
@@ -211,8 +211,8 @@ Descripción del cliente web:
   ### scriptAsientos.js
 
     En el inicio del archivo se contienen los mensajes que se van a mostrar dependiendo del resultado de lo que realice el usuario en la aplicación.
-
-  - función buscarAsiento(): obtiene los datos del número de asiento 'numeroAsientoBuscar', del número de la cuenta 'numeroCuentaBuscarAsiento' y de la fecha 'fechaAsientoBuscar', valida la opción de que el usuario ingrese solo el número de asiento o el          número de cuenta y la fecha para buscar por esas dos opciones: <a name="buscarasiento"></a>
+  <a name="buscarasiento"></a>
+  - función buscarAsiento(): obtiene los datos del número de asiento 'numeroAsientoBuscar', del número de la cuenta 'numeroCuentaBuscarAsiento' y de la fecha 'fechaAsientoBuscar', valida la opción de que el usuario ingrese solo el número de asiento o el          número de cuenta y la fecha para buscar por esas dos opciones: 
   -  función busquedaPorCuentaYfecha(): si el usuario ingresó estos dos datos y dejó en blanco el número de asiento, entonces a la API se va a enviar una Query con estos dos datos para devolver el o los asientos que involucren a esa cuenta ese día dado.          [Accede a esta ruta de la API](#buscarasientopornumerocuentayfecha). 
   -  función busquedaPorAsiento(): si el usuario solo ingresa el número de asiento se envía este hacia la API el cual devuelve ese asiento específico con todos los datos. [Accede a esta ruta de la API](#buscarasientopornumeroasiento).
   - función cargarAsiento(): obtiene la fecha y cada una de las cuentas y sus respectivos valores, para ello verifica que exista una cuenta en ambos lados y que se cancelen entre si. [Accede a esta ruta de la API](#crearasientos).
