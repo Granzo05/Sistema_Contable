@@ -236,5 +236,207 @@
     
 Lista de endpoints:
 
+* CuentasController:
+
+  - '/cuenta':
+      - Método: POST
+      - Solicitud JSON:      
+      ###
+           {
+            "rubro": "Activo",       
+            "nroCuenta": "1.0.00.0.1",
+            "descripcion": "Caja"          
+           }      
+      - Respuestas:
+        - 200: Se creó con éxito.
+        - 400: La cuenta está repetida.
+        
+  - '/cuenta/nro_cuenta/{nroCuenta}':
+      - Método: GET
+      - Solicitud:
+      ###
+           /cuenta/nro_cuenta/1.0.00.0.1          
+      - Respuestas:
+        - []: No se encontró ninguna cuenta.
+        - JSON:
+      ###
+          {
+          "id": 1,
+          "rubro": "Activo",       
+          "nroCuenta": "1.0.00.0.1",
+          "descripcion": "Caja"  
+          }
+
+  - '/asientos/cuenta/nro_cuenta/{nroCuenta}':
+      - Método: GET
+      - Solicitud:
+      ###
+           /cuenta/nro_cuenta/1.0         
+      - Respuestas:
+        - []: No se encontró ninguna cuenta.
+        - JSON:
+      ###
+          {
+          "id": 1,
+          "rubro": "Activo",       
+          "nroCuenta": "1.0.00.0.1",
+          "descripcion": "Caja"  
+          }
+          {
+          "id": 2,
+          "rubro": "Activo",       
+          "nroCuenta": "1.0.00.0.2",
+          "descripcion": "Mercadería"  
+          }
+      - Uso especial: esta solicitud devuelve una lista con un LIMIT de 10 respuestas como máximo. Más que nada             para hacer una llamada más simple a la base de datos y no sobrecargarla con muchas solicitudes
+        
+     
+    - '/cuenta/descripcion/{descripcion}':
+        - Método: GET
+        - Solicitud:
+        ###
+            /cuenta/descripcion/ca        
+        - Respuestas:
+          - []: No se encontró ninguna cuenta.
+          - JSON:
+        ###
+            {
+            "id": 1,
+            "rubro": "Activo",       
+            "nroCuenta": "1.0.00.0.1",
+            "descripcion": "Caja"  
+            }
+            {
+            "id": 20,
+            "rubro": "Activo",       
+            "nroCuenta": "1.0.01.1.2",
+            "descripcion": "Caja de ahorro en dólares"  
+            }
+
+    - '/cuenta/{nroCuenta}/update':
+        - Método: PUT
+        - Solicitud:
+        ###
+            /cuenta/1.0.00.0.1/update
+            body:
+                  {
+                    "nroCuenta": "1.0.00.0.1",
+                    "descripcion": "Caja chica",
+                    "rubro": "ACTIVO"
+                  }        
+        - Respuestas:
+          - 200: cuenta modificada con éxito.
+          - 404: número de cuenta inexistente.
+         
+     - '/cuenta/{nroCuenta}/delete':
+        - Método: DELETE
+        - Solicitud:
+        ###
+            /cuenta/1.0.00.0.1/delete       
+        - Respuestas:
+          - 202: cuenta eliminada con éxito.
+          - 400: cuenta inexistente o eliminada previamente.          
+
+    * AsientosController:
+
+      - '/cuenta':
+      - Método: POST
+      - Solicitud JSON:      
+      ###
+           {
+            "rubro": "Activo",       
+            "nroCuenta": "1.0.00.0.1",
+            "descripcion": "Caja"          
+           }      
+      - Respuestas:
+        - 200: Se creó con éxito.
+        - 400: La cuenta está repetida.
+        
+  - '/cuenta/nro_cuenta/{nroCuenta}':
+      - Método: GET
+      - Solicitud:
+      ###
+           /cuenta/nro_cuenta/1.0.00.0.1          
+      - Respuestas:
+        - []: No se encontró ninguna cuenta.
+        - JSON:
+      ###
+          {
+          "id": 1,
+          "rubro": "Activo",       
+          "nroCuenta": "1.0.00.0.1",
+          "descripcion": "Caja"  
+          }
+
+  - '/asientos/cuenta/nro_cuenta/{nroCuenta}':
+      - Método: GET
+      - Solicitud:
+      ###
+           /cuenta/nro_cuenta/1.0         
+      - Respuestas:
+        - []: No se encontró ninguna cuenta.
+        - JSON:
+      ###
+          {
+          "id": 1,
+          "rubro": "Activo",       
+          "nroCuenta": "1.0.00.0.1",
+          "descripcion": "Caja"  
+          }
+          {
+          "id": 2,
+          "rubro": "Activo",       
+          "nroCuenta": "1.0.00.0.2",
+          "descripcion": "Mercadería"  
+          }
+      - Uso especial: esta solicitud devuelve una lista con un LIMIT de 10 respuestas como máximo. Más que nada             para hacer una llamada más simple a la base de datos y no sobrecargarla con muchas solicitudes
+        
+     
+    - '/cuenta/descripcion/{descripcion}':
+        - Método: GET
+        - Solicitud:
+        ###
+            /cuenta/descripcion/ca        
+        - Respuestas:
+          - []: No se encontró ninguna cuenta.
+          - JSON:
+        ###
+            {
+            "id": 1,
+            "rubro": "Activo",       
+            "nroCuenta": "1.0.00.0.1",
+            "descripcion": "Caja"  
+            }
+            {
+            "id": 20,
+            "rubro": "Activo",       
+            "nroCuenta": "1.0.01.1.2",
+            "descripcion": "Caja de ahorro en dólares"  
+            }
+
+    - '/cuenta/{nroCuenta}/update':
+        - Método: PUT
+        - Solicitud:
+        ###
+            /cuenta/1.0.00.0.1/update
+            body:
+                  {
+                    "nroCuenta": "1.0.00.0.1",
+                    "descripcion": "Caja chica",
+                    "rubro": "ACTIVO"
+                  }        
+        - Respuestas:
+          - 200: cuenta modificada con éxito.
+          - 404: número de cuenta inexistente.
+         
+     - '/cuenta/{nroCuenta}/delete':
+        - Método: DELETE
+        - Solicitud:
+        ###
+            /cuenta/1.0.00.0.1/delete       
+        - Respuestas:
+          - 202: cuenta eliminada con éxito.
+          - 400: cuenta inexistente o eliminada previamente.      
+
 
 
