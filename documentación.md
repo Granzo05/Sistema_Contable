@@ -169,26 +169,26 @@ MayorController:
 
 Descripción del cliente web:
 
-  HTML:
+  HTML
   
-    ### main.html
+  ### main.html
       Es el que provee de navegabilidad a toda la aplicación. Se vuelve a este presionando en el label de 'Contabilidad'.
     
-    ### cuentas.html
+  ### cuentas.html
       Posee un sistema CRUD para poder manejar la información del plan de cuentas, a su vez en los inputs posee una funcionabilidad en la que al escribir se autocompleta con posibles resultados. 
       En el espacio de BUSCAR la tabla se actualiza dinámicamente al escribir sobre el input de número de cuenta o de la descripción.
     
-    ### asientos.html  
+  ### asientos.html  
       Permite la carga de asientos brindando la fecha, una cuenta del debe y otra del haber obligatoriamente que se cancelen entre si en los valores. A su vez, permite añadir nuevos campos de ser necesario para cargar mas cuentas al asiento.
       A la hora de buscar se puede hacer de dos maneras:
         - Sabiendo el número de asiento, el cual está compuesto por el ID de la tabla asientos en la base de datos. Al ingresar el ID va a recuperar todo el asiento completo con la fecha, las cuentas involucradas y los valores de cada una.
         - Sin saber el número de asiento pero sabiendo la fecha se puede buscar por el número de cuenta y la fecha específica, con la cual va a traer todos los asientos del dia que contengan solo esa cuenta y el ID de cada asiento. Con el cual, de ser     
           necesario, se puede buscar con ese ID todo el asiento completo para verlo más en detalle. Ya que solo buscando de esta forma, el asiento que se va a ver es parcial, solo es visible la cuenta y el valor de esta pero no el asiento completo.
     
-    ### mayor.html  
+  ### mayor.html  
       Permite la busqueda del valor de una cuenta específica en un determinado mes de un año, esta trae los datos de la cuenta, los valores del debe y haber y su saldo en ese período.
 
-  JS:
+  JAVASCRIPT    
   
   ### scriptCuenta.js
   
@@ -208,7 +208,7 @@ Descripción del cliente web:
     - función limpiarCampos(): deja todos los inputs vacíos después de alguna carga de datos en la aplicación. [Trabaja en conjunto con este script](#scriptLimpiarCampos).
     // Navegabilidad: escucha a cada botón (Añadir, buscar, modificar y eliminar) que al hacerle click muestra solo los elementos asignados a ese botón y oculta el resto.
 
-    ### scriptAsientos.js
+  ### scriptAsientos.js
 
     En el inicio del archivo se contienen los mensajes que se van a mostrar dependiendo del resultado de lo que realice el usuario en la aplicación.
 
@@ -220,14 +220,14 @@ Descripción del cliente web:
     - función agregarInputsAsientoHaber() y agregarInputsAsientoDebe(): busca el div que contiene la cuenta y genera un nuevo input tanto para la cuenta como para el valor dependiendo el que se quiera añadir.
     - función agregarInputsAsientos(): usando ambas funciones del punto anterior, agrega los 4 inputs respectivos (Cuenta debe, valor debe, cuenta haber y valor haber).
 
-    ### scriptMayor.js
+  ### scriptMayor.js
 
     En el inicio del archivo se contienen los mensajes que se van a mostrar dependiendo del resultado de lo que realice el usuario en la aplicación.
 
     - función buscarMayor(): obtiene el número de cuenta, el mes y el año para validarlos y luego enviarlos hacia la API como una query ya que al ser una solicitud GET no hay otra opción para enviar los datos. [Accede a esta ruta de la API](#buscarMayor).
     - función buscarCuentasPorNroCuenta(): genera la lista con posibles resultados al ingresar el número de cuenta. [Accede a esta ruta de la API](#findByNroCuentaEqualsLimit).
 
-    ### scriptModal.js
+  ### scriptModal.js
 
     Es el encargado de mostrar los mensajes de error o de éxito.
 
