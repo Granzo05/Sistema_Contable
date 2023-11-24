@@ -226,6 +226,13 @@ Descripción del cliente web:
 
     - función buscarMayor(): obtiene el número de cuenta, el mes y el año para validarlos y luego enviarlos hacia la API como una query ya que al ser una solicitud GET no hay otra opción para enviar los datos. [Accede a esta ruta de la API](#buscarMayor).
     - función buscarCuentasPorNroCuenta(): genera la lista con posibles resultados al ingresar el número de cuenta. [Accede a esta ruta de la API](#findByNroCuentaEqualsLimit).
+
+    ### scriptModal.js
+
+    Es el encargado de mostrar los mensajes de error o de éxito.
+
+    - función abrirModalResultadoMayor(): obtiene todos los datos del mayor de la cuenta y muestra el año, el mes parseado de número a mes y los demás datos del saldo. [Depende de esta función](#buscarMayor).
+    - función crearModalAsiento(): obtiene todos los datos del asiento, ya sea del obtenido por el número de la cuenta y fecha o por el de número de asiento, muestra la fecha, el número de asiento, la o las cuentas que intervengan con sus respectivos valores.      [Depende de esta función](#buscarAsiento).
     
 Lista de endpoints:
 
