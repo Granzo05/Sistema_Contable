@@ -212,7 +212,7 @@ Descripción del cliente web:
 
     En el inicio del archivo se contienen los mensajes que se van a mostrar dependiendo del resultado de lo que realice el usuario en la aplicación.
 
-  - función buscarAsiento(): obtiene los datos del número de asiento 'numeroAsientoBuscar', del número de la cuenta 'numeroCuentaBuscarAsiento' y de la fecha 'fechaAsientoBuscar', valida la opción de que el usuario ingrese solo el número de asiento o el          número de cuenta y la fecha para buscar por esas dos opciones:
+  - función buscarAsiento(): obtiene los datos del número de asiento 'numeroAsientoBuscar', del número de la cuenta 'numeroCuentaBuscarAsiento' y de la fecha 'fechaAsientoBuscar', valida la opción de que el usuario ingrese solo el número de asiento o el          número de cuenta y la fecha para buscar por esas dos opciones: <a name="buscarasiento"></a>
   -  función busquedaPorCuentaYfecha(): si el usuario ingresó estos dos datos y dejó en blanco el número de asiento, entonces a la API se va a enviar una Query con estos dos datos para devolver el o los asientos que involucren a esa cuenta ese día dado.          [Accede a esta ruta de la API](#buscarasientopornumerocuentayfecha). 
   -  función busquedaPorAsiento(): si el usuario solo ingresa el número de asiento se envía este hacia la API el cual devuelve ese asiento específico con todos los datos. [Accede a esta ruta de la API](#buscarasientopornumeroasiento).
   - función cargarAsiento(): obtiene la fecha y cada una de las cuentas y sus respectivos valores, para ello verifica que exista una cuenta en ambos lados y que se cancelen entre si. [Accede a esta ruta de la API](#crearasientos).
