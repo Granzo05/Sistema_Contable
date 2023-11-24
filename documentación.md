@@ -64,7 +64,7 @@ AsientosController:
      6) Guarda el mayor.
      7) Guarda el detalle, al recorrer un for por todos los detalles nos aseguramos que todo esto se realice por cada una de las cuentas involucradas.
 
-### Método: buscarAsientoPorNumeroCuentaYFecha
+### Método: buscarAsientoPorNumeroCuentaYFecha <a name="buscarAsientoPorNumeroCuentaYFecha"></a>
 
     @GetMapping("/asientos/busqueda/")
   - buscarAsientoPorNumeroCuentaYFecha(@RequestParam("fecha") String fecha,@RequestParam("nroCuenta") String nroCuenta):
@@ -76,7 +76,7 @@ AsientosController:
      6) Recorremos cada uno y guardamos únicamente los que coincidan con la fecha buscada.
      7) Devolvemos esta lista hacia el cliente.
 
-### Método: buscarAsientoPorNumeroAsiento
+### Método: buscarAsientoPorNumeroAsiento <a name="buscarAsientoPorNumeroAsiento"></a>
 
     @GetMapping("/asientos/nroAsiento/{nroAsiento}")
   - buscarAsientoPorNumeroAsiento(@PathVariable("nroAsiento") Long nroAsiento):
@@ -85,7 +85,7 @@ AsientosController:
      3) Formateamos la fecha de yyyy-mm-dd a dd/mm/yyyy.
      4) Devolvemos el detalle del asiento.
 
- ### Método: cargarDetallesAsiento
+ ### Método: cargarDetallesAsiento <a name="cargarDetallesAsiento"></a>
  
   - cargarDetallesAsiento(String tipoCuenta, DetalleAsiento detalle, Asientos asiento):
      1) Recibe como parámetro el asiento, los detalles de la cuenta y el tipo de cuenta(Debe o Haber).
@@ -96,14 +96,14 @@ AsientosController:
 
 CuentasController:
 
-### Método: crearCuenta
+### Método: crearCuenta <a name="crearCuenta"></a>
     @PostMapping("/cuenta")
   - crearCuenta(@RequestBody Cuentas cuentasDetails):
      1) Recibe el numero de cuenta, la descripción y el rubro de la cuenta.
      2) Busca si existe una en la base de datos.
      3) Si ya existe una devuelve un error, si no existe la carga a la base de datos.
 
-### Método: buscarPlanDeCuentasPorNroCuenta
+### Método: buscarPlanDeCuentasPorNroCuenta <a name="buscarPlanDeCuentasPorNroCuenta"></a>
 
     @GetMapping("/cuenta/nro_cuenta/{nroCuenta}")
   - buscarPlanDeCuentasPorNroCuenta(@PathVariable String nroCuenta):
@@ -111,14 +111,14 @@ CuentasController:
      2) Devuelve todas las cuentas que sean similares a ese nroCuenta utilizando un LIKE %nro%.
      3) Se usa para cargar dinámicamente la tabla a mostrar cuando el usuario comienza a escribir un número de cuenta para ir filtrando los resultados.
 
-### Método: findByNroCuentaEqualsLimit
+### Método: findByNroCuentaEqualsLimit <a name="findByNroCuentaEqualsLimit"></a>
 
     @GetMapping("/asientos/cuenta/nro_cuenta/{nroCuenta}")
   - findByNroCuentaEqualsLimit(@PathVariable String nroCuenta):
      1) Recibe el numero de cuenta.
      2) Devuelve todas las cuentas que sean similares a ese nroCuenta utilizando un LIKE %nro% pero con un máximo de 50 resultados.
 
-### Método: buscarPlanDeCuentasPorDescripcion
+### Método: buscarPlanDeCuentasPorDescripcion <a name="buscarPlanDeCuentasPorDescripcion"></a>
 
     @GetMapping("/cuenta/descripcion/{descripcion}")
   - buscarPlanDeCuentasPorDescripcion(@PathVariable String descripcion):
@@ -126,7 +126,7 @@ CuentasController:
      2) Devuelve todas las cuentas que sean similares a esa descripcion utilizando un LIKE %descripcion%.
      3) Se usa para cargar dinámicamente la tabla a mostrar cuando el usuario comienza a escribir una descripción para ir filtrando los resultados.
 
-### Método: buscarPlanDeCuentasPorRubro
+### Método: buscarPlanDeCuentasPorRubro <a name="buscarPlanDeCuentasPorRubro"></a>
 
     @GetMapping("/cuenta/{rubro}")
   - buscarPlanDeCuentasPorRubro(@PathVariable String rubro):
@@ -134,15 +134,15 @@ CuentasController:
      2) Devuelve todas las cuentas que posean ese rubro.
      3) Esto se utiliza al cambiar el select del lado del cliente, en el cual va a devolver todas las cuentas que pertenezcan a un rubro en específico.
 
-### Método: updatePlanDeCuentas
-
+### Método: updatePlanDeCuentas <a name="updatePlanDeCuentas"></a>
+ 
     @PutMapping("/cuenta/{nroCuenta}/update")
   - updatePlanDeCuentas(@PathVariable String nroCuenta, @RequestBody Map<String, String> requestData):
      1) Recibe el número de cuenta, y si es posible la descripción o el rubro, al ser opcional se usa un Map.
      2) Busca por el número de cuenta.
      3) Si no encuentra una cuenta entonces la busca por la descripción, esto puede servir cuando a una cuenta se le quiere cambiar el número.
         
-### Método: borrarPlanDeCuentas
+### Método: borrarPlanDeCuentas <a name="borrarPlanDeCuentas"></a>
 
     @DeleteMapping("/cuenta/{nroCuenta}/delete")
   - borrarPlanDeCuentas(@PathVariable String nroCuenta):
@@ -151,7 +151,7 @@ CuentasController:
    
 MayorController:
 
-### Método: buscarMayor
+### Método: buscarMayor <a name="buscarMayor"></a>
 
     @GetMapping("/mayor/")
   - buscarMayor(@RequestParam("nroCuenta") String nroCuenta, @RequestParam("mes") int mes, @RequestParam("año") int anio):
@@ -213,7 +213,7 @@ Descripción del cliente web:
     En el inicio del archivo se contienen los mensajes que se van a mostrar dependiendo del resultado de lo que realice el usuario en la aplicación.
 
     - función buscarAsiento(): obtiene los datos del número de asiento 'numeroAsientoBuscar', del número de la cuenta 'numeroCuentaBuscarAsiento' y de la fecha 'fechaAsientoBuscar', valida la opción de que el usuario ingrese solo el número de asiento o el          número de cuenta y la fecha para buscar por esas dos opciones:
-      -  función busquedaPorCuentaYfecha(): si el usuario ingresó estos dos datos y dejó en blanco el número de asiento, entonces a la API se va a enviar una Query con estos dos datos para devolver el o los asientos que involucren a esa cuenta ese día dado.          [Accede a esta ruta de la API](#buscarAsientoPorNumeroCuentaYFecha).
+      -  función busquedaPorCuentaYfecha(): si el usuario ingresó estos dos datos y dejó en blanco el número de asiento, entonces a la API se va a enviar una Query con estos dos datos para devolver el o los asientos que involucren a esa cuenta ese día dado.          [Accede a esta ruta de la API](#buscarAsientoPorNumeroCuentaYFecha). 
       -  función busquedaPorAsiento(): si el usuario solo ingresa el número de asiento se envía este hacia la API el cual devuelve ese asiento específico con todos los datos. [Accede a esta ruta de la API](#buscarAsientoPorNumeroAsiento).
     - función cargarAsiento(): obtiene la fecha y cada una de las cuentas y sus respectivos valores, para ello verifica que exista una cuenta en ambos lados y que se cancelen entre si. [Accede a esta ruta de la API](#crearAsientos).
     - función buscarCuentasPorNroCuenta(): actúa como una vista previa de los posibles resultados a ingresar en la cuenta, trayendo todos las cuentas similares a ese número ingresado. [Accede a esta ruta de la API](#findByNroCuentaEqualsLimit).
@@ -232,7 +232,7 @@ Descripción del cliente web:
     Es el encargado de mostrar los mensajes de error o de éxito.
 
     - función abrirModalResultadoMayor(): obtiene todos los datos del mayor de la cuenta y muestra el año, el mes parseado de número a mes y los demás datos del saldo. [Depende de esta función](#buscarMayor).
-    - función crearModalAsiento(): obtiene todos los datos del asiento, ya sea del obtenido por el número de la cuenta y fecha o por el de número de asiento, muestra la fecha, el número de asiento, la o las cuentas que intervengan con sus respectivos valores.      [Depende de esta función](#buscarAsiento).
+    - función crearModalAsiento(): obtiene todos los datos del asiento, ya sea del obtenido por el número de la cuenta y fecha o por el de número de asiento, muestra la fecha, el número de asiento, la o las cuentas que intervengan con sus respectivos valores. [Depende de esta función](#buscarAsiento).
     
 Lista de endpoints:
 
