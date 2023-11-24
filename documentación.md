@@ -149,7 +149,7 @@ CuentasController:
      1) Recibe el número de cuenta.
      2) Busca la cuenta asociada y en caso de existir la borra.
    
-CuentasController:
+MayorController:
 
 ### Método: buscarMayor
 
@@ -191,6 +191,7 @@ Descripción del cliente web:
   JS:
   
   ### scriptCuenta.js
+  
     En el inicio del archivo se contienen los mensajes que se van a mostrar dependiendo del resultado de lo que realice el usuario en la aplicación.
 
     - función buscarCuentasPorRubro(): esta interactúa con el SELECT ya que al cambiar la opción trae de la base de datos todas las cuentas que pertenezcan a cada rubro(Activo, pasivo, patrimonio neto, ingreso o egreso), más que nada para no mostrar una tabla tan amplia, filtrando por cada rubro. [Accede a esta ruta de la API](#buscarPlanDeCuentasPorRubro) y [completa la lista de resultados con esta función](#llenarDataList()). 
@@ -199,7 +200,33 @@ Descripción del cliente web:
     - función llenarDataList(): esta recibe las cuentas desde la API y rellena la lista de posibles resultados a ingresar en el input.
     - función buscarCuentasPorNroCuenta(): esta solo interactúa para filtrar dinámicamente la tabla a medida que el usuario ingresa un número de cuenta en el input 'numeroCuentaBuscar' a buscar para ir reduciendo la búsqueda a medida que escribe.
     - función buscarCuentasPorDescripcion(): exactamente igual que el anterior pero interactuando con el elemento html de la descripción de la cuenta en el input 'descripcionBuscar'.
-    - función buscarCuentasPorDescripcion():
+    - función AñadirCuenta(): recupera el rubro 'rubroAñadir', el número de cuenta 'numeroCuentaAñadir' y la descripción 'descripcionAñadir', verifica que no estén vacíos y luego los envía a la API. [Accede a esta ruta de la API](#crearCuenta).
+    - función actualizarCuenta(): recupera el rubro 'rubroModificar', el número de cuenta 'numeroCuentaModificar' y la descripción 'descripcionModificar', verifica que no estén vacíos y luego los envía a la API para actualizar los datos de la cuenta. [Accede a     esta ruta de la API](#updatePlanDeCuentas).
+    - función eliminarCuenta(): recupera el número de cuenta 'numeroCuentaModificar' verifica que no esté vacío y luego los envía a la API para eliminar la cuenta. [Accede a esta ruta de la API](#borrarPlanDeCuentas).
+    - función verificarRubroYNroCuenta(): verifica que el primer dígito del número de cuenta sea igual al del asignado en el principio del archivo al rubro, de forma predeterminada es Activo = 1, Pasivo = 2, PN = 3, Ingreso = 4 y Egreso = 5, si el número de        cuenta en un rubro, por ejemplo, 'Activo' no comienza con '1' lanza un error.
+    - función cargarTabla(): accede a la tabla 'tablaCuentas' y va creando dinámicamente una fila y columna por cada dato recuperado desde la API, esta se encarga de mostrar todas las cuentas de un rubro.
+    - función limpiarCampos(): deja todos los inputs vacíos después de alguna carga de datos en la aplicación. [Trabaja en conjunto con este script](#scriptLimpiarCampos).
+    // Navegabilidad: escucha a cada botón (Añadir, buscar, modificar y eliminar) que al hacerle click muestra solo los elementos asignados a ese botón y oculta el resto.
+
+    ### scriptAsientos.js
+
+    En el inicio del archivo se contienen los mensajes que se van a mostrar dependiendo del resultado de lo que realice el usuario en la aplicación.
+
+    - función buscarAsiento(): obtiene los datos del número de asiento 'numeroAsientoBuscar', del número de la cuenta 'numeroCuentaBuscarAsiento' y de la fecha 'fechaAsientoBuscar', valida la opción de que el usuario ingrese solo el número de asiento o el          número de cuenta y la fecha para buscar por esas dos opciones:
+      -  función busquedaPorCuentaYfecha(): si el usuario ingresó estos dos datos y dejó en blanco el número de asiento, entonces a la API se va a enviar una Query con estos dos datos para devolver el o los asientos que involucren a esa cuenta ese día dado.          [Accede a esta ruta de la API](#buscarAsientoPorNumeroCuentaYFecha).
+      -  función busquedaPorAsiento(): si el usuario solo ingresa el número de asiento se envía este hacia la API el cual devuelve ese asiento específico con todos los datos. [Accede a esta ruta de la API](#buscarAsientoPorNumeroAsiento).
+    - función cargarAsiento(): obtiene la fecha y cada una de las cuentas y sus respectivos valores, para ello verifica que exista una cuenta en ambos lados y que se cancelen entre si. [Accede a esta ruta de la API](#crearAsientos).
+    - función buscarCuentasPorNroCuenta(): actúa como una vista previa de los posibles resultados a ingresar en la cuenta, trayendo todos las cuentas similares a ese número ingresado. [Accede a esta ruta de la API](#findByNroCuentaEqualsLimit).
+    - función agregarInputsAsientoHaber() y agregarInputsAsientoDebe(): busca el div que contiene la cuenta y genera un nuevo input tanto para la cuenta como para el valor dependiendo el que se quiera añadir.
+    - función agregarInputsAsientos(): usando ambas funciones del punto anterior, agrega los 4 inputs respectivos (Cuenta debe, valor debe, cuenta haber y valor haber).
+
+    ### scriptMayor.js
+
+    En el inicio del archivo se contienen los mensajes que se van a mostrar dependiendo del resultado de lo que realice el usuario en la aplicación.
+
+    - función buscarMayor(): obtiene el número de cuenta, el mes y el año para validarlos y luego enviarlos hacia la API como una query ya que al ser una solicitud GET no hay otra opción para enviar los datos. [Accede a esta ruta de la API](#buscarMayor).
+    - función buscarCuentasPorNroCuenta(): genera la lista con posibles resultados al ingresar el número de cuenta. [Accede a esta ruta de la API](#findByNroCuentaEqualsLimit).
+    
 Lista de endpoints:
 
 
