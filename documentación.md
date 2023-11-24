@@ -43,7 +43,7 @@ Controladores de la API:
 
 AsientosController:
 
-### Método: crearAsientos
+### Método: crearAsientos <a name="crearasientos"></a>
 
     @PostMapping("/asientos")
   - crearAsientos(@RequestBody AsientoDTO asientoDTO):
@@ -64,7 +64,7 @@ AsientosController:
      6) Guarda el mayor.
      7) Guarda el detalle, al recorrer un for por todos los detalles nos aseguramos que todo esto se realice por cada una de las cuentas involucradas.
 
-### Método: buscarAsientoPorNumeroCuentaYFecha <a name="buscarAsientoPorNumeroCuentaYFecha"></a>
+### Método: buscarAsientoPorNumeroCuentaYFecha <a name="buscarasientopornumerocuentayfecha"></a>
 
     @GetMapping("/asientos/busqueda/")
   - buscarAsientoPorNumeroCuentaYFecha(@RequestParam("fecha") String fecha,@RequestParam("nroCuenta") String nroCuenta):
@@ -76,7 +76,7 @@ AsientosController:
      6) Recorremos cada uno y guardamos únicamente los que coincidan con la fecha buscada.
      7) Devolvemos esta lista hacia el cliente.
 
-### Método: buscarAsientoPorNumeroAsiento <a name="buscarAsientoPorNumeroAsiento"></a>
+### Método: buscarAsientoPorNumeroAsiento <a name="buscarasientopornumeroasiento"></a>
 
     @GetMapping("/asientos/nroAsiento/{nroAsiento}")
   - buscarAsientoPorNumeroAsiento(@PathVariable("nroAsiento") Long nroAsiento):
@@ -85,7 +85,7 @@ AsientosController:
      3) Formateamos la fecha de yyyy-mm-dd a dd/mm/yyyy.
      4) Devolvemos el detalle del asiento.
 
- ### Método: cargarDetallesAsiento <a name="cargarDetallesAsiento"></a>
+ ### Método: cargarDetallesAsiento <a name="cargardetallesasiento"></a>
  
   - cargarDetallesAsiento(String tipoCuenta, DetalleAsiento detalle, Asientos asiento):
      1) Recibe como parámetro el asiento, los detalles de la cuenta y el tipo de cuenta(Debe o Haber).
@@ -96,14 +96,14 @@ AsientosController:
 
 CuentasController:
 
-### Método: crearCuenta <a name="crearCuenta"></a>
+### Método: crearCuenta <a name="crearcuenta"></a>
     @PostMapping("/cuenta")
   - crearCuenta(@RequestBody Cuentas cuentasDetails):
      1) Recibe el numero de cuenta, la descripción y el rubro de la cuenta.
      2) Busca si existe una en la base de datos.
      3) Si ya existe una devuelve un error, si no existe la carga a la base de datos.
 
-### Método: buscarPlanDeCuentasPorNroCuenta <a name="buscarPlanDeCuentasPorNroCuenta"></a>
+### Método: buscarPlanDeCuentasPorNroCuenta <a name="buscarplandecuentaspornrocuenta"></a>
 
     @GetMapping("/cuenta/nro_cuenta/{nroCuenta}")
   - buscarPlanDeCuentasPorNroCuenta(@PathVariable String nroCuenta):
@@ -111,14 +111,14 @@ CuentasController:
      2) Devuelve todas las cuentas que sean similares a ese nroCuenta utilizando un LIKE %nro%.
      3) Se usa para cargar dinámicamente la tabla a mostrar cuando el usuario comienza a escribir un número de cuenta para ir filtrando los resultados.
 
-### Método: findByNroCuentaEqualsLimit <a name="findByNroCuentaEqualsLimit"></a>
+### Método: findByNroCuentaEqualsLimit <a name="findbynrocuentaequalslimit"></a>
 
     @GetMapping("/asientos/cuenta/nro_cuenta/{nroCuenta}")
   - findByNroCuentaEqualsLimit(@PathVariable String nroCuenta):
      1) Recibe el numero de cuenta.
      2) Devuelve todas las cuentas que sean similares a ese nroCuenta utilizando un LIKE %nro% pero con un máximo de 50 resultados.
 
-### Método: buscarPlanDeCuentasPorDescripcion <a name="buscarPlanDeCuentasPorDescripcion"></a>
+### Método: buscarPlanDeCuentasPorDescripcion <a name="buscarplandecuentaspordescripcion"></a>
 
     @GetMapping("/cuenta/descripcion/{descripcion}")
   - buscarPlanDeCuentasPorDescripcion(@PathVariable String descripcion):
@@ -126,7 +126,7 @@ CuentasController:
      2) Devuelve todas las cuentas que sean similares a esa descripcion utilizando un LIKE %descripcion%.
      3) Se usa para cargar dinámicamente la tabla a mostrar cuando el usuario comienza a escribir una descripción para ir filtrando los resultados.
 
-### Método: buscarPlanDeCuentasPorRubro <a name="buscarPlanDeCuentasPorRubro"></a>
+### Método: buscarPlanDeCuentasPorRubro <a name="buscarplandecuentasporrubro"></a>
 
     @GetMapping("/cuenta/{rubro}")
   - buscarPlanDeCuentasPorRubro(@PathVariable String rubro):
@@ -134,7 +134,7 @@ CuentasController:
      2) Devuelve todas las cuentas que posean ese rubro.
      3) Esto se utiliza al cambiar el select del lado del cliente, en el cual va a devolver todas las cuentas que pertenezcan a un rubro en específico.
 
-### Método: updatePlanDeCuentas <a name="updatePlanDeCuentas"></a>
+### Método: updatePlanDeCuentas <a name="updateplandecuentas"></a>
  
     @PutMapping("/cuenta/{nroCuenta}/update")
   - updatePlanDeCuentas(@PathVariable String nroCuenta, @RequestBody Map<String, String> requestData):
@@ -142,7 +142,7 @@ CuentasController:
      2) Busca por el número de cuenta.
      3) Si no encuentra una cuenta entonces la busca por la descripción, esto puede servir cuando a una cuenta se le quiere cambiar el número.
         
-### Método: borrarPlanDeCuentas <a name="borrarPlanDeCuentas"></a>
+### Método: borrarPlanDeCuentas <a name="borrarplandecuentas"></a>
 
     @DeleteMapping("/cuenta/{nroCuenta}/delete")
   - borrarPlanDeCuentas(@PathVariable String nroCuenta):
@@ -151,7 +151,7 @@ CuentasController:
    
 MayorController:
 
-### Método: buscarMayor <a name="buscarMayor"></a>
+### Método: buscarMayor <a name="buscarmayor"></a>
 
     @GetMapping("/mayor/")
   - buscarMayor(@RequestParam("nroCuenta") String nroCuenta, @RequestParam("mes") int mes, @RequestParam("año") int anio):
@@ -194,18 +194,18 @@ Descripción del cliente web:
   
     En el inicio del archivo se contienen los mensajes que se van a mostrar dependiendo del resultado de lo que realice el usuario en la aplicación.
 
-  - función buscarCuentasPorRubro(): esta interactúa con el SELECT ya que al cambiar la opción trae de la base de datos todas las cuentas que pertenezcan a cada rubro(Activo, pasivo, patrimonio neto, ingreso o egreso), más que nada para no mostrar una tabla tan amplia, filtrando por cada rubro. [Accede a esta ruta de la API](#buscarPlanDeCuentasPorRubro) y [completa la lista de resultados con esta función](#llenarDataList()). 
-  - función buscarCuentaEliminar(): esta da el posible resultado a ingresar cuando se comienza a escribir el número de la cuenta a eliminar, realizando un SELECT a la base de datos con un límite de resultados para no generar una lista tan extensa. [Accede a esta ruta de la API](#findByNroCuentaEqualsLimit). 
-  - función buscarCuentaModificar(): mismo funcionamiento que el anterior, pero al acceder a otros elementos HTML preferí dejarlos por separados para no agregar varios condicionales dependiendo del elemento que quiero buscar, me parece que permite entender       el código de forma más sencilla, y son pocas líneas que podría ahorrar. [Accede a esta ruta de la API](#findByNroCuentaEqualsLimit). 
-  - función llenarDataList(): esta recibe las cuentas desde la API y rellena la lista de posibles resultados a ingresar en el input.
+  - función buscarCuentasPorRubro(): esta interactúa con el SELECT ya que al cambiar la opción trae de la base de datos todas las cuentas que pertenezcan a cada rubro(Activo, pasivo, patrimonio neto, ingreso o egreso), más que nada para no mostrar una tabla tan amplia, filtrando por cada rubro. [Accede a esta ruta de la API](#buscarplandecuentasporrubro) y [completa la lista de resultados con esta función](#llenardatalist). 
+  - función buscarCuentaEliminar(): esta da el posible resultado a ingresar cuando se comienza a escribir el número de la cuenta a eliminar, realizando un SELECT a la base de datos con un límite de resultados para no generar una lista tan extensa. [Accede a esta ruta de la API](#findbynrocuentaequalslimit). 
+  - función buscarCuentaModificar(): mismo funcionamiento que el anterior, pero al acceder a otros elementos HTML preferí dejarlos por separados para no agregar varios condicionales dependiendo del elemento que quiero buscar, me parece que permite entender       el código de forma más sencilla, y son pocas líneas que podría ahorrar. [Accede a esta ruta de la API](#findbynrocuentaequalslimit). 
+  - función llenarDataList(): esta recibe las cuentas desde la API y rellena la lista de posibles resultados a ingresar en el input. <a name="llenardatalist"></a>
   - función buscarCuentasPorNroCuenta(): esta solo interactúa para filtrar dinámicamente la tabla a medida que el usuario ingresa un número de cuenta en el input 'numeroCuentaBuscar' a buscar para ir reduciendo la búsqueda a medida que escribe.
   - función buscarCuentasPorDescripcion(): exactamente igual que el anterior pero interactuando con el elemento html de la descripción de la cuenta en el input 'descripcionBuscar'.
-  - función AñadirCuenta(): recupera el rubro 'rubroAñadir', el número de cuenta 'numeroCuentaAñadir' y la descripción 'descripcionAñadir', verifica que no estén vacíos y luego los envía a la API. [Accede a esta ruta de la API](#crearCuenta).
-  - función actualizarCuenta(): recupera el rubro 'rubroModificar', el número de cuenta 'numeroCuentaModificar' y la descripción 'descripcionModificar', verifica que no estén vacíos y luego los envía a la API para actualizar los datos de la cuenta. [Accede a     esta ruta de la API](#updatePlanDeCuentas).
-  - función eliminarCuenta(): recupera el número de cuenta 'numeroCuentaModificar' verifica que no esté vacío y luego los envía a la API para eliminar la cuenta. [Accede a esta ruta de la API](#borrarPlanDeCuentas).
+  - función AñadirCuenta(): recupera el rubro 'rubroAñadir', el número de cuenta 'numeroCuentaAñadir' y la descripción 'descripcionAñadir', verifica que no estén vacíos y luego los envía a la API. [Accede a esta ruta de la API](#crearcuenta).
+  - función actualizarCuenta(): recupera el rubro 'rubroModificar', el número de cuenta 'numeroCuentaModificar' y la descripción 'descripcionModificar', verifica que no estén vacíos y luego los envía a la API para actualizar los datos de la cuenta. [Accede a     esta ruta de la API](#updateplandecuentas).
+  - función eliminarCuenta(): recupera el número de cuenta 'numeroCuentaModificar' verifica que no esté vacío y luego los envía a la API para eliminar la cuenta. [Accede a esta ruta de la API](#borrarplandecuentas).
   - función verificarRubroYNroCuenta(): verifica que el primer dígito del número de cuenta sea igual al del asignado en el principio del archivo al rubro, de forma predeterminada es Activo = 1, Pasivo = 2, PN = 3, Ingreso = 4 y Egreso = 5, si el número de        cuenta en un rubro, por ejemplo, 'Activo' no comienza con '1' lanza un error.
   - función cargarTabla(): accede a la tabla 'tablaCuentas' y va creando dinámicamente una fila y columna por cada dato recuperado desde la API, esta se encarga de mostrar todas las cuentas de un rubro.
-  - función limpiarCampos(): deja todos los inputs vacíos después de alguna carga de datos en la aplicación. [Trabaja en conjunto con este script](#scriptLimpiarCampos).
+  - función limpiarCampos(): deja todos los inputs vacíos después de alguna carga de datos en la aplicación. [Trabaja en conjunto con este script](#scriptlimpiarcampos).
   // Navegabilidad: escucha a cada botón (Añadir, buscar, modificar y eliminar) que al hacerle click muestra solo los elementos asignados a ese botón y oculta el resto.
 
   ### scriptAsientos.js
@@ -213,10 +213,10 @@ Descripción del cliente web:
     En el inicio del archivo se contienen los mensajes que se van a mostrar dependiendo del resultado de lo que realice el usuario en la aplicación.
 
   - función buscarAsiento(): obtiene los datos del número de asiento 'numeroAsientoBuscar', del número de la cuenta 'numeroCuentaBuscarAsiento' y de la fecha 'fechaAsientoBuscar', valida la opción de que el usuario ingrese solo el número de asiento o el          número de cuenta y la fecha para buscar por esas dos opciones:
-  -  función busquedaPorCuentaYfecha(): si el usuario ingresó estos dos datos y dejó en blanco el número de asiento, entonces a la API se va a enviar una Query con estos dos datos para devolver el o los asientos que involucren a esa cuenta ese día dado.          [Accede a esta ruta de la API](#buscarAsientoPorNumeroCuentaYFecha). 
-  -  función busquedaPorAsiento(): si el usuario solo ingresa el número de asiento se envía este hacia la API el cual devuelve ese asiento específico con todos los datos. [Accede a esta ruta de la API](#buscarAsientoPorNumeroAsiento).
-  - función cargarAsiento(): obtiene la fecha y cada una de las cuentas y sus respectivos valores, para ello verifica que exista una cuenta en ambos lados y que se cancelen entre si. [Accede a esta ruta de la API](#crearAsientos).
-  - función buscarCuentasPorNroCuenta(): actúa como una vista previa de los posibles resultados a ingresar en la cuenta, trayendo todos las cuentas similares a ese número ingresado. [Accede a esta ruta de la API](#findByNroCuentaEqualsLimit).
+  -  función busquedaPorCuentaYfecha(): si el usuario ingresó estos dos datos y dejó en blanco el número de asiento, entonces a la API se va a enviar una Query con estos dos datos para devolver el o los asientos que involucren a esa cuenta ese día dado.          [Accede a esta ruta de la API](#buscarasientopornumerocuentayfecha). 
+  -  función busquedaPorAsiento(): si el usuario solo ingresa el número de asiento se envía este hacia la API el cual devuelve ese asiento específico con todos los datos. [Accede a esta ruta de la API](#buscarasientopornumeroasiento).
+  - función cargarAsiento(): obtiene la fecha y cada una de las cuentas y sus respectivos valores, para ello verifica que exista una cuenta en ambos lados y que se cancelen entre si. [Accede a esta ruta de la API](#crearasientos).
+  - función buscarCuentasPorNroCuenta(): actúa como una vista previa de los posibles resultados a ingresar en la cuenta, trayendo todos las cuentas similares a ese número ingresado. [Accede a esta ruta de la API](#findbynrocuentaequalslimit).
   - función agregarInputsAsientoHaber() y agregarInputsAsientoDebe(): busca el div que contiene la cuenta y genera un nuevo input tanto para la cuenta como para el valor dependiendo el que se quiera añadir.
   - función agregarInputsAsientos(): usando ambas funciones del punto anterior, agrega los 4 inputs respectivos (Cuenta debe, valor debe, cuenta haber y valor haber).
 
@@ -224,15 +224,15 @@ Descripción del cliente web:
 
   En el inicio del archivo se contienen los mensajes que se van a mostrar dependiendo del resultado de lo que realice el usuario en la aplicación.
 
-  - función buscarMayor(): obtiene el número de cuenta, el mes y el año para validarlos y luego enviarlos hacia la API como una query ya que al ser una solicitud GET no hay otra opción para enviar los datos. [Accede a esta ruta de la API](#buscarMayor).
-  - función buscarCuentasPorNroCuenta(): genera la lista con posibles resultados al ingresar el número de cuenta. [Accede a esta ruta de la API](#findByNroCuentaEqualsLimit).
+  - función buscarMayor(): obtiene el número de cuenta, el mes y el año para validarlos y luego enviarlos hacia la API como una query ya que al ser una solicitud GET no hay otra opción para enviar los datos. [Accede a esta ruta de la API](#buscarmayor).
+  - función buscarCuentasPorNroCuenta(): genera la lista con posibles resultados al ingresar el número de cuenta. [Accede a esta ruta de la API](#findbynrocuentaequalslimit).
 
   ### scriptModal.js
 
   Es el encargado de mostrar los mensajes de error o de éxito.
 
-  - función abrirModalResultadoMayor(): obtiene todos los datos del mayor de la cuenta y muestra el año, el mes parseado de número a mes y los demás datos del saldo. [Depende de esta función](#buscarMayor).
-  - función crearModalAsiento(): obtiene todos los datos del asiento, ya sea del obtenido por el número de la cuenta y fecha o por el de número de asiento, muestra la fecha, el número de asiento, la o las cuentas que intervengan con sus respectivos valores. [Depende de esta función](#buscarAsiento).
+  - función abrirModalResultadoMayor(): obtiene todos los datos del mayor de la cuenta y muestra el año, el mes parseado de número a mes y los demás datos del saldo. [Depende de esta función](#buscarmayor).
+  - función crearModalAsiento(): obtiene todos los datos del asiento, ya sea del obtenido por el número de la cuenta y fecha o por el de número de asiento, muestra la fecha, el número de asiento, la o las cuentas que intervengan con sus respectivos valores. [Depende de esta función](#buscarasiento).
     
 Lista de endpoints:
 
