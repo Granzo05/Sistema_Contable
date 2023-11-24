@@ -235,7 +235,7 @@
     
 Lista de endpoints:
 
-* CuentasController:
+  * CuentasController:
 
   - '/cuenta':
       - Método: POST
@@ -290,55 +290,55 @@ Lista de endpoints:
       - Uso especial: esta solicitud devuelve una lista con un LIMIT de 10 respuestas como máximo. Más que nada             para hacer una llamada más simple a la base de datos y no sobrecargarla con muchas solicitudes
         
      
-    - '/cuenta/descripcion/{descripcion}':
-        - Método: GET
-        - Solicitud:
-        ###
-            /cuenta/descripcion/ca        
-        - Respuestas:
-          - []: No se encontró ninguna cuenta.
-          - JSON:
-        ###
-            {
-            "id": 1,
-            "rubro": "Activo",       
-            "nroCuenta": "1.0.00.0.1",
-            "descripcion": "Caja"  
-            }
-            {
-            "id": 20,
-            "rubro": "Activo",       
-            "nroCuenta": "1.0.01.1.2",
-            "descripcion": "Caja de ahorro en dólares"  
-            }
+  - '/cuenta/descripcion/{descripcion}':
+      - Método: GET
+      - Solicitud:
+      ###
+          /cuenta/descripcion/ca        
+      - Respuestas:
+        - []: No se encontró ninguna cuenta.
+        - JSON:
+      ###
+          {
+          "id": 1,
+          "rubro": "Activo",       
+          "nroCuenta": "1.0.00.0.1",
+          "descripcion": "Caja"  
+          }
+          {
+          "id": 20,
+          "rubro": "Activo",       
+          "nroCuenta": "1.0.01.1.2",
+          "descripcion": "Caja de ahorro en dólares"  
+          }
 
-    - '/cuenta/{nroCuenta}/update':
-        - Método: PUT
-        - Solicitud:
-        ###
-            /cuenta/1.0.00.0.1/update
-            body:
-                  {
-                    "nroCuenta": "1.0.00.0.1",
-                    "descripcion": "Caja chica",
-                    "rubro": "ACTIVO"
-                  }        
-        - Respuestas:
-          - 200: cuenta modificada con éxito.
-          - 404: número de cuenta inexistente.
-         
-     - '/cuenta/{nroCuenta}/delete':
-        - Método: DELETE
-        - Solicitud:
-        ###
-            /cuenta/1.0.00.0.1/delete       
-        - Respuestas:
-          - 202: cuenta eliminada con éxito.
-          - 400: cuenta inexistente o eliminada previamente.          
+  - '/cuenta/{nroCuenta}/update':
+      - Método: PUT
+      - Solicitud:
+      ###
+          /cuenta/1.0.00.0.1/update
+          body:
+                {
+                  "nroCuenta": "1.0.00.0.1",
+                  "descripcion": "Caja chica",
+                  "rubro": "ACTIVO"
+                }        
+      - Respuestas:
+        - 200: cuenta modificada con éxito.
+        - 404: número de cuenta inexistente.
+        
+  - '/cuenta/{nroCuenta}/delete':
+      - Método: DELETE
+      - Solicitud:
+      ###
+          /cuenta/1.0.00.0.1/delete       
+      - Respuestas:
+        - 202: cuenta eliminada con éxito.
+        - 400: cuenta inexistente o eliminada previamente.          
 
-    * AsientosController:
+  * AsientosController:
 
-      - '/asientos':
+  - '/asientos':
       - Método: POST
       - Solicitud JSON:      
       ###
@@ -413,28 +413,27 @@ Lista de endpoints:
           "valor": 2000  
           }
 
-   * MayorController:
+  * MayorController:
 
-      - '/mayor':
-      - Método: GET
-      - Solicitud:
-        ###
-            /mayor/?nroCuenta=1.0.00.0.2&mes=11&año=2023  
-      - Respuestas:
-        - {}: No se encontró ningún resultado.
-        - JSON:
-        ###
-            {
-            "año": 2023,
-            "cuenta": {
-                        "descripcion": "Caja",
-                        "id"; 2,
-                        "nroCuenta": "1.0.00.0.1",
-                        "rubro": "ACTIVO"
-                       },      
-            "debe": 2000,
-            "haber": 0,
-            "mes": 11,
-            "saldo": "Deudor"
-            }
-        
+  - '/mayor':
+    - Método: GET
+    - Solicitud:
+    ###
+        /mayor/?nroCuenta=1.0.00.0.2&mes=11&año=2023  
+    - Respuestas:
+      - {}: No se encontró ningún resultado.
+      - JSON:
+    ###
+          {
+          "año": 2023,
+          "cuenta": {
+                      "descripcion": "Caja",
+                      "id"; 2,
+                      "nroCuenta": "1.0.00.0.1",
+                      "rubro": "ACTIVO"
+                     },      
+          "debe": 2000,
+          "haber": 0,
+          "mes": 11,
+          "saldo": "Deudor"
+          }       
