@@ -191,10 +191,15 @@ Descripción del cliente web:
   JS:
   
   ### scriptCuenta.js
-  
+    En el inicio del archivo se contienen los mensajes que se van a mostrar dependiendo del resultado de lo que realice el usuario en la aplicación.
 
-
-  
+    - función buscarCuentasPorRubro(): esta interactúa con el SELECT ya que al cambiar la opción trae de la base de datos todas las cuentas que pertenezcan a cada rubro(Activo, pasivo, patrimonio neto, ingreso o egreso), más que nada para no mostrar una tabla tan amplia, filtrando por cada rubro. [Accede a esta ruta de la API](#buscarPlanDeCuentasPorRubro) y [completa la lista de resultados con esta función](#llenarDataList()). 
+    - función buscarCuentaEliminar(): esta da el posible resultado a ingresar cuando se comienza a escribir el número de la cuenta a eliminar, realizando un SELECT a la base de datos con un límite de resultados para no generar una lista tan extensa. [Accede a esta ruta de la API](#findByNroCuentaEqualsLimit). 
+    - función buscarCuentaModificar(): mismo funcionamiento que el anterior, pero al acceder a otros elementos HTML preferí dejarlos por separados para no agregar varios condicionales dependiendo del elemento que quiero buscar, me parece que permite entender       el código de forma más sencilla, y son pocas líneas que podría ahorrar. [Accede a esta ruta de la API](#findByNroCuentaEqualsLimit). 
+    - función llenarDataList(): esta recibe las cuentas desde la API y rellena la lista de posibles resultados a ingresar en el input.
+    - función buscarCuentasPorNroCuenta(): esta solo interactúa para filtrar dinámicamente la tabla a medida que el usuario ingresa un número de cuenta en el input 'numeroCuentaBuscar' a buscar para ir reduciendo la búsqueda a medida que escribe.
+    - función buscarCuentasPorDescripcion(): exactamente igual que el anterior pero interactuando con el elemento html de la descripción de la cuenta en el input 'descripcionBuscar'.
+    - función buscarCuentasPorDescripcion():
 Lista de endpoints:
 
 
