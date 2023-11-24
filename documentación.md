@@ -231,7 +231,7 @@
 
     Es el encargado de mostrar los mensajes de error o de éxito.
   
-    - función abrirModalResultadoMayor(): obtiene todos los datos del mayor de la cuenta y muestra el año, el mes parseado de número a mes y los demás datos del saldo. [Depende de esta función](#buscarmayor).
+    - función abrirModalResultadoMayor(): obtiene todos los datos del mayor de la cuenta y muestra el año, el mes parseado de número a mes y los demás datos del saldo. [Accede a esta ruta de la API](#buscarmayor).
     - función crearModalAsiento(): obtiene todos los datos del asiento, ya sea del obtenido por el número de la cuenta y fecha o por el de número de asiento, muestra la fecha, el número de asiento, la o las cuentas que intervengan con sus respectivos valores. [Depende de esta función](#buscarasiento).
     
 Lista de endpoints:
