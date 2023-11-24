@@ -12,8 +12,7 @@
 
 * Diagrama de Clases:
 
-  ![image](https://github.com/Granzo05/Sistema_Contable/assets/121827648/dd558645-4bd6-46d4-bb83-bb77d64f15a4)
-
+  ![image](https://github.com/Granzo05/Sistema_Contable/assets/121827648/5672eeea-58ae-45a3-a46e-a90951212c6b)
 
 * Explicación de clases de la API:
 
